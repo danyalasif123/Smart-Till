@@ -1,8 +1,8 @@
 import api from "./api";
 
-export const login = async (data) => {
+export const registerBusiness = async (data) => {
   const response = await api.post(
-    "/auth/login",
+    "/business/register",
     data
   );
 

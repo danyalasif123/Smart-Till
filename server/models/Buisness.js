@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const businessSchema = new mongoose.Schema(
   {
-    name: {
+    businessName: {
       type: String,
       required: true,
+      trim: true,
     },
 
     email: {
@@ -14,21 +15,19 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
     },
 
-    password: {
+    phone: {
       type: String,
       required: true,
     },
 
-    role: {
+    address: {
       type: String,
-      enum: ["admin", "manager", "cashier"],
-      default: "cashier",
+      required: true,
     },
 
-    businessId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Business",
-      required: true,
+    logo: {
+      type: String,
+      default: "",
     },
 
     status: {
@@ -41,4 +40,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Business", businessSchema);

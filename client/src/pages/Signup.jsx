@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../services/authService";
-import "../styles/auth.css";
 
 function Signup() {
+
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -13,28 +13,38 @@ function Signup() {
   });
 
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
+
       await signup(form);
 
       alert("Account Created Successfully");
 
       navigate("/");
+
     } catch (error) {
+
       alert(error.response?.data?.message || "Signup Failed");
+
     }
+
   };
 
   return (
+
     <div className="auth-container">
+
       <div className="auth-card">
 
         <h1>Create Account</h1>
@@ -44,8 +54,9 @@ function Signup() {
           <input
             type="text"
             name="name"
-            placeholder="Full Name"
+            placeholder="Name"
             onChange={handleChange}
+            required
           />
 
           <input
@@ -53,6 +64,7 @@ function Signup() {
             name="email"
             placeholder="Email"
             onChange={handleChange}
+            required
           />
 
           <input
@@ -60,6 +72,7 @@ function Signup() {
             name="password"
             placeholder="Password"
             onChange={handleChange}
+            required
           />
 
           <button type="submit">
@@ -69,12 +82,19 @@ function Signup() {
         </form>
 
         <p>
+
           Already have an account?
-          <Link to="/"> Login</Link>
+
+          <Link to="/">
+            Login
+          </Link>
+
         </p>
 
       </div>
+
     </div>
+
   );
 }
 

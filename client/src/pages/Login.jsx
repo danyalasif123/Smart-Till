@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
-import "../styles/auth.css";
 
 function Login() {
+
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -22,6 +22,7 @@ function Login() {
     e.preventDefault();
 
     try {
+
       const data = await login(form);
 
       localStorage.setItem("token", data.token);
@@ -29,17 +30,22 @@ function Login() {
       alert("Login Successful");
 
       navigate("/dashboard");
+
     } catch (error) {
+
       alert(error.response?.data?.message || "Login Failed");
+
     }
   };
 
   return (
     <div className="auth-container">
+
       <div className="auth-card">
 
         <h1>SmartTill</h1>
-        <h2>Admin Login</h2>
+
+        <h2>Login</h2>
 
         <form onSubmit={handleSubmit}>
 
@@ -48,6 +54,7 @@ function Login() {
             name="email"
             placeholder="Email"
             onChange={handleChange}
+            required
           />
 
           <input
@@ -55,6 +62,7 @@ function Login() {
             name="password"
             placeholder="Password"
             onChange={handleChange}
+            required
           />
 
           <button type="submit">
@@ -64,11 +72,17 @@ function Login() {
         </form>
 
         <p>
+
           Don't have an account?
-          <Link to="/signup"> Sign Up</Link>
+
+          <Link to="/signup">
+            Sign Up
+          </Link>
+
         </p>
 
       </div>
+
     </div>
   );
 }

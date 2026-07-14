@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
+import axios from "axios";
 
-const { signup, login } = require("../controllers/authController");
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-router.post("/signup", signup);
-router.post("/login", login);
-
-module.exports = router;
+export default api;

@@ -1,8 +1,8 @@
-const Business = require("../models/Business");
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+import Business from "../models/Business.js";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
-exports.registerBusiness = async (req, res) => {
+export const registerBusiness = async (req, res) => {
   try {
     const {
       businessName,
@@ -50,6 +50,7 @@ exports.registerBusiness = async (req, res) => {
     });
 
     admin.createdBy = admin._id;
+
     await admin.save();
 
     res.status(201).json({

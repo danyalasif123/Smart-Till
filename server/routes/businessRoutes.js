@@ -1,11 +1,8 @@
-const express = require("express");
+import express from "express";
+import { registerBusiness } from "../controllers/businessController.js";
 
 const router = express.Router();
 
-const {
-  registerBusiness,
-} = require("../controllers/businessController");
-
 router.post("/register", registerBusiness);
 
-module.exports = router;
+export default router;

@@ -1,16 +1,19 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const businessSchema = new mongoose.Schema(
   {
     businessName: {
       type: String,
       required: true,
+      trim: true,
     },
 
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
 
     phone: {
@@ -38,4 +41,6 @@ const businessSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Business", businessSchema);
+const Business = mongoose.model("Business", businessSchema);
+
+export default Business;

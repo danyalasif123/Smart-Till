@@ -1,9 +1,26 @@
-const express = require("express");
+import express from "express";
+
+import {
+  createUser,
+  getUsers,
+  getUserById,
+  updateUser,
+  updateUserStatus,
+} from "../controllers/userController.js";
+
+import verifyToken from "../middleware/verifyToken.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
-const { createUser } = require("../controllers/userController");
+router.post("/", verifyToken, isAdmin, createUser);
 
-router.post("/", createUser);
+router.get("/", verifyToken, isAdmin, getUsers);
 
-module.exports = router;
+router.get("/:id", verifyToken, isAdmin, getUserById);
+
+router.put("/:id", verifyToken, isAdmin, updateUser);
+
+router.patch("/:id/status", verifyToken, isAdmin, updateUserStatus);
+
+export default router;

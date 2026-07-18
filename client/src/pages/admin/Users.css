@@ -1,33 +1,48 @@
 .users-page {
-  padding: 24px;
+  padding: 20px;
 }
+
+/* ==========================
+   Header
+========================== */
 
 .users-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+
+  margin-bottom: 18px;
 }
 
 .users-header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .users-header p {
-  margin-top: 6px;
-  color: var(--text-secondary);
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
 }
 
+/* ==========================
+   Toolbar
+========================== */
+
 .users-toolbar {
-  margin-bottom: 20px;
+  margin: 16px 0;
 }
+
+/* ==========================
+   Content
+========================== */
 
 .users-content {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: 4px;
   box-shadow: var(--shadow);
   overflow: hidden;
 }

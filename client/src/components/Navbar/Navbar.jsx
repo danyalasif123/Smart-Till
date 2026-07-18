@@ -42,7 +42,7 @@ function Navbar() {
 
       <div className="user-section">
 
-        <span>{user?.name}</span>
+        
 
         <button onClick={handleLogout}>
           Logout

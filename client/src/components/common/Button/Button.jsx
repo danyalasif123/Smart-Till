@@ -4,7 +4,7 @@ const Button = ({
   children,
   onClick,
   type = "button",
-  variant = "primary",
+  variant = "",
   disabled = false,
 }) => {
   return (

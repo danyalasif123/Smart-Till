@@ -5,7 +5,7 @@ function AdminLayout({ children }) {
     <div
       style={{
         minHeight: "100vh",
-        background: "#f3f2f1",
+        background: "white",
       }}
     >
       <Navbar />

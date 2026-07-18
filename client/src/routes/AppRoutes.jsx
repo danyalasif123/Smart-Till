@@ -8,7 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminLayout from "../layouts/AdminLayout";
 
 import Dashboard from "../pages/admin/Dashboard";
-import Users from "../pages/Users/Users";
+import Users from "../pages/admin/Users";
 
 function AppRoutes() {
   return (

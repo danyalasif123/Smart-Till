@@ -6,6 +6,7 @@ import {
   getUserById,
   updateUser,
   updateUserStatus,
+  deleteUser,
 } from "../controllers/userController.js";
 
 import verifyToken from "../middleware/verifyToken.js";
@@ -22,5 +23,6 @@ router.get("/:id", verifyToken, isAdmin, getUserById);
 router.put("/:id", verifyToken, isAdmin, updateUser);
 
 router.patch("/:id/status", verifyToken, isAdmin, updateUserStatus);
+router.delete("/:id", verifyToken, isAdmin, deleteUser);
 
 export default router;

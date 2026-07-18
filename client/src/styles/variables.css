@@ -1,0 +1,32 @@
+:root {
+  /* Primary */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  /* Status */
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Backgrounds */
+  --background: #f5f7fb;
+  --surface: #ffffff;
+
+  /* Text */
+  --text: #111827;
+  --text-secondary: #6b7280;
+
+  /* Borders */
+  --border: #e5e7eb;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadow */
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  /* Animation */
+  --transition: 0.25s ease;
+}

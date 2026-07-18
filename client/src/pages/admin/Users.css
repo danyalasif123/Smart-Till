@@ -1,0 +1,33 @@
+.users-page {
+  padding: 24px;
+}
+
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.users-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--text);
+}
+
+.users-header p {
+  margin-top: 6px;
+  color: var(--text-secondary);
+}
+
+.users-toolbar {
+  margin-bottom: 20px;
+}
+
+.users-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}

@@ -50,6 +50,9 @@ export const getUsers = async (req, res) => {
   try {
     const users = await User.find({
       businessId: req.user.businessId,
+
+      // Exclude admin from users list
+      role: { $ne: "admin" },
     })
       .select("-password")
       .sort({ createdAt: -1 });

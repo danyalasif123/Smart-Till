@@ -134,16 +134,15 @@ const UserModal = ({
             <label htmlFor="role">Role</label>
 
             <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="select-input"
-            >
-              <option value="admin">Admin</option>
-              <option value="manager">Manager</option>
-              <option value="cashier">Cashier</option>
-            </select>
+  id="role"
+  name="role"
+  value={formData.role}
+  onChange={handleChange}
+  className="select-input"
+>
+  <option value="manager">Manager</option>
+  <option value="cashier">Cashier</option>
+</select>
           </div>
 
           <div className="checkbox-group">

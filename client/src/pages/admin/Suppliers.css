@@ -1,0 +1,75 @@
+.suppliers-page {
+  padding: 20px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.suppliers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 18px;
+}
+
+.suppliers-header h1 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  color: var(--text);
+}
+
+.suppliers-header p {
+  margin: 4px 0 0;
+
+  font-size: 13px;
+
+  color: #666666;
+}
+
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.suppliers-toolbar {
+  margin: 16px 0;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.suppliers-content {
+  width: 100%;
+
+  background: var(--surface);
+
+  border-radius: 4px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+  .suppliers-page {
+    padding: 14px;
+  }
+
+  .suppliers-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,200 @@
+.category-table {
+  width: 100%;
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  font-size: 13px;
+}
+
+/* =========================
+   Header + Row Grid
+========================= */
+
+.category-table-header,
+.category-table-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(150px, 1.5fr)
+    minmax(250px, 3fr)
+    minmax(100px, 0.8fr)
+    minmax(140px, 1fr);
+
+  align-items: center;
+}
+
+/* =========================
+   Header
+========================= */
+
+.category-table-header {
+  min-height: 36px;
+
+  background: #f7f7f7;
+
+  border-bottom: 1px solid #dcdcdc;
+
+  color: #444444;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+.category-table-header > div {
+  padding: 8px 12px;
+}
+
+/* =========================
+   Rows
+========================= */
+
+.category-table-row {
+  min-height: 40px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  transition: background-color 0.15s ease;
+}
+
+.category-table-row:last-child {
+  border-bottom: none;
+}
+
+.category-table-row:hover {
+  background: #f5f9fc;
+}
+
+/* =========================
+   Cells
+========================= */
+
+.category-table-cell {
+  padding: 7px 12px;
+
+  color: #323130;
+
+  font-size: 13px;
+
+  min-width: 0;
+}
+
+/* =========================
+   Category Name
+========================= */
+
+.category-name {
+  font-weight: 500;
+  color: #242424;
+}
+
+/* =========================
+   Description
+========================= */
+
+.category-description {
+  color: #605e5c;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   Actions
+========================= */
+
+.category-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.category-edit-btn,
+.category-delete-btn {
+  min-height: 28px;
+
+  padding: 4px 9px;
+
+  border-radius: 3px;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Edit */
+
+.category-edit-btn {
+  color: #0067b8;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+}
+
+.category-edit-btn:hover {
+  background: #f3f2f1;
+  border-color: #a19f9d;
+}
+
+/* Delete */
+
+.category-delete-btn {
+  color: #a4262c;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+}
+
+.category-delete-btn:hover {
+  background: #fde7e9;
+  border-color: #a4262c;
+}
+
+/* =========================
+   Empty / Loading
+========================= */
+
+.category-table-message {
+  width: 100%;
+
+  padding: 30px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  color: #605e5c;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 800px) {
+  .category-table {
+    overflow-x: auto;
+  }
+
+  .category-table-header,
+  .category-table-row {
+    min-width: 700px;
+  }
+}

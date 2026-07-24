@@ -1,0 +1,71 @@
+.categories-page {
+  padding: 20px;
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.categories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 18px;
+}
+
+.categories-header h1 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  color: var(--text);
+}
+
+.categories-header p {
+  margin: 4px 0 0;
+
+  font-size: 13px;
+
+  color: #666666;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.categories-toolbar {
+  margin: 16px 0;
+}
+
+/* =========================
+   TABLE CONTAINER
+========================= */
+
+.categories-content {
+  width: 100%;
+
+  background: var(--surface);
+
+  border-radius: 4px;
+
+  overflow: hidden;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .categories-page {
+    padding: 14px;
+  }
+
+  .categories-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

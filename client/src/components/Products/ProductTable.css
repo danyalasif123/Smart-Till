@@ -1,0 +1,232 @@
+.product-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.product-table {
+  width: 100%;
+  min-width: 950px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.product-table-header,
+.product-table-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(150px, 2fr)
+    minmax(120px, 1.3fr)
+    minmax(90px, 1fr)
+    minmax(90px, 0.9fr)
+    minmax(70px, 0.7fr)
+    minmax(70px, 0.7fr)
+    minmax(90px, 0.8fr)
+    minmax(130px, 1fr);
+
+  align-items: center;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.product-table-header {
+  min-height: 36px;
+
+  background: #f7f7f7;
+
+  border-bottom: 1px solid #dcdcdc;
+
+  color: #444444;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+.product-table-header > div {
+  padding: 8px 10px;
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.product-table-row {
+  min-height: 40px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  transition: background-color 0.15s ease;
+}
+
+.product-table-row:last-child {
+  border-bottom: none;
+}
+
+.product-table-row:hover {
+  background: #f5f9fc;
+}
+
+
+/* =========================================
+   CELLS
+========================================= */
+
+.product-table-cell {
+  min-width: 0;
+
+  padding: 7px 10px;
+
+  color: #323130;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   PRODUCT
+========================================= */
+
+.product-name {
+  font-weight: 500;
+  color: #242424;
+}
+
+.product-sku {
+  color: #605e5c;
+}
+
+.product-price {
+  font-weight: 500;
+}
+
+
+/* =========================================
+   STOCK
+========================================= */
+
+.product-stock-normal {
+  color: #323130;
+}
+
+.product-stock-low {
+  color: #a4262c;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.product-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  overflow: visible;
+}
+
+.product-edit-btn,
+.product-delete-btn {
+  min-height: 28px;
+
+  padding: 4px 9px;
+
+  border-radius: 3px;
+
+  background: #ffffff;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+
+/* Edit */
+
+.product-edit-btn {
+  color: #0067b8;
+
+  border: 1px solid #c8c6c4;
+}
+
+.product-edit-btn:hover {
+  background: #f3f2f1;
+
+  border-color: #a19f9d;
+}
+
+
+/* Delete */
+
+.product-delete-btn {
+  color: #a4262c;
+
+  border: 1px solid #c8c6c4;
+}
+
+.product-delete-btn:hover {
+  background: #fde7e9;
+
+  border-color: #a4262c;
+}
+
+
+/* =========================================
+   LOADING / EMPTY
+========================================= */
+
+.product-table-message {
+  width: 100%;
+
+  padding: 30px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  color: #605e5c;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+  .product-table {
+    min-width: 900px;
+  }
+}

@@ -22,7 +22,7 @@ function Navbar() {
 
         <NavLink to="/admin">Dashboard</NavLink>
 
-        <NavLink to="/admin/sales">Sales</NavLink>
+        <NavLink to="/admin/pos">Sales</NavLink>
 
         <NavLink to="/admin/products">Products</NavLink>
 

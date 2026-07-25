@@ -1,0 +1,383 @@
+/* =========================================
+   PAGE
+========================================= */
+
+.pos-page {
+  height: calc(100vh - 60px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: #f5f6f8;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.pos-page-header {
+  min-height: 68px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 12px 18px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pos-page-header h1 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.pos-page-header p {
+  margin: 3px 0 0;
+
+  color: #666666;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   HEADER SUMMARY
+========================================= */
+
+.pos-header-summary {
+  display: flex;
+
+  align-items: center;
+
+  gap: 24px;
+}
+
+.pos-header-summary > div {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+}
+
+.pos-header-summary span {
+  color: #777777;
+
+  font-size: 10px;
+}
+
+.pos-header-summary strong {
+  margin-top: 2px;
+
+  color: #242424;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.pos-layout {
+  flex: 1;
+
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    410px;
+}
+
+
+/* =========================================
+   PRODUCTS SECTION
+========================================= */
+
+.pos-products-section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 14px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.pos-product-toolbar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.pos-search-wrapper {
+  position: relative;
+
+  flex: 1;
+}
+
+.pos-search-input {
+  width: 100%;
+  height: 38px;
+
+  box-sizing: border-box;
+
+  padding: 0 38px 0 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  color: #242424;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pos-search-input::placeholder {
+  color: #8a8886;
+}
+
+.pos-search-input:focus {
+  outline: none;
+
+  border-color: #0067b8;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(0, 103, 184, 0.1);
+}
+
+
+/* =========================================
+   CLEAR SEARCH
+========================================= */
+
+.pos-search-clear {
+  position: absolute;
+
+  top: 50%;
+  right: 8px;
+
+  width: 24px;
+  height: 24px;
+
+  transform: translateY(-50%);
+
+  padding: 0;
+
+  background: transparent;
+
+  border: none;
+  border-radius: 3px;
+
+  color: #605e5c;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.pos-search-clear:hover {
+  background: #f3f2f1;
+}
+
+
+/* =========================================
+   CLEAR SALE
+========================================= */
+
+.pos-clear-cart {
+  height: 38px;
+
+  padding: 0 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  color: #a4262c;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.pos-clear-cart:hover:not(:disabled) {
+  background: #fde7e9;
+
+  border-color: #a4262c;
+}
+
+.pos-clear-cart:disabled {
+  color: #a19f9d;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   PRODUCT INFO
+========================================= */
+
+.pos-product-info {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 8px 2px;
+}
+
+.pos-product-info span {
+  color: #777777;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   PRODUCT SCROLL AREA
+========================================= */
+
+.pos-products-scroll {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding-right: 4px;
+}
+
+
+/* =========================================
+   CART SECTION
+========================================= */
+
+.pos-cart-section {
+  min-width: 0;
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.pos-products-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.pos-products-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pos-products-scroll::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 4px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+  .pos-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      360px;
+  }
+}
+
+
+@media (max-width: 800px) {
+  .pos-page {
+    height: auto;
+
+    min-height: 100vh;
+
+    overflow: visible;
+  }
+
+  .pos-layout {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .pos-products-section {
+    min-height: 500px;
+  }
+
+  .pos-cart-section {
+    min-height: 500px;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .pos-page-header {
+    align-items: flex-start;
+
+    padding: 12px;
+  }
+
+  .pos-header-summary {
+    gap: 12px;
+  }
+
+  .pos-products-section {
+    padding: 10px;
+  }
+
+  .pos-product-toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .pos-clear-cart {
+    width: 100%;
+  }
+}

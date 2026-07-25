@@ -6,7 +6,7 @@ import Search from "../../components/common/Search/Search";
 
 import CustomerTable from "../../components/Customers/CustomerTable";
 import CustomerModal from "../../components/Customers/CustomerModal";
-
+import CustomerDetailsModal from "../../components/Customers/CustomerDetailsModal";
 import {
   getCustomers,
   deleteCustomer,
@@ -34,6 +34,15 @@ const Customers = () => {
     selectedCustomer,
     setSelectedCustomer,
   ] = useState(null);
+  const [
+  viewCustomer,
+  setViewCustomer,
+] = useState(null);
+
+const [
+  isDetailsOpen,
+  setIsDetailsOpen,
+] = useState(false);
 
 
   // ==========================================
@@ -111,49 +120,24 @@ const Customers = () => {
   // VIEW CUSTOMER
   // ==========================================
 
-  const handleView = (customer) => {
-    console.log(
-      "View Customer:",
-      customer
-    );
+// ==========================================
+// VIEW CUSTOMER
+// ==========================================
 
-    /*
-      We will implement this after
-      creating the Sales module.
+const handleView = (customer) => {
+  setViewCustomer(customer);
 
-      Eventually:
+  setIsDetailsOpen(true);
+};
+// ==========================================
+// CLOSE CUSTOMER DETAILS
+// ==========================================
 
-      navigate(
-        `/admin/customers/${customer._id}`
-      );
+const handleCloseDetails = () => {
+  setIsDetailsOpen(false);
 
-      That page will show:
-
-      Customer Information
-
-      Customer ID:
-      CUST-A82F19C4
-
-      Total Orders:
-      5
-
-      Total Spent:
-      £147.80
-
-      Type:
-      Repeat Customer
-
-      Purchase History:
-      --------------------------------
-      SALE-1005
-      Coca Cola x2
-      Bread x1
-
-      SALE-1012
-      Milk x2
-      ...
-    */
-  };
+  setViewCustomer(null);
+};
 
 
   // ==========================================
@@ -372,6 +356,15 @@ const Customers = () => {
           selectedCustomer
         }
       />
+      {/* =====================================
+    CUSTOMER DETAILS
+===================================== */}
+
+<CustomerDetailsModal
+  isOpen={isDetailsOpen}
+  customer={viewCustomer}
+  onClose={handleCloseDetails}
+/>
 
     </div>
   );

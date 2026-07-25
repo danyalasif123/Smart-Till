@@ -53,3 +53,7 @@ export const getCustomerSales = async (
 
   return response.data;
 };
+// ==========================================
+// GET SALES BY CUSTOMER
+// ==========================================
+

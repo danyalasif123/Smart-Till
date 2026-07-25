@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./POS.css";
 
 import ProductGrid from "../../components/POS/ProductGrid";
@@ -10,6 +11,12 @@ import { createSale } from "../../services/saleService";
 
 const POS = () => {
   // ==========================================
+  // NAVIGATION
+  // ==========================================
+
+  const navigate = useNavigate();
+
+  // ==========================================
   // STATE
   // ==========================================
 
@@ -18,8 +25,7 @@ const POS = () => {
 
   const [search, setSearch] = useState("");
 
-  // Selected customer at POS
-  // null = anonymous walk-in customer
+  // null means anonymous walk-in customer
   const [selectedCustomer, setSelectedCustomer] =
     useState(null);
 
@@ -72,6 +78,7 @@ const POS = () => {
 
   const filteredProducts = products.filter(
     (product) => {
+      // Hide inactive products
       if (!product.status) {
         return false;
       }
@@ -107,14 +114,23 @@ const POS = () => {
 
   const handleAddProduct = (product) => {
     if (product.stockQuantity <= 0) {
-      alert(`${product.name} is out of stock.`);
+      alert(
+        `${product.name} is out of stock.`
+      );
+
       return;
     }
 
     setCart((currentCart) => {
-      const existingItem = currentCart.find(
-        (item) => item._id === product._id
-      );
+      const existingItem =
+        currentCart.find(
+          (item) =>
+            item._id === product._id
+        );
+
+      // ======================================
+      // PRODUCT ALREADY EXISTS
+      // ======================================
 
       if (existingItem) {
         if (
@@ -130,15 +146,21 @@ const POS = () => {
           return currentCart;
         }
 
-        return currentCart.map((item) =>
-          item._id === product._id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
+        return currentCart.map(
+          (item) =>
+            item._id === product._id
+              ? {
+                  ...item,
+                  quantity:
+                    item.quantity + 1,
+                }
+              : item
         );
       }
+
+      // ======================================
+      // NEW PRODUCT
+      // ======================================
 
       return [
         ...currentCart,
@@ -157,7 +179,9 @@ const POS = () => {
   const handleIncrease = (product) => {
     setCart((currentCart) =>
       currentCart.map((item) => {
-        if (item._id !== product._id) {
+        if (
+          item._id !== product._id
+        ) {
           return item;
         }
 
@@ -170,7 +194,8 @@ const POS = () => {
 
         return {
           ...item,
-          quantity: item.quantity + 1,
+          quantity:
+            item.quantity + 1,
         };
       })
     );
@@ -182,30 +207,37 @@ const POS = () => {
 
   const handleDecrease = (product) => {
     setCart((currentCart) => {
-      const item = currentCart.find(
-        (cartItem) =>
-          cartItem._id === product._id
-      );
+      const item =
+        currentCart.find(
+          (cartItem) =>
+            cartItem._id ===
+            product._id
+        );
 
       if (!item) {
         return currentCart;
       }
 
+      // Remove item if quantity becomes 0
       if (item.quantity <= 1) {
         return currentCart.filter(
           (cartItem) =>
-            cartItem._id !== product._id
+            cartItem._id !==
+            product._id
         );
       }
 
-      return currentCart.map((cartItem) =>
-        cartItem._id === product._id
-          ? {
-              ...cartItem,
-              quantity:
-                cartItem.quantity - 1,
-            }
-          : cartItem
+      return currentCart.map(
+        (cartItem) =>
+          cartItem._id ===
+          product._id
+            ? {
+                ...cartItem,
+                quantity:
+                  cartItem.quantity -
+                  1,
+              }
+            : cartItem
       );
     });
   };
@@ -224,7 +256,7 @@ const POS = () => {
   };
 
   // ==========================================
-  // CLEAR SALE
+  // CLEAR CURRENT SALE
   // ==========================================
 
   const handleClearCart = () => {
@@ -235,21 +267,25 @@ const POS = () => {
       return;
     }
 
-    const confirmed = window.confirm(
-      "Clear the current sale?"
-    );
+    const confirmed =
+      window.confirm(
+        "Clear the current sale?"
+      );
 
     if (!confirmed) {
       return;
     }
 
+    // Clear products
     setCart([]);
 
-    // Also remove selected customer
+    // Remove selected customer
     setSelectedCustomer(null);
 
+    // Reset payment
     setPaymentMethod("cash");
 
+    // Clear product search
     setSearch("");
   };
 
@@ -257,7 +293,9 @@ const POS = () => {
   // SELECT CUSTOMER
   // ==========================================
 
-  const handleSelectCustomer = (customer) => {
+  const handleSelectCustomer = (
+    customer
+  ) => {
     setSelectedCustomer(customer);
   };
 
@@ -270,101 +308,125 @@ const POS = () => {
   };
 
   // ==========================================
+  // OPEN SALES HISTORY
+  // ==========================================
+
+  const handleSalesHistory = () => {
+    navigate("/admin/sales");
+  };
+
+  // ==========================================
   // COMPLETE SALE
   // ==========================================
 
-  const handleCompleteSale = async () => {
-    if (cart.length === 0) {
-      alert("Cart is empty.");
-      return;
-    }
+  const handleCompleteSale =
+    async () => {
+      if (cart.length === 0) {
+        alert("Cart is empty.");
 
-    try {
-      setSaleLoading(true);
+        return;
+      }
 
-      // ======================================
-      // BACKEND RECEIVES:
-      //
-      // productId + quantity
-      // customer MongoDB ID (if selected)
-      //
-      // Backend gets actual prices itself.
-      // ======================================
+      try {
+        setSaleLoading(true);
 
-      const saleData = {
-        items: cart.map((item) => ({
-          productId: item._id,
-          quantity: item.quantity,
-        })),
+        // ====================================
+        // BUILD SALE REQUEST
+        // ====================================
 
-        paymentMethod,
+        const saleData = {
+          items: cart.map(
+            (item) => ({
+              productId:
+                item._id,
 
-        source: "pos",
+              quantity:
+                item.quantity,
+            })
+          ),
 
-        // If customer was found using
-        // CUST-XXXXXXXX, attach their
-        // MongoDB ID to the sale.
-        //
-        // Otherwise this remains null
-        // for anonymous walk-in customers.
-        customerId:
-          selectedCustomer?._id || null,
-      };
+          paymentMethod,
 
-      const response =
-        await createSale(saleData);
+          source: "pos",
 
-      // ======================================
-      // SUCCESS MESSAGE
-      // ======================================
+          // Customer MongoDB ID is sent
+          // internally.
+          //
+          // Cashier only deals with:
+          // CUST-XXXXXXXX
+          //
+          // Walk-in customer = null
+          customerId:
+            selectedCustomer?._id ||
+            null,
+        };
 
-      const customerText =
-        selectedCustomer
-          ? `\nCustomer: ${selectedCustomer.name}\nCustomer ID: ${selectedCustomer.customerNumber}`
-          : "\nCustomer: Walk-in";
+        // ====================================
+        // CREATE SALE
+        // ====================================
 
-      alert(
-        `Sale completed successfully.\n` +
-          `Sale: ${response.sale.saleNumber}` +
-          customerText +
-          `\nTotal: $${Number(
-            response.sale.total
-          ).toFixed(2)}`
-      );
+        const response =
+          await createSale(
+            saleData
+          );
 
-      // ======================================
-      // RESET POS FOR NEXT CUSTOMER
-      // ======================================
+        // ====================================
+        // CUSTOMER MESSAGE
+        // ====================================
 
-      setCart([]);
+        const customerText =
+          selectedCustomer
+            ? `\nCustomer: ${selectedCustomer.name}` +
+              `\nCustomer ID: ${selectedCustomer.customerNumber}`
+            : "\nCustomer: Walk-in";
 
-      setSelectedCustomer(null);
+        // ====================================
+        // SUCCESS
+        // ====================================
 
-      setPaymentMethod("cash");
+        alert(
+          `Sale completed successfully.\n` +
+            `Sale: ${response.sale.saleNumber}` +
+            customerText +
+            `\nTotal: $${Number(
+              response.sale.total
+            ).toFixed(2)}`
+        );
 
-      setSearch("");
+        // ====================================
+        // RESET POS
+        // ====================================
 
-      // Refresh products because stock
-      // has changed.
-      await fetchProducts();
-    } catch (error) {
-      console.error(
-        "Complete Sale Error:",
-        error
-      );
+        setCart([]);
 
-      alert(
-        error.response?.data?.message ||
-          "Failed to complete sale."
-      );
+        setSelectedCustomer(null);
 
-      // Stock may have changed from
-      // another checkout.
-      await fetchProducts();
-    } finally {
-      setSaleLoading(false);
-    }
-  };
+        setPaymentMethod("cash");
+
+        setSearch("");
+
+        // Refresh products because
+        // stock has changed
+        await fetchProducts();
+      } catch (error) {
+        console.error(
+          "Complete Sale Error:",
+          error
+        );
+
+        alert(
+          error.response?.data
+            ?.message ||
+            "Failed to complete sale."
+        );
+
+        // Refresh stock because another
+        // cashier may have changed it
+        await fetchProducts();
+      } finally {
+        setSaleLoading(false);
+      }
+    };
 
   // ==========================================
   // CART TOTAL
@@ -373,7 +435,9 @@ const POS = () => {
   const cartTotal = cart.reduce(
     (total, item) =>
       total +
-      Number(item.sellingPrice) *
+      Number(
+        item.sellingPrice
+      ) *
         Number(item.quantity),
     0
   );
@@ -384,7 +448,8 @@ const POS = () => {
 
   const totalItems = cart.reduce(
     (total, item) =>
-      total + Number(item.quantity),
+      total +
+      Number(item.quantity),
     0
   );
 
@@ -401,46 +466,82 @@ const POS = () => {
 
       <div className="pos-page-header">
 
+        {/* LEFT */}
+
         <div>
-          <h1>Point of Sale</h1>
+          <h1>
+            Point of Sale
+          </h1>
 
           <p>
-            Create and process customer sales.
+            Create and process
+            customer sales.
           </p>
         </div>
 
-        <div className="pos-header-summary">
+        {/* RIGHT */}
 
-          {/* CUSTOMER */}
+        <div className="pos-header-right">
 
-          <div>
-            <span>Customer</span>
+          {/* SALES HISTORY BUTTON */}
 
-            <strong>
-              {selectedCustomer
-                ? selectedCustomer.name
-                : "Walk-in"}
-            </strong>
-          </div>
+          <button
+            type="button"
+            className="pos-sales-history-btn"
+            onClick={
+              handleSalesHistory
+            }
+          >
+            Sales History
+          </button>
 
-          {/* ITEMS */}
+          {/* =================================
+              SALE SUMMARY
+          ================================= */}
 
-          <div>
-            <span>Items</span>
+          <div className="pos-header-summary">
 
-            <strong>
-              {totalItems}
-            </strong>
-          </div>
+            {/* CUSTOMER */}
 
-          {/* TOTAL */}
+            <div>
+              <span>
+                Customer
+              </span>
 
-          <div>
-            <span>Total</span>
+              <strong>
+                {selectedCustomer
+                  ? selectedCustomer.name
+                  : "Walk-in"}
+              </strong>
+            </div>
 
-            <strong>
-              ${cartTotal.toFixed(2)}
-            </strong>
+            {/* ITEMS */}
+
+            <div>
+              <span>
+                Items
+              </span>
+
+              <strong>
+                {totalItems}
+              </strong>
+            </div>
+
+            {/* TOTAL */}
+
+            <div>
+              <span>
+                Total
+              </span>
+
+              <strong>
+                $
+                {cartTotal.toFixed(
+                  2
+                )}
+              </strong>
+            </div>
+
           </div>
 
         </div>
@@ -455,13 +556,18 @@ const POS = () => {
 
         {/* ===================================
             LEFT SIDE
+            PRODUCTS
         =================================== */}
 
         <div className="pos-products-section">
 
-          {/* PRODUCT SEARCH */}
+          {/* =================================
+              PRODUCT TOOLBAR
+          ================================= */}
 
           <div className="pos-product-toolbar">
+
+            {/* SEARCH */}
 
             <div className="pos-search-wrapper">
 
@@ -492,6 +598,8 @@ const POS = () => {
 
             </div>
 
+            {/* CLEAR SALE */}
+
             <button
               type="button"
               className="pos-clear-cart"
@@ -508,18 +616,24 @@ const POS = () => {
 
           </div>
 
-          {/* PRODUCT COUNT */}
+          {/* =================================
+              PRODUCT COUNT
+          ================================= */}
 
           <div className="pos-product-info">
 
             <span>
-              {filteredProducts.length}{" "}
+              {
+                filteredProducts.length
+              }{" "}
               products
             </span>
 
           </div>
 
-          {/* PRODUCT GRID */}
+          {/* =================================
+              PRODUCT GRID
+          ================================= */}
 
           <div className="pos-products-scroll">
 
@@ -541,6 +655,7 @@ const POS = () => {
 
         {/* ===================================
             RIGHT SIDE
+            CUSTOMER + CART
         =================================== */}
 
         <div className="pos-cart-section">

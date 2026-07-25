@@ -25,9 +25,9 @@ export const getCustomerById = async (id) => {
 
 
 // ==========================================
-// GET CUSTOMER BY CUSTOMER NUMBER
+// LOOKUP CUSTOMER BY CUSTOMER NUMBER
 //
-// Used later by POS:
+// Used by POS:
 // CUST-A82F19C4
 // ==========================================
 
@@ -35,7 +35,9 @@ export const getCustomerByNumber = async (
   customerNumber
 ) => {
   const response = await api.get(
-    `/customers/number/${customerNumber}`
+    `/customers/number/${encodeURIComponent(
+      customerNumber
+    )}`
   );
 
   return response.data;

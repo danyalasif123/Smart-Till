@@ -1,0 +1,247 @@
+/* =========================================
+   CUSTOMER
+========================================= */
+
+.pos-customer {
+  padding: 12px 14px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.pos-customer-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 8px;
+}
+
+
+.pos-customer-label {
+  color: #323130;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.pos-customer-optional {
+  margin-top: 2px;
+
+  color: #8a8886;
+
+  font-size: 9px;
+}
+
+
+.pos-walkin {
+  padding: 3px 7px;
+
+  background: #f3f2f1;
+
+  border-radius: 10px;
+
+  color: #605e5c;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.pos-customer-search {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  gap: 6px;
+}
+
+
+.pos-customer-search input {
+  width: 100%;
+
+  height: 32px;
+
+  box-sizing: border-box;
+
+  padding: 0 9px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+
+  border-radius: 3px;
+
+  color: #242424;
+
+  font-family: inherit;
+
+  font-size: 11px;
+}
+
+
+.pos-customer-search input:focus {
+  outline: none;
+
+  border-color: #0067b8;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(0, 103, 184, 0.08);
+}
+
+
+.pos-customer-search button {
+  min-width: 58px;
+
+  height: 32px;
+
+  padding: 0 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #0067b8;
+
+  border-radius: 3px;
+
+  color: #0067b8;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.pos-customer-search button:hover:not(:disabled) {
+  background: #edf6fc;
+}
+
+
+.pos-customer-search button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.pos-customer-error {
+  margin-top: 6px;
+
+  color: #a4262c;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   SELECTED CUSTOMER
+========================================= */
+
+.pos-selected-customer {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 9px 10px;
+
+  background: #f3f9fd;
+
+  border: 1px solid #c7e0f4;
+
+  border-radius: 3px;
+}
+
+
+.pos-selected-customer-info {
+  min-width: 0;
+}
+
+
+.pos-customer-name {
+  color: #242424;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.pos-customer-number {
+  margin-top: 2px;
+
+  color: #0067b8;
+
+  font-size: 10px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.pos-customer-stats {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 5px;
+
+  color: #605e5c;
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   REMOVE
+========================================= */
+
+.pos-remove-customer {
+  padding: 5px 8px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+
+  border-radius: 3px;
+
+  color: #a4262c;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+
+.pos-remove-customer:hover {
+  background: #fde7e9;
+
+  border-color: #a4262c;
+}

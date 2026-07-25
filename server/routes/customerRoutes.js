@@ -4,6 +4,7 @@ import {
   createCustomer,
   getCustomers,
   getCustomerById,
+  getCustomerByNumber,
   updateCustomer,
   updateCustomerStatus,
   deleteCustomer,
@@ -42,8 +43,28 @@ router.get(
 
 
 // ==========================================
-// GET CUSTOMER BY ID
+// GET CUSTOMER BY CUSTOMER NUMBER
 // Admin / Manager / Cashier
+//
+// Used by POS customer lookup
+//
+// GET /api/customers/number/CUST-A82F19C4
+// ==========================================
+
+router.get(
+  "/number/:customerNumber",
+  verifyToken,
+  getCustomerByNumber
+);
+
+
+// ==========================================
+// GET CUSTOMER BY MONGODB ID
+// Admin / Manager / Cashier
+//
+// IMPORTANT:
+// Keep this AFTER /number/:customerNumber
+//
 // GET /api/customers/:id
 // ==========================================
 

@@ -1,0 +1,318 @@
+.sale-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.sale-modal {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border-radius: 5px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.sale-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sale-modal-header h2 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sale-modal-header span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #0067b8;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sale-modal-close-icon {
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  background: transparent;
+
+  border: none;
+  border-radius: 3px;
+
+  color: #605e5c;
+
+  font-size: 21px;
+
+  cursor: pointer;
+}
+
+.sale-modal-close-icon:hover {
+  background: #f3f2f1;
+}
+
+
+/* =========================================
+   SALE INFO
+========================================= */
+
+.sale-detail-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  padding: 16px 18px;
+
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sale-detail-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.sale-detail-field > span {
+  color: #777777;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.sale-detail-field strong {
+  color: #242424;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sale-detail-field small {
+  color: #0067b8;
+
+  font-size: 9px;
+}
+
+.sale-payment-method {
+  text-transform: capitalize;
+}
+
+
+/* =========================================
+   ITEMS
+========================================= */
+
+.sale-items-section {
+  padding: 18px;
+}
+
+.sale-items-section h3 {
+  margin: 0 0 10px;
+
+  color: #242424;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sale-items-table-wrapper {
+  overflow-x: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 3px;
+}
+
+.sale-items-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 11px;
+}
+
+.sale-items-table th {
+  padding: 9px 10px;
+
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #605e5c;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+.sale-items-table td {
+  padding: 10px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  color: #323130;
+}
+
+.sale-items-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sale-item-product {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.sale-item-product strong {
+  font-size: 11px;
+}
+
+.sale-item-product small {
+  color: #777777;
+
+  font-size: 9px;
+}
+
+.sale-no-items {
+  padding: 25px !important;
+
+  color: #777777 !important;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   TOTALS
+========================================= */
+
+.sale-details-totals {
+  width: 280px;
+
+  margin-left: auto;
+
+  padding: 0 18px 18px;
+}
+
+.sale-details-totals > div {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 5px 0;
+
+  color: #605e5c;
+
+  font-size: 11px;
+}
+
+.sale-details-grand-total {
+  margin-top: 6px;
+
+  padding-top: 10px !important;
+
+  border-top: 1px solid #d1d5db;
+
+  color: #242424 !important;
+
+  font-size: 14px !important;
+}
+
+.sale-details-grand-total strong {
+  color: #0067b8;
+
+  font-size: 17px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.sale-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 12px 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.sale-modal-footer button {
+  height: 32px;
+
+  padding: 0 16px;
+
+  background: #0067b8;
+
+  border: none;
+  border-radius: 3px;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.sale-modal-footer button:hover {
+  background: #005a9e;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 650px) {
+  .sale-detail-info {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .sale-details-totals {
+    width: auto;
+  }
+}

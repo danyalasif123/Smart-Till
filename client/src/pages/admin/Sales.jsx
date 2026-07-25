@@ -3,12 +3,12 @@ import "./Sales.css";
 
 import Search from "../../components/common/Search/Search";
 import { getSales } from "../../services/saleService";
-
+import SaleDetailsModal from "../../components/POS/SaleDetailsModal";
 const Sales = () => {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-
+  const [selectedSale, setSelectedSale] = useState(null);
   // ==========================================
   // FETCH SALES
   // ==========================================
@@ -148,13 +148,9 @@ const Sales = () => {
   // ==========================================
   // VIEW SALE
   // ==========================================
-
-  const handleView = (sale) => {
-    console.log("View sale:", sale);
-
-    // Next step:
-    // open Sale Details modal
-  };
+const handleView = (sale) => {
+  setSelectedSale(sale);
+};
 
   return (
     <div className="sales-page">
@@ -404,7 +400,14 @@ const Sales = () => {
         </table>
 
       </div>
-
+{selectedSale && (
+  <SaleDetailsModal
+    sale={selectedSale}
+    onClose={() =>
+      setSelectedSale(null)
+    }
+  />
+)}
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Users from "../pages/admin/Users";
 import Categories from "../pages/admin/Categories";
 import Products from "../pages/admin/Products";
 import Suppliers from "../pages/admin/Suppliers";
+import Customers from "../pages/admin/Customers";
 function AppRoutes() {
   return (
     <Routes>
@@ -89,6 +90,16 @@ function AppRoutes() {
     <ProtectedRoute role="admin">
       <AdminLayout>
         <Suppliers />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/customers"
+  element={
+    <ProtectedRoute role="admin">
+      <AdminLayout>
+        <Customers />
       </AdminLayout>
     </ProtectedRoute>
   }

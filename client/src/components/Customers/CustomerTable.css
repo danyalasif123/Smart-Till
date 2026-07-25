@@ -1,0 +1,330 @@
+/* =========================================
+   WRAPPER
+========================================= */
+
+.customer-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.customer-table {
+  width: 100%;
+
+  min-width: 1150px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.customer-table-header,
+.customer-table-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(130px, 1.1fr)
+    minmax(170px, 1.5fr)
+    minmax(70px, 0.6fr)
+    minmax(100px, 0.9fr)
+    minmax(120px, 1fr)
+    minmax(90px, 0.8fr)
+    minmax(85px, 0.7fr)
+    minmax(180px, 1.3fr);
+
+  align-items: center;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.customer-table-header {
+  min-height: 34px;
+
+  background: #f7f7f7;
+
+  border-bottom: 1px solid #dcdcdc;
+
+  color: #444444;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+.customer-table-header > div {
+  padding: 7px 9px;
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.customer-table-row {
+  min-height: 42px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  transition: background-color 0.15s ease;
+}
+
+.customer-table-row:last-child {
+  border-bottom: none;
+}
+
+.customer-table-row:hover {
+  background: #f5f9fc;
+}
+
+
+/* =========================================
+   CELL
+========================================= */
+
+.customer-table-cell {
+  min-width: 0;
+
+  padding: 6px 9px;
+
+  color: #323130;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   CUSTOMER NUMBER
+========================================= */
+
+.customer-number {
+  color: #0067b8;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   CUSTOMER NAME
+========================================= */
+
+.customer-name {
+  color: #242424;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   CUSTOMER EMAIL
+========================================= */
+
+.customer-email {
+  margin-top: 2px;
+
+  color: #777777;
+
+  font-size: 10px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   MONEY
+========================================= */
+
+.customer-money {
+  font-weight: 500;
+}
+
+
+/* =========================================
+   CUSTOMER TYPE
+========================================= */
+
+.customer-type {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 20px;
+
+  padding: 2px 7px;
+
+  border-radius: 10px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+/* REGULAR */
+
+.customer-type.regular {
+  background: #f3f2f1;
+
+  color: #605e5c;
+}
+
+
+/* REPEAT */
+
+.customer-type.repeat {
+  background: #e6f4ea;
+
+  color: #107c10;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.customer-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  overflow: visible;
+}
+
+
+.customer-view-btn,
+.customer-edit-btn,
+.customer-delete-btn {
+  min-height: 26px;
+
+  padding: 3px 7px;
+
+  background: #ffffff;
+
+  border-radius: 3px;
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+
+/* =========================================
+   VIEW
+========================================= */
+
+.customer-view-btn {
+  color: #323130;
+
+  border: 1px solid #c8c6c4;
+}
+
+.customer-view-btn:hover {
+  background: #f3f2f1;
+}
+
+
+/* =========================================
+   EDIT
+========================================= */
+
+.customer-edit-btn {
+  color: #0067b8;
+
+  border: 1px solid #c8c6c4;
+}
+
+.customer-edit-btn:hover {
+  background: #f3f2f1;
+
+  border-color: #a19f9d;
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
+
+.customer-delete-btn {
+  color: #a4262c;
+
+  border: 1px solid #c8c6c4;
+}
+
+.customer-delete-btn:hover {
+  background: #fde7e9;
+
+  border-color: #a4262c;
+}
+
+
+/* =========================================
+   LOADING / EMPTY
+========================================= */
+
+.customer-table-message {
+  width: 100%;
+
+  padding: 30px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+
+  color: #605e5c;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+  .customer-table {
+    min-width: 1100px;
+  }
+}

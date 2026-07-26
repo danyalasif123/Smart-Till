@@ -502,3 +502,288 @@
     flex-direction: column;
   }
 }
+/* =========================================
+   PAYMENT SUMMARY
+========================================= */
+
+.purchase-payment-details-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+
+  padding: 15px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+
+  background: #fafafa;
+}
+
+.purchase-payment-details-summary > div {
+  min-height: 55px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 10px;
+
+  background: white;
+
+  border: 1px solid #eeeeee;
+  border-radius: 4px;
+}
+
+.purchase-payment-details-summary span {
+  color: #605e5c;
+
+  font-size: 9px;
+}
+
+.purchase-payment-details-summary strong {
+  color: #323130;
+
+  font-size: 13px;
+}
+
+.payment-balance-due {
+  color: #a4262c !important;
+}
+
+.payment-balance-paid {
+  color: #107c10 !important;
+}
+
+
+/* =========================================
+   PAYMENT HISTORY
+========================================= */
+
+.purchase-payment-history-table {
+  overflow-x: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.purchase-payment-history-header,
+.purchase-payment-history-row {
+  min-width: 720px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    1fr
+    1.4fr
+    1.2fr
+    0.8fr;
+
+  gap: 12px;
+
+  align-items: center;
+
+  padding: 11px 12px;
+}
+
+.purchase-payment-history-header {
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #605e5c;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.purchase-payment-history-row {
+  border-bottom: 1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+.purchase-payment-history-row:last-child {
+  border-bottom: none;
+}
+
+
+/* =========================================
+   PAYMENT METHOD
+========================================= */
+
+.payment-method-badge {
+  display: inline-block;
+
+  padding: 4px 7px;
+
+  background: #f3f2f1;
+
+  border-radius: 10px;
+
+  color: #323130 !important;
+
+  font-size: 8px !important;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   PAYMENT AMOUNT
+========================================= */
+
+.payment-history-amount {
+  color: #107c10;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-align: right;
+}
+
+
+/* =========================================
+   PAYMENT EMPTY / LOADING
+========================================= */
+
+.purchase-payment-history-message {
+  padding: 25px;
+
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+
+  color: #605e5c;
+
+  font-size: 10px;
+}
+
+.purchase-payment-history-empty {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding: 25px;
+
+  border: 1px dashed #c8c6c4;
+  border-radius: 4px;
+
+  background: #fafafa;
+
+  text-align: center;
+}
+
+.purchase-payment-history-empty strong {
+  color: #323130;
+
+  font-size: 10px;
+}
+
+.purchase-payment-history-empty span {
+  color: #777;
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   PAYMENT NOTES
+========================================= */
+
+.purchase-payment-notes-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.purchase-payment-note {
+  padding: 12px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+
+  background: #fafafa;
+}
+
+.purchase-payment-note > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.purchase-payment-note strong {
+  color: #107c10;
+
+  font-size: 10px;
+}
+
+.purchase-payment-note span {
+  color: #777;
+
+  font-size: 8px;
+}
+
+.purchase-payment-note p {
+  margin: 7px 0 0;
+
+  color: #323130;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   PAID / BALANCE TOTAL
+========================================= */
+
+.purchase-details-paid-total {
+  margin-top: 8px;
+
+  padding-top: 10px !important;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.purchase-details-paid-total strong {
+  color: #107c10 !important;
+}
+
+.purchase-details-balance-total strong {
+  color: #a4262c;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 750px) {
+
+  .purchase-payment-details-summary {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .purchase-payment-details-summary {
+    grid-template-columns: 1fr;
+  }
+
+}

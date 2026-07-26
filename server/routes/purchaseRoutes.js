@@ -6,6 +6,7 @@ import {
   receivePurchase,
   cancelPurchase,
   recordPurchasePayment,
+  getPurchasePayments,
 } from "../controllers/purchaseController.js";
 
 import verifyToken from "../middleware/verifyToken.js";
@@ -67,7 +68,21 @@ router.patch(
   cancelPurchase
 );
 
+// PAYMENT HISTORY
+router.get(
+  "/:id/payments",
+  verifyToken,
+  getPurchasePayments
+);
 
+
+// RECORD PAYMENT
+router.patch(
+  "/:id/payment",
+  verifyToken,
+  isAdmin,
+  recordPurchasePayment
+);
 // ==========================================
 // GET PURCHASE BY ID
 // GET /api/purchases/:id

@@ -7,6 +7,7 @@ import "./PurchaseDetailsModal.css";
 
 import {
   getPurchaseById,
+  getPurchasePayments,
 } from "../../services/purchaseService";
 
 
@@ -22,12 +23,25 @@ const PurchaseDetailsModal = ({
   const [purchase, setPurchase] =
     useState(null);
 
+  const [payments, setPayments] =
+    useState([]);
+
+  const [
+    paymentSummary,
+    setPaymentSummary,
+  ] = useState(null);
+
   const [loading, setLoading] =
     useState(false);
 
+  const [
+    paymentLoading,
+    setPaymentLoading,
+  ] = useState(false);
+
 
   // ==========================================
-  // LOAD PURCHASE DETAILS
+  // LOAD DATA
   // ==========================================
 
   useEffect(() => {
@@ -38,20 +52,68 @@ const PurchaseDetailsModal = ({
       return;
     }
 
-    const fetchPurchase = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
 
+        setPaymentLoading(true);
+
         setPurchase(null);
 
-        const response =
+        setPayments([]);
+
+        setPaymentSummary(null);
+
+
+        // ====================================
+        // GET PURCHASE
+        // ====================================
+
+        const purchaseResponse =
           await getPurchaseById(
             purchaseId
           );
 
         setPurchase(
-          response.purchase
+          purchaseResponse.purchase
         );
+
+
+        // ====================================
+        // GET PAYMENT HISTORY
+        // ====================================
+
+        try {
+          const paymentResponse =
+            await getPurchasePayments(
+              purchaseId
+            );
+
+          setPayments(
+            paymentResponse.payments ||
+              []
+          );
+
+          setPaymentSummary(
+            paymentResponse.summary ||
+              null
+          );
+
+        } catch (paymentError) {
+          console.error(
+            "Get Purchase Payments Error:",
+            paymentError
+          );
+
+          // We don't close the entire modal
+          // if payment history fails.
+          setPayments([]);
+
+          setPaymentSummary(null);
+
+        } finally {
+          setPaymentLoading(false);
+        }
 
       } catch (error) {
         console.error(
@@ -71,7 +133,7 @@ const PurchaseDetailsModal = ({
       }
     };
 
-    fetchPurchase();
+    fetchData();
 
   }, [
     isOpen,
@@ -123,12 +185,64 @@ const PurchaseDetailsModal = ({
 
 
   // ==========================================
-  // CLOSED
+  // FORMAT PAYMENT METHOD
+  // ==========================================
+
+  const formatPaymentMethod = (
+    method
+  ) => {
+    if (!method) {
+      return "-";
+    }
+
+    return method
+      .replaceAll("_", " ")
+      .replace(/\b\w/g, (letter) =>
+        letter.toUpperCase()
+      );
+  };
+
+
+  // ==========================================
+  // DO NOT RENDER
   // ==========================================
 
   if (!isOpen) {
     return null;
   }
+
+
+  // ==========================================
+  // PAYMENT VALUES
+  // ==========================================
+
+  const total =
+    Number(
+      paymentSummary?.total ??
+        purchase?.total ??
+        0
+    );
+
+  const amountPaid =
+    Number(
+      paymentSummary?.amountPaid ??
+        purchase?.amountPaid ??
+        0
+    );
+
+  const balance =
+    Number(
+      paymentSummary?.balance ??
+        Math.max(
+          total - amountPaid,
+          0
+        )
+    );
+
+  const paymentStatus =
+    paymentSummary?.paymentStatus ||
+    purchase?.paymentStatus ||
+    "unpaid";
 
 
   // ==========================================
@@ -147,15 +261,18 @@ const PurchaseDetailsModal = ({
         <div className="purchase-details-header">
 
           <div>
+
             <h2>
               Purchase Details
             </h2>
 
             <p>
-              View supplier purchase
-              information and received stock.
+              View purchase, stock and
+              supplier payment information.
             </p>
+
           </div>
+
 
           <button
             type="button"
@@ -191,7 +308,7 @@ const PurchaseDetailsModal = ({
             <>
 
               {/* =============================
-                  PURCHASE SUMMARY
+                  PURCHASE HEADER
               ============================= */}
 
               <div className="purchase-details-top">
@@ -216,17 +333,14 @@ const PurchaseDetailsModal = ({
                   <span
                     className={`purchase-details-status ${purchase.status}`}
                   >
-                    {
-                      purchase.status
-                    }
+                    {purchase.status}
                   </span>
 
+
                   <span
-                    className={`purchase-details-payment ${purchase.paymentStatus}`}
+                    className={`purchase-details-payment ${paymentStatus}`}
                   >
-                    {
-                      purchase.paymentStatus
-                    }
+                    {paymentStatus}
                   </span>
 
                 </div>
@@ -235,7 +349,7 @@ const PurchaseDetailsModal = ({
 
 
               {/* =============================
-                  INFORMATION
+                  SUPPLIER + PURCHASE INFO
               ============================= */}
 
               <div className="purchase-details-grid">
@@ -247,6 +361,7 @@ const PurchaseDetailsModal = ({
                   <h3>
                     Supplier
                   </h3>
+
 
                   <div className="details-info-row">
 
@@ -307,13 +422,14 @@ const PurchaseDetailsModal = ({
                 </div>
 
 
-                {/* PURCHASE */}
+                {/* PURCHASE INFO */}
 
                 <div className="purchase-details-card">
 
                   <h3>
                     Purchase Information
                   </h3>
+
 
                   <div className="details-info-row">
 
@@ -364,7 +480,7 @@ const PurchaseDetailsModal = ({
 
 
               {/* =============================
-                  PRODUCTS
+                  PURCHASED ITEMS
               ============================= */}
 
               <div className="purchase-details-section">
@@ -420,35 +536,31 @@ const PurchaseDetailsModal = ({
                       item,
                       index
                     ) => (
+
                       <div
                         className="purchase-details-table-row"
                         key={
                           item._id ||
-                          `${item.productId}-${index}`
+                          index
                         }
                       >
 
                         <div>
 
                           <strong className="details-product-name">
-                            {
-                              item.productName
-                            }
+                            {item.productName}
                           </strong>
 
                         </div>
 
 
                         <div>
-                          {item.sku ||
-                            "-"}
+                          {item.sku || "-"}
                         </div>
 
 
                         <div>
-                          {
-                            item.quantity
-                          }
+                          {item.quantity}
                         </div>
 
 
@@ -466,6 +578,7 @@ const PurchaseDetailsModal = ({
                         </div>
 
                       </div>
+
                     )
                   )}
 
@@ -475,12 +588,327 @@ const PurchaseDetailsModal = ({
 
 
               {/* =============================
-                  BOTTOM SECTION
+                  PAYMENT SUMMARY
+              ============================= */}
+
+              <div className="purchase-details-section">
+
+                <div className="purchase-details-section-heading">
+
+                  <h3>
+                    Payment Summary
+                  </h3>
+
+                </div>
+
+
+                <div className="purchase-payment-details-summary">
+
+                  {/* TOTAL */}
+
+                  <div>
+
+                    <span>
+                      Purchase Total
+                    </span>
+
+                    <strong>
+                      {formatCurrency(
+                        total
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  {/* PAID */}
+
+                  <div>
+
+                    <span>
+                      Amount Paid
+                    </span>
+
+                    <strong>
+                      {formatCurrency(
+                        amountPaid
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  {/* BALANCE */}
+
+                  <div>
+
+                    <span>
+                      Balance Due
+                    </span>
+
+                    <strong
+                      className={
+                        balance > 0
+                          ? "payment-balance-due"
+                          : "payment-balance-paid"
+                      }
+                    >
+                      {formatCurrency(
+                        balance
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  {/* STATUS */}
+
+                  <div>
+
+                    <span>
+                      Payment Status
+                    </span>
+
+                    <span
+                      className={`purchase-details-payment ${paymentStatus}`}
+                    >
+                      {paymentStatus}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* =============================
+                  PAYMENT HISTORY
+              ============================= */}
+
+              <div className="purchase-details-section">
+
+                <div className="purchase-details-section-heading">
+
+                  <h3>
+                    Payment History
+                  </h3>
+
+                  <span>
+                    {payments.length}{" "}
+                    payment
+                    {payments.length !== 1
+                      ? "s"
+                      : ""}
+                  </span>
+
+                </div>
+
+
+                {paymentLoading ? (
+
+                  <div className="purchase-payment-history-message">
+                    Loading payment history...
+                  </div>
+
+                ) : payments.length === 0 ? (
+
+                  <div className="purchase-payment-history-empty">
+
+                    <strong>
+                      No payments recorded
+                    </strong>
+
+                    <span>
+                      This purchase does not
+                      have any payment records
+                      yet.
+                    </span>
+
+                  </div>
+
+                ) : (
+
+                  <div className="purchase-payment-history-table">
+
+                    {/* HEADER */}
+
+                    <div className="purchase-payment-history-header">
+
+                      <div>
+                        Date
+                      </div>
+
+                      <div>
+                        Method
+                      </div>
+
+                      <div>
+                        Reference
+                      </div>
+
+                      <div>
+                        Recorded By
+                      </div>
+
+                      <div>
+                        Amount
+                      </div>
+
+                    </div>
+
+
+                    {/* PAYMENTS */}
+
+                    {payments.map(
+                      (payment) => (
+
+                        <div
+                          className="purchase-payment-history-row"
+                          key={payment._id}
+                        >
+
+                          {/* DATE */}
+
+                          <div>
+                            {formatDate(
+                              payment.createdAt
+                            )}
+                          </div>
+
+
+                          {/* METHOD */}
+
+                          <div>
+
+                            <span className="payment-method-badge">
+
+                              {formatPaymentMethod(
+                                payment.paymentMethod
+                              )}
+
+                            </span>
+
+                          </div>
+
+
+                          {/* REFERENCE */}
+
+                          <div>
+                            {payment.reference ||
+                              "-"}
+                          </div>
+
+
+                          {/* CREATED BY */}
+
+                          <div>
+                            {payment.createdBy
+                              ?.name ||
+                              "-"}
+                          </div>
+
+
+                          {/* AMOUNT */}
+
+                          <div className="payment-history-amount">
+
+                            {formatCurrency(
+                              payment.amount
+                            )}
+
+                          </div>
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                )}
+
+              </div>
+
+
+              {/* =============================
+                  PAYMENT NOTES
+              ============================= */}
+
+              {payments.some(
+                (payment) =>
+                  payment.notes
+              ) && (
+
+                <div className="purchase-details-section">
+
+                  <div className="purchase-details-section-heading">
+
+                    <h3>
+                      Payment Notes
+                    </h3>
+
+                  </div>
+
+
+                  <div className="purchase-payment-notes-list">
+
+                    {payments
+                      .filter(
+                        (payment) =>
+                          payment.notes
+                      )
+                      .map(
+                        (payment) => (
+
+                          <div
+                            className="purchase-payment-note"
+                            key={
+                              payment._id
+                            }
+                          >
+
+                            <div>
+
+                              <strong>
+                                {formatCurrency(
+                                  payment.amount
+                                )}
+                              </strong>
+
+                              <span>
+                                {formatDate(
+                                  payment.createdAt
+                                )}
+                              </span>
+
+                            </div>
+
+                            <p>
+                              {
+                                payment.notes
+                              }
+                            </p>
+
+                          </div>
+
+                        )
+                      )}
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              {/* =============================
+                  BOTTOM
               ============================= */}
 
               <div className="purchase-details-bottom">
 
-                {/* USER / NOTES */}
+                {/* ACTIVITY */}
 
                 <div>
 
@@ -523,18 +951,18 @@ const PurchaseDetailsModal = ({
                   </div>
 
 
+                  {/* PURCHASE NOTES */}
+
                   {purchase.notes && (
 
                     <div className="purchase-details-notes">
 
                       <span>
-                        Notes
+                        Purchase Notes
                       </span>
 
                       <p>
-                        {
-                          purchase.notes
-                        }
+                        {purchase.notes}
                       </p>
 
                     </div>
@@ -609,11 +1037,42 @@ const PurchaseDetailsModal = ({
 
                   </div>
 
+
+                  <div className="purchase-details-paid-total">
+
+                    <span>
+                      Paid
+                    </span>
+
+                    <strong>
+                      {formatCurrency(
+                        amountPaid
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="purchase-details-balance-total">
+
+                    <span>
+                      Balance
+                    </span>
+
+                    <strong>
+                      {formatCurrency(
+                        balance
+                      )}
+                    </strong>
+
+                  </div>
+
                 </div>
 
               </div>
 
             </>
+
           )}
 
         </div>

@@ -85,13 +85,26 @@ export const cancelPurchase = async (
 
 export const recordPurchasePayment = async (
   id,
-  amount
+  data
 ) => {
   const response = await api.patch(
     `/purchases/${id}/payment`,
-    {
-      amount,
-    }
+    data
+  );
+
+  return response.data;
+};
+
+
+// ==========================================
+// GET PURCHASE PAYMENTS
+// ==========================================
+
+export const getPurchasePayments = async (
+  id
+) => {
+  const response = await api.get(
+    `/purchases/${id}/payments`
   );
 
   return response.data;

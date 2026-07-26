@@ -16,7 +16,24 @@ const PurchasePaymentModal = ({
   onClose,
   onSuccess,
 }) => {
+  // ==========================================
+  // STATE
+  // ==========================================
+
   const [amount, setAmount] =
+    useState("");
+
+  const [
+    paymentMethod,
+    setPaymentMethod,
+  ] = useState("bank_transfer");
+
+  const [
+    reference,
+    setReference,
+  ] = useState("");
+
+  const [notes, setNotes] =
     useState("");
 
   const [loading, setLoading] =
@@ -24,14 +41,25 @@ const PurchasePaymentModal = ({
 
 
   // ==========================================
-  // RESET
+  // RESET FORM WHEN MODAL OPENS
   // ==========================================
 
   useEffect(() => {
     if (isOpen) {
       setAmount("");
+
+      setPaymentMethod(
+        "bank_transfer"
+      );
+
+      setReference("");
+
+      setNotes("");
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    purchase?._id,
+  ]);
 
 
   // ==========================================
@@ -53,6 +81,10 @@ const PurchasePaymentModal = ({
   };
 
 
+  // ==========================================
+  // DO NOT RENDER
+  // ==========================================
+
   if (
     !isOpen ||
     !purchase
@@ -62,7 +94,7 @@ const PurchasePaymentModal = ({
 
 
   // ==========================================
-  // VALUES
+  // PURCHASE VALUES
   // ==========================================
 
   const total =
@@ -83,7 +115,7 @@ const PurchasePaymentModal = ({
 
 
   // ==========================================
-  // SUBMIT
+  // HANDLE SUBMIT
   // ==========================================
 
   const handleSubmit = async (
@@ -91,8 +123,18 @@ const PurchasePaymentModal = ({
   ) => {
     e.preventDefault();
 
+
+    // ========================================
+    // CONVERT AMOUNT
+    // ========================================
+
     const payment =
       Number(amount);
+
+
+    // ========================================
+    // VALIDATE PAYMENT
+    // ========================================
 
     if (
       Number.isNaN(payment) ||
@@ -106,6 +148,10 @@ const PurchasePaymentModal = ({
     }
 
 
+    // ========================================
+    // PREVENT OVERPAYMENT
+    // ========================================
+
     if (payment > balance) {
       alert(
         `Maximum payment is ${formatCurrency(
@@ -117,26 +163,84 @@ const PurchasePaymentModal = ({
     }
 
 
+    // ========================================
+    // VALIDATE PAYMENT METHOD
+    // ========================================
+
+    if (!paymentMethod) {
+      alert(
+        "Please select a payment method."
+      );
+
+      return;
+    }
+
+
     try {
       setLoading(true);
+
+
+      // ======================================
+      // PAYMENT DATA
+      //
+      // Backend now receives:
+      //
+      // amount
+      // paymentMethod
+      // reference
+      // notes
+      // ======================================
+
+      const paymentData = {
+        amount: payment,
+
+        paymentMethod,
+
+        reference:
+          reference.trim(),
+
+        notes:
+          notes.trim(),
+      };
+
+
+      // ======================================
+      // RECORD PAYMENT
+      // ======================================
 
       const response =
         await recordPurchasePayment(
           purchase._id,
-          payment
+          paymentData
         );
 
+
+      // ======================================
+      // SUCCESS
+      // ======================================
+
       alert(
-        response.message
+        response.message ||
+          "Payment recorded successfully."
       );
 
+
+      // ======================================
+      // REFRESH PURCHASE LIST
+      // ======================================
+
       await onSuccess?.();
+
+
+      // ======================================
+      // CLOSE MODAL
+      // ======================================
 
       onClose();
 
     } catch (error) {
       console.error(
-        "Payment Error:",
+        "Purchase Payment Error:",
         error
       );
 
@@ -151,28 +255,38 @@ const PurchasePaymentModal = ({
   };
 
 
+  // ==========================================
+  // RENDER
+  // ==========================================
+
   return (
     <div className="purchase-payment-overlay">
 
       <div className="purchase-payment-modal">
 
+        {/* =====================================
+            HEADER
+        ===================================== */}
+
         <div className="purchase-payment-header">
 
           <div>
+
             <h2>
               Record Payment
             </h2>
 
             <p>
-              {
-                purchase.purchaseNumber
-              }
+              {purchase.purchaseNumber}
             </p>
+
           </div>
+
 
           <button
             type="button"
             onClick={onClose}
+            disabled={loading}
           >
             ×
           </button>
@@ -180,15 +294,26 @@ const PurchasePaymentModal = ({
         </div>
 
 
+        {/* =====================================
+            FORM
+        ===================================== */}
+
         <form
           onSubmit={handleSubmit}
         >
 
           <div className="purchase-payment-body">
 
+            {/* =================================
+                PURCHASE SUMMARY
+            ================================= */}
+
             <div className="purchase-payment-summary">
 
+              {/* TOTAL */}
+
               <div>
+
                 <span>
                   Purchase Total
                 </span>
@@ -198,10 +323,14 @@ const PurchasePaymentModal = ({
                     total
                   )}
                 </strong>
+
               </div>
 
 
+              {/* ALREADY PAID */}
+
               <div>
+
                 <span>
                   Already Paid
                 </span>
@@ -211,8 +340,11 @@ const PurchasePaymentModal = ({
                     amountPaid
                   )}
                 </strong>
+
               </div>
 
+
+              {/* BALANCE */}
 
               <div className="payment-balance">
 
@@ -230,6 +362,10 @@ const PurchasePaymentModal = ({
 
             </div>
 
+
+            {/* =================================
+                PAYMENT AMOUNT
+            ================================= */}
 
             <div className="purchase-payment-field">
 
@@ -251,25 +387,160 @@ const PurchasePaymentModal = ({
                 }
                 autoFocus
                 required
+                disabled={
+                  loading ||
+                  balance <= 0
+                }
               />
 
             </div>
 
 
-            <button
-              type="button"
-              className="pay-full-balance"
-              onClick={() =>
-                setAmount(
-                  balance.toFixed(2)
-                )
-              }
-            >
-              Pay Full Balance
-            </button>
+            {/* =================================
+                PAY FULL BALANCE
+            ================================= */}
+
+            {balance > 0 && (
+
+              <button
+                type="button"
+                className="pay-full-balance"
+                onClick={() =>
+                  setAmount(
+                    balance.toFixed(2)
+                  )
+                }
+                disabled={loading}
+              >
+                Pay Full Balance
+              </button>
+
+            )}
+
+
+            {/* =================================
+                PAYMENT METHOD
+            ================================= */}
+
+            <div className="purchase-payment-field">
+
+              <label>
+                Payment Method *
+              </label>
+
+              <select
+                value={
+                  paymentMethod
+                }
+                onChange={(e) =>
+                  setPaymentMethod(
+                    e.target.value
+                  )
+                }
+                disabled={loading}
+                required
+              >
+
+                <option value="cash">
+                  Cash
+                </option>
+
+                <option value="card">
+                  Card
+                </option>
+
+                <option value="bank_transfer">
+                  Bank Transfer
+                </option>
+
+                <option value="cheque">
+                  Cheque
+                </option>
+
+                <option value="other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+
+            {/* =================================
+                PAYMENT REFERENCE
+            ================================= */}
+
+            <div className="purchase-payment-field">
+
+              <label>
+                Payment Reference
+              </label>
+
+              <input
+                type="text"
+                placeholder="e.g. BANK-TRX-1029"
+                value={reference}
+                onChange={(e) =>
+                  setReference(
+                    e.target.value
+                  )
+                }
+                disabled={loading}
+              />
+
+              <small>
+                Optional bank transaction,
+                cheque or payment reference.
+              </small>
+
+            </div>
+
+
+            {/* =================================
+                NOTES
+            ================================= */}
+
+            <div className="purchase-payment-field">
+
+              <label>
+                Notes
+              </label>
+
+              <textarea
+                placeholder="Optional payment notes..."
+                value={notes}
+                onChange={(e) =>
+                  setNotes(
+                    e.target.value
+                  )
+                }
+                disabled={loading}
+              />
+
+            </div>
+
+
+            {/* =================================
+                FULLY PAID MESSAGE
+            ================================= */}
+
+            {balance <= 0 && (
+
+              <div className="purchase-payment-paid-message">
+
+                This purchase has already
+                been fully paid.
+
+              </div>
+
+            )}
 
           </div>
 
+
+          {/* ===================================
+              FOOTER
+          =================================== */}
 
           <div className="purchase-payment-footer">
 
@@ -282,6 +553,7 @@ const PurchasePaymentModal = ({
               Cancel
             </button>
 
+
             <button
               type="submit"
               className="payment-save"
@@ -290,9 +562,11 @@ const PurchasePaymentModal = ({
                 balance <= 0
               }
             >
+
               {loading
-                ? "Saving..."
+                ? "Recording..."
                 : "Record Payment"}
+
             </button>
 
           </div>

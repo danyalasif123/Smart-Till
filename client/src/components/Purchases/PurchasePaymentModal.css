@@ -1,3 +1,7 @@
+/* =========================================
+   OVERLAY
+========================================= */
+
 .purchase-payment-overlay {
   position: fixed;
   inset: 0;
@@ -7,12 +11,22 @@
   align-items: center;
   justify-content: center;
 
+  padding: 20px;
+
   background: rgba(0, 0, 0, 0.4);
 }
 
+
+/* =========================================
+   MODAL
+========================================= */
+
 .purchase-payment-modal {
-  width: 420px;
-  max-width: calc(100% - 30px);
+  width: 100%;
+  max-width: 450px;
+  max-height: 92vh;
+
+  overflow-y: auto;
 
   background: white;
 
@@ -23,18 +37,25 @@
     rgba(0, 0, 0, 0.2);
 }
 
+
+/* =========================================
+   HEADER
+========================================= */
+
 .purchase-payment-header {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
 
   padding: 18px 20px;
 
-  border-bottom:
-    1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .purchase-payment-header h2 {
   margin: 0;
+
+  color: #242424;
 
   font-size: 17px;
 }
@@ -48,46 +69,74 @@
 }
 
 .purchase-payment-header button {
+  width: 30px;
+  height: 30px;
+
   border: none;
 
   background: transparent;
+
+  color: #323130;
 
   font-size: 22px;
 
   cursor: pointer;
 }
 
+
+/* =========================================
+   BODY
+========================================= */
+
 .purchase-payment-body {
   padding: 20px;
 }
+
+
+/* =========================================
+   SUMMARY
+========================================= */
 
 .purchase-payment-summary {
   padding: 14px;
 
   background: #fafafa;
 
-  border:
-    1px solid #e5e7eb;
-
+  border: 1px solid #e5e7eb;
   border-radius: 4px;
 }
 
 .purchase-payment-summary > div {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   padding: 6px 0;
 
+  color: #323130;
+
   font-size: 10px;
 }
+
+.purchase-payment-summary span {
+  color: #605e5c;
+}
+
+.purchase-payment-summary strong {
+  color: #323130;
+}
+
+
+/* =========================================
+   BALANCE
+========================================= */
 
 .payment-balance {
   margin-top: 6px;
 
   padding-top: 12px !important;
 
-  border-top:
-    1px solid #ddd;
+  border-top: 1px solid #ddd;
 
   font-size: 12px !important;
 }
@@ -98,6 +147,11 @@
   font-size: 15px;
 }
 
+
+/* =========================================
+   FIELDS
+========================================= */
+
 .purchase-payment-field {
   margin-top: 18px;
 }
@@ -107,29 +161,86 @@
 
   margin-bottom: 6px;
 
+  color: #323130;
+
   font-size: 10px;
   font-weight: 600;
 }
 
-.purchase-payment-field input {
+
+/* =========================================
+   INPUT / SELECT / TEXTAREA
+========================================= */
+
+.purchase-payment-field input,
+.purchase-payment-field select,
+.purchase-payment-field textarea {
   width: 100%;
-  height: 38px;
 
   box-sizing: border-box;
 
-  padding: 0 10px;
+  padding: 9px 10px;
 
-  border:
-    1px solid #c8c6c4;
-
+  border: 1px solid #c8c6c4;
   border-radius: 3px;
+
+  background: white;
+
+  color: #323130;
+
+  font-family: inherit;
+  font-size: 10px;
 
   outline: none;
 }
 
-.purchase-payment-field input:focus {
-  border-color: #0067b8;
+.purchase-payment-field input,
+.purchase-payment-field select {
+  height: 38px;
 }
+
+.purchase-payment-field textarea {
+  min-height: 75px;
+
+  resize: vertical;
+}
+
+.purchase-payment-field input:focus,
+.purchase-payment-field select:focus,
+.purchase-payment-field textarea:focus {
+  border-color: #0067b8;
+
+  box-shadow:
+    0 0 0 1px #0067b8;
+}
+
+.purchase-payment-field input:disabled,
+.purchase-payment-field select:disabled,
+.purchase-payment-field textarea:disabled {
+  background: #f3f2f1;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   HELP TEXT
+========================================= */
+
+.purchase-payment-field small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #777;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   PAY FULL BALANCE
+========================================= */
 
 .pay-full-balance {
   margin-top: 8px;
@@ -148,6 +259,42 @@
   cursor: pointer;
 }
 
+.pay-full-balance:hover {
+  text-decoration: underline;
+}
+
+.pay-full-balance:disabled {
+  color: #aaa;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   PAID MESSAGE
+========================================= */
+
+.purchase-payment-paid-message {
+  margin-top: 18px;
+
+  padding: 12px;
+
+  border: 1px solid #bad80a;
+  border-radius: 4px;
+
+  background: #f1f8e9;
+
+  color: #107c10;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
 .purchase-payment-footer {
   display: flex;
   justify-content: flex-end;
@@ -156,8 +303,7 @@
 
   padding: 14px 20px;
 
-  border-top:
-    1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
 }
 
 .purchase-payment-footer button {
@@ -173,18 +319,70 @@
   cursor: pointer;
 }
 
+
+/* =========================================
+   CANCEL BUTTON
+========================================= */
+
 .payment-cancel {
-  border:
-    1px solid #c8c6c4;
+  border: 1px solid #c8c6c4;
 
   background: white;
+
+  color: #323130;
 }
 
+.payment-cancel:hover {
+  background: #f3f2f1;
+}
+
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
 .payment-save {
-  border:
-    1px solid #0067b8;
+  border: 1px solid #0067b8;
 
   background: #0067b8;
 
   color: white;
+}
+
+.payment-save:hover:not(:disabled) {
+  background: #005a9e;
+}
+
+.payment-save:disabled {
+  border-color: #c8c6c4;
+
+  background: #c8c6c4;
+
+  color: #666;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 500px) {
+
+  .purchase-payment-overlay {
+    padding: 10px;
+  }
+
+  .purchase-payment-modal {
+    max-height: 95vh;
+  }
+
+  .purchase-payment-footer {
+    flex-direction: column-reverse;
+  }
+
+  .purchase-payment-footer button {
+    width: 100%;
+  }
 }

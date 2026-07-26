@@ -4,7 +4,8 @@ import Purchase from "../models/Purchase.js";
 import Product from "../models/Product.js";
 import Supplier from "../models/Supplier.js";
 import StockTransaction from "../models/StockTransaction.js";
-
+import PurchasePayment
+  from "../models/PurchasePayment.js";
 
 // ==========================================
 // GENERATE PURCHASE NUMBER
@@ -879,12 +880,22 @@ export const cancelPurchase = async (
 // Status becomes "paid"
 // ==========================================
 
+// ==========================================
+// RECORD PURCHASE PAYMENT
+// PATCH /api/purchases/:id/payment
+// ==========================================
+
 export const recordPurchasePayment = async (
   req,
   res
 ) => {
   try {
-    const { amount } = req.body;
+    const {
+      amount,
+      paymentMethod,
+      reference = "",
+      notes = "",
+    } = req.body;
 
 
     // ======================================
@@ -901,6 +912,31 @@ export const recordPurchasePayment = async (
       return res.status(400).json({
         message:
           "Payment amount must be greater than 0",
+      });
+    }
+
+
+    // ======================================
+    // PAYMENT METHOD
+    // ======================================
+
+    const allowedMethods = [
+      "cash",
+      "card",
+      "bank_transfer",
+      "cheque",
+      "other",
+    ];
+
+    if (
+      !paymentMethod ||
+      !allowedMethods.includes(
+        paymentMethod
+      )
+    ) {
+      return res.status(400).json({
+        message:
+          "Invalid payment method",
       });
     }
 
@@ -927,7 +963,7 @@ export const recordPurchasePayment = async (
 
 
     // ======================================
-    // CANCELLED PURCHASE
+    // CANCELLED
     // ======================================
 
     if (
@@ -936,24 +972,26 @@ export const recordPurchasePayment = async (
     ) {
       return res.status(400).json({
         message:
-          "Cannot record payment for a cancelled purchase",
+          "Cannot pay a cancelled purchase",
       });
     }
 
 
     // ======================================
-    // CURRENT VALUES
+    // CURRENT BALANCE
     // ======================================
 
     const total =
-      Number(purchase.total || 0);
+      Number(
+        purchase.total || 0
+      );
 
     const currentPaid =
       Number(
         purchase.amountPaid || 0
       );
 
-    const outstandingBalance =
+    const balance =
       total - currentPaid;
 
 
@@ -961,27 +999,24 @@ export const recordPurchasePayment = async (
     // ALREADY PAID
     // ======================================
 
-    if (
-      outstandingBalance <= 0
-    ) {
+    if (balance <= 0) {
       return res.status(400).json({
         message:
-          "Purchase has already been fully paid",
+          "Purchase is already fully paid",
       });
     }
 
 
     // ======================================
-    // PREVENT OVERPAYMENT
+    // OVERPAYMENT
     // ======================================
 
     if (
-      paymentAmount >
-      outstandingBalance
+      paymentAmount > balance
     ) {
       return res.status(400).json({
         message:
-          `Payment cannot exceed outstanding balance of $${outstandingBalance.toFixed(
+          `Payment cannot exceed outstanding balance of $${balance.toFixed(
             2
           )}`,
       });
@@ -989,7 +1024,38 @@ export const recordPurchasePayment = async (
 
 
     // ======================================
-    // UPDATE AMOUNT PAID
+    // CREATE PAYMENT HISTORY
+    // ======================================
+
+    const payment =
+      await PurchasePayment.create({
+        purchaseId:
+          purchase._id,
+
+        supplierId:
+          purchase.supplierId,
+
+        amount:
+          paymentAmount,
+
+        paymentMethod,
+
+        reference:
+          reference.trim(),
+
+        notes:
+          notes.trim(),
+
+        businessId:
+          req.user.businessId,
+
+        createdBy:
+          req.user.id,
+      });
+
+
+    // ======================================
+    // UPDATE PURCHASE
     // ======================================
 
     purchase.amountPaid =
@@ -997,45 +1063,52 @@ export const recordPurchasePayment = async (
       paymentAmount;
 
 
-    // ======================================
-    // DETERMINE PAYMENT STATUS
-    // ======================================
-
     if (
       purchase.amountPaid >=
       total
     ) {
       purchase.paymentStatus =
         "paid";
-    } else if (
-      purchase.amountPaid > 0
-    ) {
-      purchase.paymentStatus =
-        "partial";
+
     } else {
       purchase.paymentStatus =
-        "unpaid";
+        "partial";
     }
 
 
+    await purchase.save();
+
+
     // ======================================
-    // SAVE
+    // POPULATE PAYMENT
     // ======================================
 
-    await purchase.save();
+    const populatedPayment =
+      await PurchasePayment.findById(
+        payment._id
+      )
+        .populate(
+          "createdBy",
+          "name email role"
+        )
+        .populate(
+          "supplierId",
+          "name"
+        );
 
 
     // ======================================
     // RESPONSE
     // ======================================
 
-    res.status(200).json({
+    res.status(201).json({
       message:
         "Purchase payment recorded successfully",
 
-      payment: {
-        paymentAmount,
+      payment:
+        populatedPayment,
 
+      summary: {
         total,
 
         amountPaid:
@@ -1048,13 +1121,101 @@ export const recordPurchasePayment = async (
         paymentStatus:
           purchase.paymentStatus,
       },
-
-      purchase,
     });
 
   } catch (error) {
     console.error(
       "Purchase Payment Error:",
+      error
+    );
+
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};
+// ==========================================
+// GET PURCHASE PAYMENT HISTORY
+// GET /api/purchases/:id/payments
+// ==========================================
+
+export const getPurchasePayments = async (
+  req,
+  res
+) => {
+  try {
+
+    const purchase =
+      await Purchase.findOne({
+        _id: req.params.id,
+
+        businessId:
+          req.user.businessId,
+      });
+
+
+    if (!purchase) {
+      return res.status(404).json({
+        message:
+          "Purchase not found",
+      });
+    }
+
+
+    const payments =
+      await PurchasePayment.find({
+        purchaseId:
+          purchase._id,
+
+        businessId:
+          req.user.businessId,
+      })
+        .populate(
+          "createdBy",
+          "name email role"
+        )
+        .sort({
+          createdAt: -1,
+        });
+
+
+    const total =
+      Number(
+        purchase.total || 0
+      );
+
+    const amountPaid =
+      Number(
+        purchase.amountPaid || 0
+      );
+
+
+    res.status(200).json({
+      count:
+        payments.length,
+
+      summary: {
+        total,
+
+        amountPaid,
+
+        balance:
+          Math.max(
+            total - amountPaid,
+            0
+          ),
+
+        paymentStatus:
+          purchase.paymentStatus,
+      },
+
+      payments,
+    });
+
+  } catch (error) {
+    console.error(
+      "Get Purchase Payments Error:",
       error
     );
 

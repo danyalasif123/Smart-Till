@@ -1,0 +1,1450 @@
+/* =========================================
+   PAGE
+========================================= */
+
+.reports-page {
+  padding: 24px;
+
+  min-height: 100vh;
+
+  background: #f7f7f7;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.reports-header {
+  margin-bottom: 20px;
+}
+
+.reports-header h1 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 24px;
+}
+
+.reports-header p {
+  margin: 5px 0 0;
+
+  color: #605e5c;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   REPORT TYPE TABS
+========================================= */
+
+.report-type-tabs {
+  display: flex;
+
+  gap: 5px;
+
+  margin-bottom: 15px;
+
+  overflow-x: auto;
+}
+
+.report-type-tabs button {
+  white-space: nowrap;
+
+  padding: 9px 14px;
+
+  border: 1px solid #d2d0ce;
+  border-radius: 3px;
+
+  background: white;
+
+  color: #323130;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.report-type-tabs button.active {
+  border-color: #0067b8;
+
+  background: #0067b8;
+
+  color: white;
+}
+
+.report-type-tabs button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   FILTER CARD
+========================================= */
+
+.report-filter-card {
+  margin-bottom: 18px;
+
+  padding: 15px;
+
+  border: 1px solid #e1dfdd;
+  border-radius: 4px;
+
+  background: white;
+}
+
+
+/* =========================================
+   PERIOD BUTTONS
+========================================= */
+
+.report-period-buttons {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+.report-period-buttons button {
+  padding: 8px 13px;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  background: white;
+
+  color: #323130;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.report-period-buttons button:hover {
+  background: #f3f2f1;
+}
+
+.report-period-buttons button.active {
+  border-color: #0067b8;
+
+  background: #0067b8;
+
+  color: white;
+}
+
+
+/* =========================================
+   CUSTOM FILTER
+========================================= */
+
+.report-custom-filter {
+  display: flex;
+  align-items: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 15px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.report-custom-filter > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.report-custom-filter label {
+  color: #605e5c;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.report-custom-filter input {
+  height: 35px;
+
+  box-sizing: border-box;
+
+  padding: 0 9px;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  background: white;
+
+  color: #323130;
+
+  font-size: 9px;
+
+  outline: none;
+}
+
+.report-custom-filter input:focus {
+  border-color: #0067b8;
+}
+
+
+/* =========================================
+   APPLY
+========================================= */
+
+.report-apply-button {
+  height: 35px;
+
+  padding: 0 15px;
+
+  border: 1px solid #0067b8;
+  border-radius: 3px;
+
+  background: #0067b8;
+
+  color: white;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.report-apply-button:hover {
+  background: #005a9e;
+}
+
+
+/* =========================================
+   ACTIVE RANGE
+========================================= */
+
+.report-active-range {
+  margin-top: 12px;
+
+  color: #777;
+
+  font-size: 9px;
+}
+
+.report-active-range strong {
+  color: #323130;
+}
+
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
+
+.report-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.report-summary-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 16px;
+
+  border: 1px solid #e1dfdd;
+  border-radius: 4px;
+
+  background: white;
+}
+
+.report-summary-card span {
+  color: #605e5c;
+
+  font-size: 9px;
+}
+
+.report-summary-card strong {
+  color: #242424;
+
+  font-size: 20px;
+}
+
+.report-summary-card small {
+  color: #888;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   FINANCIAL SUMMARY
+========================================= */
+
+.report-financial-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  margin-bottom: 15px;
+
+  border: 1px solid #e1dfdd;
+  border-radius: 4px;
+
+  background: white;
+}
+
+.report-financial-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 13px 15px;
+
+  border-right: 1px solid #eeeeee;
+}
+
+.report-financial-summary > div:last-child {
+  border-right: none;
+}
+
+.report-financial-summary span {
+  color: #605e5c;
+
+  font-size: 9px;
+}
+
+.report-financial-summary strong {
+  color: #323130;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   TWO COLUMN
+========================================= */
+
+.report-two-column {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.report-section {
+  margin-bottom: 12px;
+
+  border: 1px solid #e1dfdd;
+  border-radius: 4px;
+
+  background: white;
+
+  overflow: hidden;
+}
+
+.report-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 13px 15px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.report-section-header h2 {
+  margin: 0;
+
+  color: #323130;
+
+  font-size: 12px;
+}
+
+.report-section-header span {
+  color: #888;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   BREAKDOWN
+========================================= */
+
+.report-breakdown-list {
+  padding: 5px 15px;
+}
+
+.report-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 11px 0;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.report-breakdown-row:last-child {
+  border-bottom: none;
+}
+
+.report-breakdown-row > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.report-breakdown-row strong {
+  color: #323130;
+
+  font-size: 10px;
+}
+
+.report-breakdown-row span {
+  color: #888;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   PRODUCT TABLE
+========================================= */
+
+.report-table-header,
+.report-table-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding: 11px 15px;
+}
+
+.report-table-header {
+  background: #fafafa;
+
+  color: #605e5c;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.report-table-row {
+  border-top: 1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+.report-table-row strong {
+  font-size: 9px;
+}
+
+
+/* =========================================
+   SALES TABLE
+========================================= */
+
+.report-sales-table {
+  overflow-x: auto;
+}
+
+.report-sales-header,
+.report-sales-row {
+  min-width: 800px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.3fr
+    1fr
+    1.3fr
+    1fr
+    1fr
+    0.8fr
+    0.8fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding: 11px 15px;
+}
+
+.report-sales-header {
+  background: #fafafa;
+
+  color: #605e5c;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.report-sales-row {
+  border-top: 1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+.report-sale-number {
+  color: #0067b8;
+
+  font-weight: 600;
+}
+
+.report-money {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   EMPTY / LOADING
+========================================= */
+
+.reports-loading,
+.report-empty,
+.report-table-empty {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .report-summary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 750px) {
+
+  .reports-page {
+    padding: 15px;
+  }
+
+  .report-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .report-financial-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .report-financial-summary > div {
+    border-right: none;
+
+    border-bottom:
+      1px solid #eeeeee;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .report-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-table {
+    overflow-x: auto;
+  }
+
+  .report-table-header,
+  .report-table-row {
+    min-width: 550px;
+  }
+
+}
+/* =========================================
+   PROFIT TABLE
+========================================= */
+
+.profit-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+.profit-table-header,
+.profit-table-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    0.7fr
+    1fr
+    1fr
+    1fr
+    0.8fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  min-width: 800px;
+
+  padding: 11px 15px;
+}
+
+
+.profit-table-header {
+  background: #fafafa;
+
+  color: #605e5c;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+
+.profit-table-row {
+  border-top:
+    1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+
+.profit-table-row strong {
+  font-size: 9px;
+}
+
+
+.profit-value {
+  font-weight: 700;
+}
+/* =========================================
+   PROFIT TABLE
+========================================= */
+
+.profit-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+.profit-table-header,
+.profit-table-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    0.7fr
+    1fr
+    1fr
+    1fr
+    0.8fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  min-width: 800px;
+
+  padding: 11px 15px;
+}
+
+
+.profit-table-header {
+  background: #fafafa;
+
+  color: #605e5c;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+
+.profit-table-row {
+  border-top:
+    1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+
+.profit-table-row strong {
+  font-size: 9px;
+}
+
+
+.profit-value {
+  font-weight: 700;
+}
+/* =========================================
+   PURCHASE REPORT
+========================================= */
+
+
+/* =========================================
+   PAYMENT AMOUNTS
+========================================= */
+
+.purchase-report-amounts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.purchase-report-amounts strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: #323130;
+}
+
+.purchase-report-amounts span {
+  font-size: 12px;
+  color: #605e5c;
+}
+
+
+/* =========================================
+   SUPPLIER SUMMARY TABLE
+========================================= */
+
+.purchase-report-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #edebe9;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.purchase-report-table-header,
+.purchase-report-table-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 2fr)
+    minmax(90px, 1fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr)
+    minmax(120px, 1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 720px;
+
+  padding: 14px 18px;
+}
+
+
+/* HEADER */
+
+.purchase-report-table-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  border-bottom: 1px solid #edebe9;
+
+  text-transform: uppercase;
+}
+
+
+/* ROW */
+
+.purchase-report-table-row {
+  font-size: 13px;
+
+  color: #323130;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition:
+    background 0.15s ease;
+}
+
+.purchase-report-table-row:last-child {
+  border-bottom: none;
+}
+
+.purchase-report-table-row:hover {
+  background: #faf9f8;
+}
+
+.purchase-report-table-row strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   OUTSTANDING MONEY
+========================================= */
+
+.purchase-outstanding {
+  font-weight: 700;
+  color: #a4262c;
+}
+
+
+/* =========================================
+   PURCHASE HISTORY
+========================================= */
+
+.purchase-history-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border: 1px solid #edebe9;
+
+  border-radius: 6px;
+
+  background: #ffffff;
+}
+
+
+/* =========================================
+   PURCHASE HISTORY GRID
+========================================= */
+
+.purchase-history-header,
+.purchase-history-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(130px, 1.2fr)
+    minmax(110px, 1fr)
+    minmax(160px, 1.5fr)
+    minmax(100px, 1fr)
+    minmax(100px, 1fr)
+    minmax(100px, 1fr)
+    minmax(100px, 1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 900px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   PURCHASE HISTORY HEADER
+========================================= */
+
+.purchase-history-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   PURCHASE HISTORY ROW
+========================================= */
+
+.purchase-history-row {
+  font-size: 13px;
+
+  color: #323130;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition:
+    background 0.15s ease;
+}
+
+.purchase-history-row:last-child {
+  border-bottom: none;
+}
+
+.purchase-history-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   PURCHASE NUMBER
+========================================= */
+
+.purchase-history-row
+.report-sale-number {
+  font-weight: 600;
+
+  color: #0078d4;
+}
+
+
+/* =========================================
+   PAYMENT STATUS BADGE
+========================================= */
+
+.purchase-status-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 65px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  text-transform: capitalize;
+
+  background: #f3f2f1;
+
+  color: #605e5c;
+}
+
+
+/* PAID */
+
+.purchase-status-badge.paid {
+  background: #dff6dd;
+
+  color: #107c10;
+}
+
+
+/* PARTIAL */
+
+.purchase-status-badge.partial {
+  background: #fff4ce;
+
+  color: #8a6d00;
+}
+
+
+/* UNPAID */
+
+.purchase-status-badge.unpaid {
+  background: #fde7e9;
+
+  color: #a4262c;
+}
+
+
+/* PENDING */
+
+.purchase-status-badge.pending {
+  background: #deecf9;
+
+  color: #005a9e;
+}
+
+
+/* =========================================
+   EMPTY PURCHASE TABLE
+========================================= */
+
+.purchase-report-table-wrapper
+.report-table-empty,
+.purchase-history-wrapper
+.report-table-empty {
+  padding: 35px 20px;
+
+  text-align: center;
+
+  color: #8a8886;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   PURCHASE REPORT SECTION SPACING
+========================================= */
+
+.report-summary-grid
++ .report-financial-summary {
+  margin-top: 20px;
+}
+
+.report-financial-summary
++ .report-two-column {
+  margin-top: 24px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .purchase-report-table-header,
+  .purchase-report-table-row {
+    min-width: 700px;
+  }
+
+  .purchase-history-header,
+  .purchase-history-row {
+    min-width: 850px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .purchase-report-amounts {
+    align-items: flex-start;
+  }
+
+  .purchase-report-table-wrapper,
+  .purchase-history-wrapper {
+    overflow-x: auto;
+  }
+
+  .purchase-report-table-header,
+  .purchase-report-table-row {
+    min-width: 680px;
+
+    padding: 12px 14px;
+
+    gap: 10px;
+  }
+
+  .purchase-history-header,
+  .purchase-history-row {
+    min-width: 820px;
+
+    padding: 12px 14px;
+
+    gap: 10px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .purchase-status-badge {
+    font-size: 10px;
+
+    padding: 4px 8px;
+  }
+
+}
+/* =========================================
+   INVENTORY REPORT
+========================================= */
+
+.inventory-report-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   INVENTORY TABLE GRID
+========================================= */
+
+.inventory-report-header,
+.inventory-report-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.7fr)
+    minmax(120px, 1fr)
+    minmax(90px, 0.8fr)
+    minmax(90px, 0.8fr)
+    minmax(90px, 0.8fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 1000px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   TABLE HEADER
+========================================= */
+
+.inventory-report-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   TABLE ROW
+========================================= */
+
+.inventory-report-row {
+  color: #323130;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition: background 0.15s ease;
+}
+
+
+.inventory-report-row:last-child {
+  border-bottom: none;
+}
+
+
+.inventory-report-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   PRODUCT
+========================================= */
+
+.inventory-report-row strong {
+  display: block;
+
+  color: #323130;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+.inventory-product-sku {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8a8886;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   STOCK QUANTITY
+========================================= */
+
+.inventory-report-row > div:nth-child(3) {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   MONEY COLUMNS
+========================================= */
+
+.inventory-report-row > div:nth-child(4),
+.inventory-report-row > div:nth-child(5),
+.inventory-report-row > div:nth-child(6),
+.inventory-report-row > div:nth-child(7) {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================
+   STOCK STATUS BADGE
+========================================= */
+
+.inventory-status {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 80px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   IN STOCK
+========================================= */
+
+.inventory-status.in_stock {
+  background: #dff6dd;
+
+  color: #107c10;
+}
+
+
+/* =========================================
+   LOW STOCK
+========================================= */
+
+.inventory-status.low_stock {
+  background: #fff4ce;
+
+  color: #8a6d00;
+}
+
+
+/* =========================================
+   OUT OF STOCK
+========================================= */
+
+.inventory-status.out_of_stock {
+  background: #fde7e9;
+
+  color: #a4262c;
+}
+
+
+/* =========================================
+   INVENTORY SUMMARY
+========================================= */
+
+.report-summary-card strong {
+  word-break: break-word;
+}
+
+
+/* =========================================
+   INVENTORY EMPTY STATE
+========================================= */
+
+.inventory-report-wrapper
+.report-table-empty {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #8a8886;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.inventory-report-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.inventory-report-wrapper::-webkit-scrollbar-track {
+  background: #f3f2f1;
+
+  border-radius: 10px;
+}
+
+
+.inventory-report-wrapper::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 10px;
+}
+
+
+.inventory-report-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+
+/* =========================================
+   TABLE HOVER STATUS
+========================================= */
+
+.inventory-report-row:hover
+.inventory-status.in_stock {
+  background: #d3f1d0;
+}
+
+
+.inventory-report-row:hover
+.inventory-status.low_stock {
+  background: #ffefb3;
+}
+
+
+.inventory-report-row:hover
+.inventory-status.out_of_stock {
+  background: #fbd5d8;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .inventory-report-header,
+  .inventory-report-row {
+    min-width: 950px;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .inventory-report-wrapper {
+    border-radius: 6px;
+  }
+
+
+  .inventory-report-header,
+  .inventory-report-row {
+    min-width: 900px;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+  }
+
+
+  .inventory-report-header {
+    font-size: 11px;
+  }
+
+
+  .inventory-report-row {
+    font-size: 12px;
+  }
+
+
+  .inventory-status {
+    min-width: 70px;
+
+    padding: 4px 8px;
+
+    font-size: 10px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .inventory-report-header,
+  .inventory-report-row {
+    min-width: 850px;
+
+    padding: 11px 12px;
+  }
+
+
+  .inventory-product-sku {
+    font-size: 10px;
+  }
+
+}

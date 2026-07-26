@@ -263,6 +263,8 @@ export const createSale = async (req, res) => {
         Number(
           product.sellingPrice
         );
+        const costPrice =
+  Number(product.costPrice || 0);
 
       if (
         Number.isNaN(sellingPrice) ||
@@ -325,30 +327,30 @@ export const createSale = async (req, res) => {
       // if product information changes.
       // ====================================
 
-      saleItems.push({
-        productId:
-          product._id,
+     saleItems.push({
+  productId:
+    product._id,
 
-        productName:
-          product.name,
+  productName:
+    product.name,
 
-        sku:
-          product.sku || "",
+  sku:
+    product.sku || "",
 
-        barcode:
-          product.barcode || "",
+  barcode:
+    product.barcode || "",
 
-        unit:
-          product.unit || "",
+  unit:
+    product.unit || "",
 
-        unitPrice:
-          sellingPrice,
+  unitPrice:
+    sellingPrice,
 
-        quantity,
+  quantity,
 
-        subtotal:
-          itemSubtotal,
-      });
+  subtotal:
+    itemSubtotal,
+});
 
 
       // ====================================

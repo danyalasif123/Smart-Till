@@ -11,6 +11,7 @@ import customerRoutes from "./routes/customerRoutes.js";
 import saleRoutes from "./routes/saleRoutes.js";
 import inventoryRoutes from "./routes/inventoryRoutes.js";
 import purchaseRoutes from "./routes/purchaseRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
 // other routes
 
 const app = express();
@@ -28,4 +29,8 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/sales", saleRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/purchases",purchaseRoutes);
+app.use(
+  "/api/reports",
+  reportRoutes
+);
 export default app;

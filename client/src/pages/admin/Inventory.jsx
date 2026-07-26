@@ -8,6 +8,8 @@ import "./Inventory.css";
 import Search from "../../components/common/Search/Search";
 import StockAdjustmentModal from "../../components/Inventory/StockAdjustmentModal";
 import {getInventory,} from "../../services/inventoryService";
+import StockHistoryModal
+  from "../../components/Inventory/StockHistoryModal";
 
 const Inventory = () => {
   // ==========================================
@@ -31,7 +33,10 @@ const [
   selectedProduct,
   setSelectedProduct,
 ] = useState(null);
-
+const [
+  historyModalOpen,
+  setHistoryModalOpen,
+] = useState(false);
   // ==========================================
   // FETCH INVENTORY
   // ==========================================
@@ -226,7 +231,26 @@ const handleStockUpdated = async () => {
   // ==========================================
   // RENDER
   // ==========================================
+// ==========================================
+// OPEN STOCK HISTORY
+// ==========================================
 
+const handleViewHistory = (product) => {
+  setSelectedProduct(product);
+
+  setHistoryModalOpen(true);
+};
+
+
+// ==========================================
+// CLOSE STOCK HISTORY
+// ==========================================
+
+const handleCloseHistory = () => {
+  setHistoryModalOpen(false);
+
+  setSelectedProduct(null);
+};
   return (
     <div className="inventory-page">
 
@@ -485,18 +509,15 @@ const handleStockUpdated = async () => {
 
                     <div className="inventory-actions">
 
-                      <button
-                        type="button"
-                        className="inventory-history-btn"
-                        onClick={() =>
-                          console.log(
-                            "History:",
-                            product
-                          )
-                        }
-                      >
-                        History
-                      </button>
+                     <button
+  type="button"
+  className="inventory-history-btn"
+  onClick={() =>
+    handleViewHistory(product)
+  }
+>
+  History
+</button>
 
                     <button
   type="button"
@@ -519,6 +540,11 @@ const handleStockUpdated = async () => {
         )}
 
       </div>
+      <StockHistoryModal
+  isOpen={historyModalOpen}
+  product={selectedProduct}
+  onClose={handleCloseHistory}
+/>
       <StockAdjustmentModal
   isOpen={adjustmentModalOpen}
   product={selectedProduct}

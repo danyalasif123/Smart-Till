@@ -1,0 +1,378 @@
+/* =========================================
+   OVERLAY
+========================================= */
+
+.history-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.history-modal {
+  width: 100%;
+  max-width: 950px;
+
+  max-height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 16px 40px
+    rgba(0, 0, 0, 0.18);
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.history-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-modal-header h2 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.history-modal-header p {
+  margin: 4px 0 0;
+
+  color: #605e5c;
+
+  font-size: 11px;
+}
+
+.history-close-btn {
+  width: 30px;
+  height: 30px;
+
+  background: transparent;
+
+  border: none;
+  border-radius: 3px;
+
+  color: #605e5c;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.history-close-btn:hover {
+  background: #f3f3f3;
+}
+
+
+/* =========================================
+   PRODUCT SUMMARY
+========================================= */
+
+.history-product-summary {
+  display: grid;
+
+  grid-template-columns:
+    2fr 1fr 1fr;
+
+  gap: 15px;
+
+  margin: 16px 20px;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.history-product-summary > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.history-product-summary span {
+  color: #777777;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.history-product-summary strong {
+  color: #242424;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.history-content {
+  padding: 0 20px 20px;
+
+  overflow-y: auto;
+}
+
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.history-table-wrapper {
+  overflow-x: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.history-table {
+  min-width: 800px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.history-table-header,
+.history-table-row {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    1.2fr
+    0.7fr
+    0.7fr
+    0.7fr
+    1.4fr
+    1fr;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.history-table-header {
+  padding: 10px 12px;
+
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #605e5c;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.history-table-row {
+  min-height: 48px;
+
+  padding: 8px 12px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 9px;
+}
+
+.history-table-row:last-child {
+  border-bottom: none;
+}
+
+.history-table-row:hover {
+  background: #fafafa;
+}
+
+
+/* =========================================
+   TRANSACTION TYPE
+========================================= */
+
+.history-type {
+  display: inline-block;
+
+  padding: 4px 7px;
+
+  border-radius: 10px;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  background: #f3f3f3;
+
+  color: #323130;
+}
+
+
+.history-type-sale {
+  background: #fde7e9;
+
+  color: #a4262c;
+}
+
+
+.history-type-purchase,
+.history-type-opening,
+.history-type-return {
+  background: #dff6dd;
+
+  color: #107c10;
+}
+
+
+.history-type-damage {
+  background: #fff4ce;
+
+  color: #8a6d00;
+}
+
+
+.history-type-adjustment {
+  background: #deecf9;
+
+  color: #005a9e;
+}
+
+
+/* =========================================
+   QUANTITY
+========================================= */
+
+.history-quantity {
+  font-weight: 600;
+}
+
+.history-quantity.positive {
+  color: #107c10;
+}
+
+.history-quantity.negative {
+  color: #a4262c;
+}
+
+
+/* =========================================
+   REFERENCE
+========================================= */
+
+.history-reference {
+  font-family: monospace;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.history-message {
+  padding: 40px 20px;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+.history-message.error {
+  color: #a4262c;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.history-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 14px 20px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.history-modal-footer button {
+  height: 34px;
+
+  padding: 0 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  color: #323130;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.history-modal-footer button:hover {
+  background: #f5f5f5;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .history-modal-overlay {
+    align-items: flex-start;
+
+    padding: 10px;
+  }
+
+  .history-product-summary {
+    grid-template-columns: 1fr;
+  }
+}

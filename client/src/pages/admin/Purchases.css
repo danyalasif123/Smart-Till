@@ -1,0 +1,333 @@
+.purchases-page {
+  padding: 24px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.purchases-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.purchases-header h1 {
+  margin: 0;
+
+  font-size: 22px;
+  color: #242424;
+}
+
+.purchases-header p {
+  margin: 5px 0 0;
+
+  font-size: 11px;
+  color: #605e5c;
+}
+
+.new-purchase-btn {
+  height: 36px;
+
+  padding: 0 16px;
+
+  border: none;
+  border-radius: 3px;
+
+  background: #0067b8;
+  color: white;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.new-purchase-btn:hover {
+  background: #005a9e;
+}
+
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.purchases-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 16px;
+}
+
+.purchases-toolbar input {
+  width: 360px;
+  height: 36px;
+
+  box-sizing: border-box;
+
+  padding: 0 11px;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  outline: none;
+
+  font-size: 10px;
+}
+
+.purchases-toolbar input:focus {
+  border-color: #0067b8;
+}
+
+.purchase-count {
+  color: #605e5c;
+
+  font-size: 10px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.purchase-table {
+  overflow-x: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+
+  background: white;
+}
+
+.purchase-table-header,
+.purchase-table-row {
+  min-width: 950px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    1.4fr
+    1fr
+    0.6fr
+    0.9fr
+    0.8fr
+    0.8fr
+    1.8fr;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding: 10px 14px;
+}
+
+.purchase-table-header {
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #605e5c;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.purchase-table-row {
+  min-height: 48px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  color: #323130;
+
+  font-size: 10px;
+}
+
+.purchase-table-row:last-child {
+  border-bottom: none;
+}
+
+.purchase-table-row:hover {
+  background: #fafafa;
+}
+
+
+/* =========================================
+   PURCHASE
+========================================= */
+
+.purchase-number {
+  display: block;
+
+  color: #242424;
+
+  font-size: 10px;
+}
+
+.purchase-reference {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #777;
+
+  font-size: 8px;
+}
+
+.purchase-total {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.purchase-status,
+.payment-status {
+  display: inline-block;
+
+  padding: 4px 7px;
+
+  border-radius: 10px;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  text-transform: capitalize;
+}
+
+.purchase-status.pending {
+  background: #fff4ce;
+  color: #8a6d00;
+}
+
+.purchase-status.received {
+  background: #dff6dd;
+  color: #107c10;
+}
+
+.purchase-status.cancelled {
+  background: #fde7e9;
+  color: #a4262c;
+}
+
+.payment-status.unpaid {
+  background: #fde7e9;
+  color: #a4262c;
+}
+
+.payment-status.partial {
+  background: #fff4ce;
+  color: #8a6d00;
+}
+
+.payment-status.paid {
+  background: #dff6dd;
+  color: #107c10;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.purchase-actions {
+  display: flex;
+
+  gap: 5px;
+}
+
+.purchase-actions button {
+  padding: 5px 8px;
+
+  border-radius: 3px;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.purchase-view-btn {
+  background: white;
+
+  border: 1px solid #c8c6c4;
+
+  color: #323130;
+}
+
+.purchase-receive-btn {
+  background: #107c10;
+
+  border: 1px solid #107c10;
+
+  color: white;
+}
+
+.purchase-cancel-btn {
+  background: white;
+
+  border: 1px solid #d13438;
+
+  color: #a4262c;
+}
+
+.purchase-actions button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.purchase-message {
+  padding: 50px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .purchases-page {
+    padding: 15px;
+  }
+
+  .purchases-header {
+    align-items: flex-start;
+
+    gap: 15px;
+
+    flex-direction: column;
+  }
+
+  .purchases-toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .purchases-toolbar input {
+    width: 100%;
+  }
+}

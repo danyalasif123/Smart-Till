@@ -52,13 +52,15 @@ function Navbar() {
         <NavLink to="/admin/pos">
           POS
         </NavLink>
+        
+        <NavLink to="/admin/purchases">
+        Purchases
+        </NavLink>
 
 
         {/* SALES HISTORY */}
 
-        <NavLink to="/admin/sales">
-          Sales History
-        </NavLink>
+     
 
 
         {/* PRODUCTS */}
@@ -124,11 +126,7 @@ function Navbar() {
 
       <div className="user-section">
 
-        {user?.name && (
-          <span className="navbar-user-name">
-            {user.name}
-          </span>
-        )}
+        
 
         <button
           type="button"

@@ -1,0 +1,302 @@
+/* =========================================
+   SMARTTILL AUTH PAGES
+========================================= */
+
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f5f9fd 0%,
+      #eef5fb 50%,
+      #f8fafc 100%
+    );
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================
+   AUTH CARD
+========================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================
+   SMARTTILL TITLE
+========================================= */
+
+.auth-card h1 {
+  margin: 0;
+
+  color: #0067b8;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  text-align: center;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* =========================================
+   PAGE TITLE
+========================================= */
+
+.auth-card h2 {
+  margin: 8px 0 26px;
+
+  color: #242424;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.auth-card input {
+  width: 100%;
+  height: 42px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 4px;
+
+  color: #242424;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.auth-card input::placeholder {
+  color: #8a8886;
+}
+
+
+.auth-card input:hover {
+  border-color: #8a8886;
+}
+
+
+.auth-card input:focus {
+  border-color: #0067b8;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(0, 103, 184, 0.12);
+}
+
+
+/* =========================================
+   FORM DIVIDER
+========================================= */
+
+.auth-card hr {
+  width: 100%;
+
+  margin: 6px 0;
+
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+
+/* =========================================
+   PRIMARY BUTTON
+========================================= */
+
+.auth-card form button {
+  width: 100%;
+  height: 42px;
+
+  margin-top: 5px;
+
+  background: #0067b8;
+
+  border: 1px solid #0067b8;
+  border-radius: 4px;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+
+.auth-card form button:hover {
+  background: #005a9e;
+
+  border-color: #005a9e;
+}
+
+
+.auth-card form button:active {
+  transform: translateY(1px);
+}
+
+
+.auth-card form button:disabled {
+  background: #a6a6a6;
+
+  border-color: #a6a6a6;
+
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+
+/* =========================================
+   BOTTOM TEXT
+========================================= */
+
+.auth-card > p {
+  margin: 22px 0 0;
+
+  color: #605e5c;
+
+  font-size: 12px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   LINKS
+========================================= */
+
+.auth-card > p a {
+  color: #0067b8;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+
+.auth-card > p a:hover {
+  color: #005a9e;
+
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   REGISTER PAGE
+========================================= */
+
+/*
+  Register contains more fields than Login,
+  so allow the card to be slightly wider.
+*/
+
+.register-auth-card {
+  max-width: 520px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .auth-container {
+    align-items: flex-start;
+
+    padding: 20px 14px;
+  }
+
+  .auth-card {
+    margin-top: 20px;
+
+    padding: 24px 18px;
+  }
+
+  .auth-card h1 {
+    font-size: 25px;
+  }
+
+  .auth-card h2 {
+    margin-bottom: 22px;
+
+    font-size: 17px;
+  }
+
+  .auth-card input {
+    height: 44px;
+  }
+
+  .auth-card form button {
+    height: 44px;
+  }
+}

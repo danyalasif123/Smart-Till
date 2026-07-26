@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerBusiness } from "../../services/businessService";
-
+import "./Auth.css";
 function RegisterBusiness() {
   const navigate = useNavigate();
 

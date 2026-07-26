@@ -78,3 +78,21 @@ export const cancelPurchase = async (
 
   return response.data;
 };
+// ==========================================
+// RECORD PURCHASE PAYMENT
+// PATCH /api/purchases/:id/payment
+// ==========================================
+
+export const recordPurchasePayment = async (
+  id,
+  amount
+) => {
+  const response = await api.patch(
+    `/purchases/${id}/payment`,
+    {
+      amount,
+    }
+  );
+
+  return response.data;
+};

@@ -14,6 +14,8 @@ import PurchaseModal
   from "../../components/Purchases/PurchaseModal";
   import PurchaseDetailsModal
   from "../../components/Purchases/PurchaseDetailsModal";
+  import PurchasePaymentModal
+  from "../../components/Purchases/PurchasePaymentModal";
 
 const Purchases = () => {
   // ==========================================
@@ -48,7 +50,15 @@ const [
   // ==========================================
   // FETCH PURCHASES
   // ==========================================
+const [
+  paymentModalOpen,
+  setPaymentModalOpen,
+] = useState(false);
 
+const [
+  paymentPurchase,
+  setPaymentPurchase,
+] = useState(null);
   const fetchPurchases = async () => {
     try {
       setLoading(true);
@@ -285,6 +295,15 @@ const handleView = (
 
   setDetailsModalOpen(true);
 };
+const handlePayment = (
+  purchase
+) => {
+  setPaymentPurchase(
+    purchase
+  );
+
+  setPaymentModalOpen(true);
+};
 
   // ==========================================
   // RENDER
@@ -501,7 +520,20 @@ const handleView = (
                     {/* ACTIONS */}
 
                     <div className="purchase-actions">
-
+{purchase.status !== "cancelled" &&
+  purchase.paymentStatus !== "paid" && (
+    <button
+      type="button"
+      className="purchase-payment-btn"
+      onClick={() =>
+        handlePayment(
+          purchase
+        )
+      }
+    >
+      Pay
+    </button>
+)}
                      <button
   type="button"
   className="purchase-view-btn"
@@ -577,6 +609,19 @@ const handleView = (
 
     setSelectedPurchaseId(null);
   }}
+/>
+<PurchasePaymentModal
+  isOpen={paymentModalOpen}
+  purchase={
+    paymentPurchase
+  }
+  onClose={() => {
+    setPaymentModalOpen(false);
+    setPaymentPurchase(null);
+  }}
+  onSuccess={
+    fetchPurchases
+  }
 />
     </div>
   );

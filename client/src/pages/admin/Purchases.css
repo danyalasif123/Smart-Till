@@ -331,3 +331,10 @@
     width: 100%;
   }
 }
+.purchase-payment-btn {
+  background: #0067b8;
+
+  border: 1px solid #0067b8 !important;
+
+  color: white;
+}

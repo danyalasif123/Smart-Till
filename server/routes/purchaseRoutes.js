@@ -1,11 +1,11 @@
 import express from "express";
-
 import {
   createPurchase,
   getPurchases,
   getPurchaseById,
   receivePurchase,
   cancelPurchase,
+  recordPurchasePayment,
 } from "../controllers/purchaseController.js";
 
 import verifyToken from "../middleware/verifyToken.js";
@@ -77,6 +77,17 @@ router.get(
   "/:id",
   verifyToken,
   getPurchaseById
+);
+// ==========================================
+// RECORD PURCHASE PAYMENT
+// PATCH /api/purchases/:id/payment
+// ==========================================
+
+router.patch(
+  "/:id/payment",
+  verifyToken,
+  isAdmin,
+  recordPurchasePayment
 );
 
 

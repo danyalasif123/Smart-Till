@@ -860,3 +860,207 @@ export const cancelPurchase = async (
     });
   }
 };
+// ==========================================
+// RECORD PURCHASE PAYMENT
+//
+// PATCH /api/purchases/:id/payment
+//
+// Examples:
+//
+// Total:      500
+// AmountPaid: 0
+//
+// Payment: 200
+// AmountPaid becomes 200
+// Status becomes "partial"
+//
+// Payment: 300
+// AmountPaid becomes 500
+// Status becomes "paid"
+// ==========================================
+
+export const recordPurchasePayment = async (
+  req,
+  res
+) => {
+  try {
+    const { amount } = req.body;
+
+
+    // ======================================
+    // VALIDATE AMOUNT
+    // ======================================
+
+    const paymentAmount =
+      Number(amount);
+
+    if (
+      Number.isNaN(paymentAmount) ||
+      paymentAmount <= 0
+    ) {
+      return res.status(400).json({
+        message:
+          "Payment amount must be greater than 0",
+      });
+    }
+
+
+    // ======================================
+    // FIND PURCHASE
+    // ======================================
+
+    const purchase =
+      await Purchase.findOne({
+        _id: req.params.id,
+
+        businessId:
+          req.user.businessId,
+      });
+
+
+    if (!purchase) {
+      return res.status(404).json({
+        message:
+          "Purchase not found",
+      });
+    }
+
+
+    // ======================================
+    // CANCELLED PURCHASE
+    // ======================================
+
+    if (
+      purchase.status ===
+      "cancelled"
+    ) {
+      return res.status(400).json({
+        message:
+          "Cannot record payment for a cancelled purchase",
+      });
+    }
+
+
+    // ======================================
+    // CURRENT VALUES
+    // ======================================
+
+    const total =
+      Number(purchase.total || 0);
+
+    const currentPaid =
+      Number(
+        purchase.amountPaid || 0
+      );
+
+    const outstandingBalance =
+      total - currentPaid;
+
+
+    // ======================================
+    // ALREADY PAID
+    // ======================================
+
+    if (
+      outstandingBalance <= 0
+    ) {
+      return res.status(400).json({
+        message:
+          "Purchase has already been fully paid",
+      });
+    }
+
+
+    // ======================================
+    // PREVENT OVERPAYMENT
+    // ======================================
+
+    if (
+      paymentAmount >
+      outstandingBalance
+    ) {
+      return res.status(400).json({
+        message:
+          `Payment cannot exceed outstanding balance of $${outstandingBalance.toFixed(
+            2
+          )}`,
+      });
+    }
+
+
+    // ======================================
+    // UPDATE AMOUNT PAID
+    // ======================================
+
+    purchase.amountPaid =
+      currentPaid +
+      paymentAmount;
+
+
+    // ======================================
+    // DETERMINE PAYMENT STATUS
+    // ======================================
+
+    if (
+      purchase.amountPaid >=
+      total
+    ) {
+      purchase.paymentStatus =
+        "paid";
+    } else if (
+      purchase.amountPaid > 0
+    ) {
+      purchase.paymentStatus =
+        "partial";
+    } else {
+      purchase.paymentStatus =
+        "unpaid";
+    }
+
+
+    // ======================================
+    // SAVE
+    // ======================================
+
+    await purchase.save();
+
+
+    // ======================================
+    // RESPONSE
+    // ======================================
+
+    res.status(200).json({
+      message:
+        "Purchase payment recorded successfully",
+
+      payment: {
+        paymentAmount,
+
+        total,
+
+        amountPaid:
+          purchase.amountPaid,
+
+        balance:
+          total -
+          purchase.amountPaid,
+
+        paymentStatus:
+          purchase.paymentStatus,
+      },
+
+      purchase,
+    });
+
+  } catch (error) {
+    console.error(
+      "Purchase Payment Error:",
+      error
+    );
+
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};

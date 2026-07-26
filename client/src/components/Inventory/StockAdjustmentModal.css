@@ -1,0 +1,328 @@
+/* =========================================
+   OVERLAY
+========================================= */
+
+.stock-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.stock-modal {
+  width: 100%;
+  max-width: 520px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 16px 40px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.stock-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.stock-modal-header h2 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.stock-modal-header p {
+  margin: 4px 0 0;
+
+  color: #605e5c;
+
+  font-size: 11px;
+}
+
+.stock-modal-close {
+  width: 30px;
+  height: 30px;
+
+  background: transparent;
+
+  border: none;
+  border-radius: 3px;
+
+  color: #605e5c;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.stock-modal-close:hover {
+  background: #f3f3f3;
+}
+
+
+/* =========================================
+   PRODUCT INFORMATION
+========================================= */
+
+.stock-product-info {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr 1fr 1fr;
+
+  gap: 10px;
+
+  margin: 18px 20px 0;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.stock-product-info div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.stock-product-info span {
+  color: #777777;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.stock-product-info strong {
+  color: #242424;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.stock-adjustment-form {
+  padding: 20px;
+}
+
+.stock-form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-bottom: 15px;
+}
+
+.stock-form-group label {
+  color: #323130;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.stock-form-group input,
+.stock-form-group select,
+.stock-form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 9px 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  color: #242424;
+
+  font-family: inherit;
+  font-size: 11px;
+
+  outline: none;
+}
+
+.stock-form-group input,
+.stock-form-group select {
+  height: 38px;
+}
+
+.stock-form-group textarea {
+  resize: vertical;
+}
+
+.stock-form-group input:focus,
+.stock-form-group select:focus,
+.stock-form-group textarea:focus {
+  border-color: #0067b8;
+
+  box-shadow:
+    0 0 0 1px #0067b8;
+}
+
+
+/* =========================================
+   STOCK PREVIEW
+========================================= */
+
+.stock-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+
+  padding: 11px 12px;
+
+  background: #f0f7fc;
+
+  border: 1px solid #c7e0f4;
+  border-radius: 4px;
+}
+
+.stock-preview span {
+  color: #605e5c;
+
+  font-size: 10px;
+}
+
+.stock-preview strong {
+  color: #0067b8;
+
+  font-size: 12px;
+}
+
+.stock-preview.invalid {
+  background: #fde7e9;
+
+  border-color: #f1b4b7;
+}
+
+.stock-preview.invalid strong {
+  color: #a4262c;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.stock-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 22px;
+}
+
+.stock-modal-actions button {
+  min-width: 90px;
+  height: 36px;
+
+  padding: 0 14px;
+
+  border-radius: 3px;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.stock-cancel-btn {
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+
+  color: #323130;
+}
+
+.stock-cancel-btn:hover {
+  background: #f5f5f5;
+}
+
+.stock-save-btn {
+  background: #0067b8;
+
+  border: 1px solid #0067b8;
+
+  color: #ffffff;
+}
+
+.stock-save-btn:hover {
+  background: #005a9e;
+}
+
+.stock-modal-actions button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .stock-modal-overlay {
+    align-items: flex-start;
+
+    padding: 12px;
+  }
+
+  .stock-product-info {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .stock-modal-actions button {
+    width: 100%;
+  }
+}

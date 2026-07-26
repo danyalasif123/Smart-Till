@@ -3,6 +3,7 @@ import crypto from "crypto";
 import Sale from "../models/Sale.js";
 import Product from "../models/Product.js";
 import Customer from "../models/Customer.js";
+import StockTransaction from "../models/StockTransaction.js";
 
 
 // ==========================================
@@ -113,7 +114,8 @@ export const createSale = async (req, res) => {
     // VALIDATE TAX
     // ======================================
 
-    const cleanTax = Number(tax);
+    const cleanTax =
+      Number(tax);
 
     if (
       Number.isNaN(cleanTax) ||
@@ -130,7 +132,7 @@ export const createSale = async (req, res) => {
     // VALIDATE CUSTOMER
     //
     // customerId is optional.
-    // null means anonymous walk-in.
+    // null = anonymous walk-in customer.
     // ======================================
 
     let customer = null;
@@ -185,7 +187,7 @@ export const createSale = async (req, res) => {
 
 
     // ======================================
-    // PREPARE SALE ITEMS
+    // PREPARE SALE DATA
     // ======================================
 
     const saleItems = [];
@@ -233,9 +235,6 @@ export const createSale = async (req, res) => {
 
       // ====================================
       // GET PRODUCT
-      //
-      // IMPORTANT:
-      // Product must belong to same business.
       // ====================================
 
       const product =
@@ -257,14 +256,13 @@ export const createSale = async (req, res) => {
 
 
       // ====================================
-      // GET SELLING PRICE
-      //
-      // Price comes from database.
-      // Never trust frontend price.
+      // SELLING PRICE
       // ====================================
 
       const sellingPrice =
-        Number(product.sellingPrice);
+        Number(
+          product.sellingPrice
+        );
 
       if (
         Number.isNaN(sellingPrice) ||
@@ -282,7 +280,9 @@ export const createSale = async (req, res) => {
       // ====================================
 
       const currentStock =
-        Number(product.stockQuantity);
+        Number(
+          product.stockQuantity
+        );
 
       if (
         Number.isNaN(currentStock) ||
@@ -296,7 +296,7 @@ export const createSale = async (req, res) => {
 
 
       // ====================================
-      // CHECK STOCK
+      // CHECK AVAILABLE STOCK
       // ====================================
 
       if (currentStock < quantity) {
@@ -308,26 +308,21 @@ export const createSale = async (req, res) => {
 
 
       // ====================================
-      // CALCULATE ITEM SUBTOTAL
+      // ITEM SUBTOTAL
       // ====================================
 
       const itemSubtotal =
         sellingPrice * quantity;
 
-
-      // ====================================
-      // ADD TO SALE SUBTOTAL
-      // ====================================
-
-      subtotal += itemSubtotal;
+      subtotal +=
+        itemSubtotal;
 
 
       // ====================================
       // PRODUCT SNAPSHOT
       //
-      // Important:
-      // If product name/price changes later,
-      // old receipts remain unchanged.
+      // Keeps old receipts correct even
+      // if product information changes.
       // ====================================
 
       saleItems.push({
@@ -358,19 +353,29 @@ export const createSale = async (req, res) => {
 
       // ====================================
       // PREPARE STOCK UPDATE
+      //
+      // We save stockBefore here so that
+      // inventory history can show:
+      //
+      // 20 -> sold 3 -> 17
       // ====================================
 
       stockUpdates.push({
         product,
         quantity,
+
+        stockBefore:
+          currentStock,
+
+        stockAfter:
+          currentStock -
+          quantity,
       });
     }
 
 
     // ======================================
     // CALCULATE FINAL TOTAL
-    //
-    // subtotal - discount + tax
     // ======================================
 
     const total =
@@ -425,8 +430,8 @@ export const createSale = async (req, res) => {
             ? customer._id
             : null,
 
-        // POS has cashier.
-        // Online sale doesn't require one.
+        // POS sale has cashier.
+        // Online sale does not require one.
         cashierId:
           source === "pos"
             ? req.user.id
@@ -469,31 +474,80 @@ export const createSale = async (req, res) => {
 
     // ======================================
     // REDUCE PRODUCT STOCK
+    //
+    // AND
+    //
+    // CREATE STOCK TRANSACTION
     // ======================================
 
     for (const stockItem of stockUpdates) {
+
       const {
         product,
         quantity,
+        stockBefore,
+        stockAfter,
       } = stockItem;
 
-      product.stockQuantity -=
-        quantity;
+
+      // ====================================
+      // UPDATE PRODUCT STOCK
+      // ====================================
+
+      product.stockQuantity =
+        stockAfter;
 
       await product.save();
+
+
+      // ====================================
+      // CREATE INVENTORY HISTORY
+      // ====================================
+
+      await StockTransaction.create({
+        businessId:
+          req.user.businessId,
+
+        productId:
+          product._id,
+
+        type:
+          "sale",
+
+        // Negative because stock
+        // leaves inventory.
+        quantity:
+          -quantity,
+
+        stockBefore,
+
+        stockAfter,
+
+        // Human-readable reference
+        reference:
+          sale.saleNumber,
+
+        // Actual Sale MongoDB ID
+        referenceId:
+          sale._id,
+
+        notes:
+          `Stock reduced by sale ${sale.saleNumber}`,
+
+        createdBy:
+          req.user.id,
+      });
     }
 
 
     // ======================================
     // UPDATE CUSTOMER STATISTICS
-    //
-    // Only runs if this sale has
-    // an identified customer.
     // ======================================
 
     if (customer) {
 
-      customer.totalOrders += 1;
+      customer.totalOrders +=
+        1;
 
       customer.totalSpent +=
         total;
@@ -540,6 +594,7 @@ export const createSale = async (req, res) => {
     });
 
   } catch (error) {
+
     console.error(
       "Create Sale Error:",
       error
@@ -591,6 +646,7 @@ export const getSales = async (
     });
 
   } catch (error) {
+
     console.error(
       "Get Sales Error:",
       error
@@ -659,6 +715,7 @@ export const getSaleById = async (
     });
 
   } catch (error) {
+
     console.error(
       "Get Sale Error:",
       error
@@ -676,9 +733,6 @@ export const getSaleById = async (
 // GET CUSTOMER SALES
 //
 // GET /api/sales/customer/:customerId
-//
-// Used by Admin Customer Details page
-// to show everything a customer purchased.
 // ==========================================
 
 export const getCustomerSales = async (
@@ -780,6 +834,7 @@ export const getCustomerSales = async (
     });
 
   } catch (error) {
+
     console.error(
       "Get Customer Sales Error:",
       error

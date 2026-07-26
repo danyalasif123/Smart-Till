@@ -10,8 +10,10 @@ import {
   getProfitReport,
   getPurchaseReport,
   getInventoryReport,
+  getLowStockReport,
+  getCustomerReport,
+  getProductReport,
 } from "../../services/reportService";
-
 const Reports = () => {
 
   // ==========================================
@@ -185,31 +187,48 @@ const Reports = () => {
       let response;
 
 
-     if (type === "sales") {
-  response = await getSalesReport(
-    params
-  );
+if (type === "sales") {
+  response =
+    await getSalesReport(params);
 }
 
 else if (type === "profit") {
-  response = await getProfitReport(
-    params
-  );
+  response =
+    await getProfitReport(params);
 }
 
 else if (type === "purchases") {
-  response = await getPurchaseReport(
-    params
-  );
+  response =
+    await getPurchaseReport(params);
 }
 
 else if (type === "inventory") {
-
   response =
     await getInventoryReport();
-
 }
 
+else if (type === "low-stock") {
+  response =
+    await getLowStockReport();
+}
+else if (
+  type === "customers"
+) {
+  response =
+    await getCustomerReport(
+      params
+    );
+}
+else if (
+  type === "products"
+) {
+
+  response =
+    await getProductReport(
+      params
+    );
+
+}
 
       setReport(response);
 
@@ -447,20 +466,52 @@ else if (type === "inventory") {
 </button>
 
 
-        <button
-          type="button"
-          disabled
-        >
-          Low Stock
-        </button>
+       <button
+  type="button"
+  className={
+    reportType === "low-stock"
+      ? "active"
+      : ""
+  }
+  onClick={() =>
+    handleReportChange(
+      "low-stock"
+    )
+  }
+>
+  Low Stock
+</button>
 
-
-        <button
-          type="button"
-          disabled
-        >
-          Customers
-        </button>
+     <button
+  type="button"
+  className={
+    reportType === "customers"
+      ? "active"
+      : ""
+  }
+  onClick={() =>
+    handleReportChange(
+      "customers"
+    )
+  }
+>
+  Customers
+</button>
+<button
+  type="button"
+  className={
+    reportType === "products"
+      ? "active"
+      : ""
+  }
+  onClick={() =>
+    handleReportChange(
+      "products"
+    )
+  }
+>
+  Products
+</button>
 
       </div>
 
@@ -2298,6 +2349,910 @@ else if (type === "inventory") {
 
           <div className="report-table-empty">
             No inventory found.
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+
+  </>
+
+)}
+{/* =====================================
+    LOW STOCK REPORT
+===================================== */}
+
+{!loading &&
+  report &&
+  reportType === "low-stock" && (
+
+  <>
+
+    {/* SUMMARY */}
+
+    <div className="report-summary-grid">
+
+      <div className="report-summary-card">
+
+        <span>
+          Need Attention
+        </span>
+
+        <strong>
+          {summary
+            .productsNeedingAttention ||
+            0}
+        </strong>
+
+        <small>
+          Products requiring restock
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>
+          Low Stock
+        </span>
+
+        <strong>
+          {summary
+            .lowStockProducts ||
+            0}
+        </strong>
+
+        <small>
+          Below stock threshold
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>
+          Out of Stock
+        </span>
+
+        <strong>
+          {summary
+            .outOfStockProducts ||
+            0}
+        </strong>
+
+        <small>
+          Products with zero stock
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>
+          Reorder Cost
+        </span>
+
+        <strong>
+          {formatCurrency(
+            summary
+              .estimatedReorderCost
+          )}
+        </strong>
+
+        <small>
+          Estimated restocking cost
+        </small>
+
+      </div>
+
+    </div>
+
+
+    {/* REORDER UNITS */}
+
+    <div className="report-financial-summary">
+
+      <div>
+
+        <span>
+          Suggested Reorder Units
+        </span>
+
+        <strong>
+          {summary
+            .suggestedReorderUnits ||
+            0}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Products Affected
+        </span>
+
+        <strong>
+          {summary
+            .productsNeedingAttention ||
+            0}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Estimated Cost
+        </span>
+
+        <strong>
+          {formatCurrency(
+            summary
+              .estimatedReorderCost
+          )}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    {/* =================================
+        PRODUCTS
+    ================================= */}
+
+    <div className="report-section">
+
+      <div className="report-section-header">
+
+        <h2>
+          Products Requiring Restock
+        </h2>
+
+        <span>
+          Products at or below their
+          low-stock threshold
+        </span>
+
+      </div>
+
+
+      <div className="low-stock-report-wrapper">
+
+        <div className="low-stock-report-header">
+
+          <div>Product</div>
+
+          <div>Category</div>
+
+          <div>Current</div>
+
+          <div>Low Level</div>
+
+          <div>Reorder</div>
+
+          <div>Unit Cost</div>
+
+          <div>Reorder Cost</div>
+
+          <div>Status</div>
+
+        </div>
+
+
+        {report.products
+          ?.length > 0 ? (
+
+          report.products.map(
+            (product) => (
+
+              <div
+                className="low-stock-report-row"
+                key={
+                  product.productId
+                }
+              >
+
+                {/* PRODUCT */}
+
+                <div>
+
+                  <strong>
+                    {product.name}
+                  </strong>
+
+                  <span className="inventory-product-sku">
+                    {product.sku ||
+                      "-"}
+                  </span>
+
+                </div>
+
+
+                {/* CATEGORY */}
+
+                <div>
+                  {product.category}
+                </div>
+
+
+                {/* CURRENT */}
+
+                <div>
+
+                  <strong>
+                    {product
+                      .stockQuantity}
+                  </strong>
+
+                  {" "}
+
+                  {product.unit}
+
+                </div>
+
+
+                {/* LOW LEVEL */}
+
+                <div>
+                  {product
+                    .lowStockLevel}
+                </div>
+
+
+                {/* REORDER */}
+
+                <div className="reorder-quantity">
+
+                  {product
+                    .suggestedReorder}
+
+                </div>
+
+
+                {/* COST */}
+
+                <div>
+
+                  {formatCurrency(
+                    product.costPrice
+                  )}
+
+                </div>
+
+
+                {/* REORDER COST */}
+
+                <div>
+
+                  {formatCurrency(
+                    product
+                      .estimatedReorderCost
+                  )}
+
+                </div>
+
+
+                {/* STATUS */}
+
+                <div>
+
+                  <span
+                    className={`inventory-status ${product.stockStatus}`}
+                  >
+
+                    {formatText(
+                      product.stockStatus
+                    )}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            )
+          )
+
+        ) : (
+
+          <div className="low-stock-empty">
+
+            <strong>
+              Stock levels look good
+            </strong>
+
+            <span>
+              No products are currently
+              at or below their low-stock
+              level.
+            </span>
+
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+
+  </>
+
+)}
+{/* =====================================
+    CUSTOMER REPORT
+===================================== */}
+
+{!loading &&
+  report &&
+  reportType === "customers" && (
+
+  <>
+
+    <div className="report-summary-grid">
+
+      <div className="report-summary-card">
+        <span>Customers</span>
+
+        <strong>
+          {summary
+            .customersWhoPurchased || 0}
+        </strong>
+
+        <small>
+          Purchased during this period
+        </small>
+      </div>
+
+
+      <div className="report-summary-card">
+        <span>New Customers</span>
+
+        <strong>
+          {summary.newCustomers || 0}
+        </strong>
+
+        <small>
+          Registered during this period
+        </small>
+      </div>
+
+
+      <div className="report-summary-card">
+        <span>Repeat Customers</span>
+
+        <strong>
+          {summary.repeatCustomers || 0}
+        </strong>
+
+        <small>
+          Made 2 or more purchases
+        </small>
+      </div>
+
+
+      <div className="report-summary-card">
+        <span>Customer Revenue</span>
+
+        <strong>
+          {formatCurrency(
+            summary.identifiedRevenue
+          )}
+        </strong>
+
+        <small>
+          Revenue from identified customers
+        </small>
+      </div>
+
+    </div>
+
+
+    <div className="report-financial-summary">
+
+      <div>
+        <span>
+          Registered Customers
+        </span>
+
+        <strong>
+          {summary
+            .totalRegisteredCustomers || 0}
+        </strong>
+      </div>
+
+
+      <div>
+        <span>
+          Customer Orders
+        </span>
+
+        <strong>
+          {summary.identifiedSales || 0}
+        </strong>
+      </div>
+
+
+      <div>
+        <span>
+          Avg Customer Spend
+        </span>
+
+        <strong>
+          {formatCurrency(
+            summary.averageCustomerSpend
+          )}
+        </strong>
+      </div>
+
+    </div>
+
+
+    {/* TOP CUSTOMERS */}
+
+    <div className="report-section">
+
+      <div className="report-section-header">
+
+        <h2>
+          Top Customers
+        </h2>
+
+        <span>
+          Ranked by spending during
+          the selected period
+        </span>
+
+      </div>
+
+
+      <div className="customer-report-wrapper">
+
+        <div className="customer-report-header">
+
+          <div>Customer</div>
+          <div>Customer ID</div>
+          <div>Orders</div>
+          <div>Total Spent</div>
+          <div>Avg Order</div>
+          <div>Last Purchase</div>
+
+        </div>
+
+
+        {report.topCustomers
+          ?.length > 0 ? (
+
+          report.topCustomers.map(
+            (customer) => (
+
+              <div
+                className="customer-report-row"
+                key={
+                  customer.customerId
+                }
+              >
+
+                <div>
+                  <strong>
+                    {customer.name}
+                  </strong>
+
+                  <span className="customer-report-email">
+                    {customer.email ||
+                      customer.phone ||
+                      "-"}
+                  </span>
+                </div>
+
+
+                <div className="customer-report-number">
+                  {customer.customerNumber}
+                </div>
+
+
+                <div>
+                  {customer.orders}
+                </div>
+
+
+                <div>
+                  {formatCurrency(
+                    customer.spent
+                  )}
+                </div>
+
+
+                <div>
+                  {formatCurrency(
+                    customer.averageOrderValue
+                  )}
+                </div>
+
+
+                <div>
+                  {formatDate(
+                    customer.lastPurchaseAt
+                  )}
+                </div>
+
+              </div>
+
+            )
+          )
+
+        ) : (
+
+          <div className="report-table-empty">
+            No customer purchases found
+            for this period.
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+
+  </>
+
+)}
+{/* =====================================
+    PRODUCT PERFORMANCE REPORT
+===================================== */}
+
+{!loading &&
+  report &&
+  reportType === "products" && (
+
+  <>
+
+    {/* SUMMARY */}
+
+    <div className="report-summary-grid">
+
+      <div className="report-summary-card">
+
+        <span>Products Sold</span>
+
+        <strong>
+          {summary.productsSold || 0}
+        </strong>
+
+        <small>
+          Unique products sold
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>Units Sold</span>
+
+        <strong>
+          {summary.totalUnitsSold || 0}
+        </strong>
+
+        <small>
+          Total quantity sold
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>Revenue</span>
+
+        <strong>
+          {formatCurrency(
+            summary.totalRevenue
+          )}
+        </strong>
+
+        <small>
+          Product sales revenue
+        </small>
+
+      </div>
+
+
+      <div className="report-summary-card">
+
+        <span>Estimated Profit</span>
+
+        <strong>
+          {formatCurrency(
+            summary.estimatedProfit
+          )}
+        </strong>
+
+        <small>
+          Revenue minus estimated cost
+        </small>
+
+      </div>
+
+    </div>
+
+
+    {/* SECONDARY SUMMARY */}
+
+    <div className="report-financial-summary">
+
+      <div>
+
+        <span>
+          Estimated Cost
+        </span>
+
+        <strong>
+          {formatCurrency(
+            summary.estimatedCost
+          )}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Avg Revenue / Unit
+        </span>
+
+        <strong>
+          {formatCurrency(
+            summary.averageRevenuePerUnit
+          )}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Products With No Sales
+        </span>
+
+        <strong>
+          {summary.productsWithNoSales ||
+            0}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    {/* =================================
+        PRODUCT PERFORMANCE TABLE
+    ================================= */}
+
+    <div className="report-section">
+
+      <div className="report-section-header">
+
+        <h2>
+          Product Performance
+        </h2>
+
+        <span>
+          Sales performance for the
+          selected period
+        </span>
+
+      </div>
+
+
+      <div className="product-report-wrapper">
+
+        <div className="product-report-header">
+
+          <div>Product</div>
+
+          <div>Category</div>
+
+          <div>Units</div>
+
+          <div>Orders</div>
+
+          <div>Revenue</div>
+
+          <div>Cost</div>
+
+          <div>Profit</div>
+
+          <div>Stock</div>
+
+        </div>
+
+
+        {report
+          .productPerformance
+          ?.length > 0 ? (
+
+          report.productPerformance.map(
+            (product) => (
+
+              <div
+                className="product-report-row"
+                key={
+                  product.productId
+                }
+              >
+
+                <div>
+
+                  <strong>
+                    {product.name}
+                  </strong>
+
+                  <span className="product-report-sku">
+                    {product.sku ||
+                      "-"}
+                  </span>
+
+                </div>
+
+
+                <div>
+                  {product.category}
+                </div>
+
+
+                <div>
+                  {product.quantitySold}
+                </div>
+
+
+                <div>
+                  {product.orders}
+                </div>
+
+
+                <div>
+                  {formatCurrency(
+                    product.revenue
+                  )}
+                </div>
+
+
+                <div>
+                  {formatCurrency(
+                    product.estimatedCost
+                  )}
+                </div>
+
+
+                <div className={
+                  product.estimatedProfit >= 0
+                    ? "product-profit-positive"
+                    : "product-profit-negative"
+                }>
+
+                  {formatCurrency(
+                    product.estimatedProfit
+                  )}
+
+                </div>
+
+
+                <div>
+                  {product.stockQuantity}
+                </div>
+
+              </div>
+
+            )
+          )
+
+        ) : (
+
+          <div className="report-table-empty">
+            No product sales found for
+            this period.
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+
+
+    {/* =================================
+        PRODUCTS WITH NO SALES
+    ================================= */}
+
+    <div className="report-section">
+
+      <div className="report-section-header">
+
+        <h2>
+          Products With No Sales
+        </h2>
+
+        <span>
+          Products that did not sell
+          during this period
+        </span>
+
+      </div>
+
+
+      <div className="no-sales-products">
+
+        {report
+          .productsWithNoSales
+          ?.length > 0 ? (
+
+          report.productsWithNoSales.map(
+            (product) => (
+
+              <div
+                className="no-sales-product"
+                key={
+                  product.productId
+                }
+              >
+
+                <div>
+
+                  <strong>
+                    {product.name}
+                  </strong>
+
+                  <span>
+                    {product.sku || "-"}
+                  </span>
+
+                </div>
+
+
+                <div>
+
+                  <span>Stock</span>
+
+                  <strong>
+                    {product.stockQuantity}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>Price</span>
+
+                  <strong>
+                    {formatCurrency(
+                      product.sellingPrice
+                    )}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            )
+          )
+
+        ) : (
+
+          <div className="report-empty">
+            Every active product has sales
+            during this period.
           </div>
 
         )}

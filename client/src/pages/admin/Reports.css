@@ -1448,3 +1448,1192 @@
   }
 
 }
+/* =========================================
+   LOW STOCK REPORT
+========================================= */
+
+.low-stock-report-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   TABLE GRID
+========================================= */
+
+.low-stock-report-header,
+.low-stock-report-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.7fr)
+    minmax(120px, 1fr)
+    minmax(90px, 0.8fr)
+    minmax(90px, 0.8fr)
+    minmax(90px, 0.8fr)
+    minmax(100px, 0.9fr)
+    minmax(120px, 1fr)
+    minmax(110px, 1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 1000px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.low-stock-report-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.low-stock-report-row {
+  color: #323130;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition: background 0.15s ease;
+}
+
+.low-stock-report-row:last-child {
+  border-bottom: none;
+}
+
+.low-stock-report-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   PRODUCT
+========================================= */
+
+.low-stock-report-row strong {
+  color: #323130;
+
+  font-weight: 600;
+}
+
+.low-stock-report-row
+.inventory-product-sku {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8a8886;
+
+  font-size: 11px;
+
+  font-weight: 400;
+}
+
+
+/* =========================================
+   CURRENT STOCK
+========================================= */
+
+.low-stock-report-row
+> div:nth-child(3) strong {
+  font-size: 14px;
+}
+
+
+/* =========================================
+   REORDER QUANTITY
+========================================= */
+
+.reorder-quantity {
+  display: inline-flex;
+
+  align-items: center;
+
+  font-weight: 700;
+
+  color: #0078d4;
+}
+
+
+/* =========================================
+   MONEY COLUMNS
+========================================= */
+
+.low-stock-report-row
+> div:nth-child(6),
+.low-stock-report-row
+> div:nth-child(7) {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================
+   STOCK STATUS
+========================================= */
+
+.low-stock-report-row
+.inventory-status {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 80px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* LOW STOCK */
+
+.low-stock-report-row
+.inventory-status.low_stock {
+  background: #fff4ce;
+
+  color: #8a6d00;
+}
+
+
+/* OUT OF STOCK */
+
+.low-stock-report-row
+.inventory-status.out_of_stock {
+  background: #fde7e9;
+
+  color: #a4262c;
+}
+
+
+/* =========================================
+   OUT OF STOCK ROW EMPHASIS
+========================================= */
+
+.low-stock-report-row:has(
+  .inventory-status.out_of_stock
+) {
+  background: #fffafa;
+}
+
+.low-stock-report-row:has(
+  .inventory-status.out_of_stock
+):hover {
+  background: #fff5f5;
+}
+
+
+/* =========================================
+   LOW STOCK ROW
+========================================= */
+
+.low-stock-report-row:has(
+  .inventory-status.low_stock
+):hover {
+  background: #fffdf5;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.low-stock-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 180px;
+
+  padding: 35px 20px;
+
+  text-align: center;
+}
+
+.low-stock-empty strong {
+  color: #107c10;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.low-stock-empty span {
+  max-width: 450px;
+
+  color: #605e5c;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.low-stock-report-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.low-stock-report-wrapper::-webkit-scrollbar-track {
+  background: #f3f2f1;
+
+  border-radius: 10px;
+}
+
+.low-stock-report-wrapper::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 10px;
+}
+
+.low-stock-report-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .low-stock-report-header,
+  .low-stock-report-row {
+    min-width: 950px;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .low-stock-report-wrapper {
+    border-radius: 6px;
+  }
+
+
+  .low-stock-report-header,
+  .low-stock-report-row {
+    min-width: 900px;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+  }
+
+
+  .low-stock-report-header {
+    font-size: 11px;
+  }
+
+
+  .low-stock-report-row {
+    font-size: 12px;
+  }
+
+
+  .low-stock-report-row
+  .inventory-status {
+    min-width: 70px;
+
+    padding: 4px 8px;
+
+    font-size: 10px;
+  }
+
+
+  .reorder-quantity {
+    font-size: 12px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .low-stock-report-header,
+  .low-stock-report-row {
+    min-width: 850px;
+
+    padding: 11px 12px;
+  }
+
+
+  .low-stock-empty {
+    min-height: 150px;
+
+    padding: 30px 15px;
+  }
+
+
+  .low-stock-empty strong {
+    font-size: 15px;
+  }
+
+
+  .low-stock-empty span {
+    font-size: 12px;
+  }
+
+}
+/* =========================================
+   CUSTOMER REPORT
+========================================= */
+
+.customer-report-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   CUSTOMER TABLE GRID
+========================================= */
+
+.customer-report-header,
+.customer-report-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.6fr)
+    minmax(140px, 1.2fr)
+    minmax(80px, 0.7fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr)
+    minmax(130px, 1.1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 850px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   TABLE HEADER
+========================================= */
+
+.customer-report-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   CUSTOMER ROW
+========================================= */
+
+.customer-report-row {
+  color: #323130;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition:
+    background 0.15s ease;
+}
+
+.customer-report-row:last-child {
+  border-bottom: none;
+}
+
+.customer-report-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   CUSTOMER NAME
+========================================= */
+
+.customer-report-row strong {
+  display: block;
+
+  color: #323130;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   CUSTOMER EMAIL / PHONE
+========================================= */
+
+.customer-report-email {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8a8886;
+
+  font-size: 11px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   CUSTOMER NUMBER
+========================================= */
+
+.customer-report-number {
+  color: #0078d4;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   ORDER COUNT
+========================================= */
+
+.customer-report-row
+> div:nth-child(3) {
+  font-weight: 600;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* =========================================
+   MONEY COLUMNS
+========================================= */
+
+.customer-report-row
+> div:nth-child(4),
+.customer-report-row
+> div:nth-child(5) {
+  font-weight: 500;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  white-space: nowrap;
+}
+
+
+/* TOTAL SPENT */
+
+.customer-report-row
+> div:nth-child(4) {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   LAST PURCHASE
+========================================= */
+
+.customer-report-row
+> div:nth-child(6) {
+  color: #605e5c;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.customer-report-wrapper
+.report-table-empty {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 150px;
+
+  padding: 35px 20px;
+
+  color: #8a8886;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.customer-report-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.customer-report-wrapper::-webkit-scrollbar-track {
+  background: #f3f2f1;
+
+  border-radius: 10px;
+}
+
+.customer-report-wrapper::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 10px;
+}
+
+.customer-report-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+
+/* =========================================
+   TOP CUSTOMER HOVER
+========================================= */
+
+.customer-report-row:hover
+.customer-report-number {
+  color: #005a9e;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .customer-report-header,
+  .customer-report-row {
+    min-width: 820px;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .customer-report-wrapper {
+    border-radius: 6px;
+  }
+
+
+  .customer-report-header,
+  .customer-report-row {
+    min-width: 780px;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+  }
+
+
+  .customer-report-header {
+    font-size: 11px;
+  }
+
+
+  .customer-report-row {
+    font-size: 12px;
+  }
+
+
+  .customer-report-row strong {
+    font-size: 12px;
+  }
+
+
+  .customer-report-email {
+    font-size: 10px;
+  }
+
+
+  .customer-report-number {
+    font-size: 11px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .customer-report-header,
+  .customer-report-row {
+    min-width: 750px;
+
+    padding: 11px 12px;
+  }
+
+
+  .customer-report-wrapper
+  .report-table-empty {
+    min-height: 130px;
+
+    padding: 25px 15px;
+
+    font-size: 12px;
+  }
+
+}
+/* =========================================
+   PRODUCT PERFORMANCE REPORT
+========================================= */
+
+.product-report-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   PRODUCT REPORT GRID
+========================================= */
+
+.product-report-header,
+.product-report-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.7fr)
+    minmax(120px, 1fr)
+    minmax(80px, 0.7fr)
+    minmax(80px, 0.7fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr)
+    minmax(110px, 1fr)
+    minmax(80px, 0.7fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 950px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.product-report-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   PRODUCT ROW
+========================================= */
+
+.product-report-row {
+  color: #323130;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition: background 0.15s ease;
+}
+
+.product-report-row:last-child {
+  border-bottom: none;
+}
+
+.product-report-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   PRODUCT NAME
+========================================= */
+
+.product-report-row strong {
+  font-weight: 600;
+}
+
+.product-report-row > div:first-child > strong {
+  display: block;
+
+  color: #323130;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   PRODUCT SKU
+========================================= */
+
+.product-report-sku {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8a8886;
+
+  font-size: 11px;
+
+  font-weight: 400;
+}
+
+
+/* =========================================
+   QUANTITY / ORDER COLUMNS
+========================================= */
+
+.product-report-row
+> div:nth-child(3),
+.product-report-row
+> div:nth-child(4),
+.product-report-row
+> div:nth-child(8) {
+  font-weight: 600;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================
+   MONEY COLUMNS
+========================================= */
+
+.product-report-row
+> div:nth-child(5),
+.product-report-row
+> div:nth-child(6),
+.product-report-row
+> div:nth-child(7) {
+  font-variant-numeric: tabular-nums;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   REVENUE
+========================================= */
+
+.product-report-row
+> div:nth-child(5) {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   PROFIT
+========================================= */
+
+.product-profit-positive {
+  color: #107c10;
+
+  font-weight: 700;
+}
+
+.product-profit-negative {
+  color: #a4262c;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   EMPTY TABLE
+========================================= */
+
+.product-report-wrapper
+.report-table-empty {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 150px;
+
+  padding: 35px 20px;
+
+  color: #8a8886;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   PRODUCTS WITH NO SALES
+========================================= */
+
+.no-sales-products {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(260px, 1fr)
+    );
+
+  gap: 12px;
+}
+
+
+/* =========================================
+   NO SALES PRODUCT CARD
+========================================= */
+
+.no-sales-product {
+  display: grid;
+
+  grid-template-columns:
+    minmax(120px, 1fr)
+    auto
+    auto;
+
+  gap: 20px;
+
+  align-items: center;
+
+  padding: 15px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.no-sales-product:hover {
+  border-color: #c8c6c4;
+
+  box-shadow:
+    0 2px 6px
+    rgba(0, 0, 0, 0.06);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================
+   NO SALES PRODUCT NAME
+========================================= */
+
+.no-sales-product
+> div:first-child {
+  min-width: 0;
+}
+
+.no-sales-product
+> div:first-child
+> strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #323130;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* SKU */
+
+.no-sales-product
+> div:first-child
+> span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8a8886;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   STOCK / PRICE
+========================================= */
+
+.no-sales-product
+> div:not(:first-child) {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  text-align: right;
+}
+
+.no-sales-product
+> div:not(:first-child)
+> span {
+  color: #8a8886;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+}
+
+.no-sales-product
+> div:not(:first-child)
+> strong {
+  color: #323130;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   NO SALES WARNING
+========================================= */
+
+.no-sales-product
+> div:nth-child(2)
+> strong {
+  color: #a4262c;
+}
+
+
+/* =========================================
+   PRODUCT REPORT SCROLLBAR
+========================================= */
+
+.product-report-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.product-report-wrapper::-webkit-scrollbar-track {
+  background: #f3f2f1;
+
+  border-radius: 10px;
+}
+
+.product-report-wrapper::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 10px;
+}
+
+.product-report-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .product-report-header,
+  .product-report-row {
+    min-width: 900px;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+  }
+
+
+  .no-sales-products {
+    grid-template-columns:
+      repeat(
+        auto-fill,
+        minmax(240px, 1fr)
+      );
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .product-report-wrapper {
+    border-radius: 6px;
+  }
+
+
+  .product-report-header,
+  .product-report-row {
+    min-width: 850px;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+  }
+
+
+  .product-report-header {
+    font-size: 11px;
+  }
+
+
+  .product-report-row {
+    font-size: 12px;
+  }
+
+
+  .product-report-row
+  > div:first-child
+  > strong {
+    font-size: 12px;
+  }
+
+
+  .product-report-sku {
+    font-size: 10px;
+  }
+
+
+  .no-sales-products {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .product-report-header,
+  .product-report-row {
+    min-width: 820px;
+
+    padding: 11px 12px;
+  }
+
+
+  .no-sales-product {
+    grid-template-columns:
+      minmax(100px, 1fr)
+      auto
+      auto;
+
+    gap: 12px;
+
+    padding: 13px;
+  }
+
+
+  .no-sales-product
+  > div:first-child
+  > strong {
+    font-size: 12px;
+  }
+
+}

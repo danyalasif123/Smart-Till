@@ -106,3 +106,53 @@ export const getInventoryReport = async () => {
 
   return response.data;
 };
+
+// ==========================================
+// GET LOW STOCK REPORT
+// ==========================================
+
+export const getLowStockReport =
+  async () => {
+
+    const response =
+      await api.get(
+        "/reports/low-stock"
+      );
+
+    return response.data;
+  };
+
+  // ==========================================
+// GET CUSTOMER REPORT
+// ==========================================
+
+export const getCustomerReport =
+  async (params = {}) => {
+
+    const response =
+      await api.get(
+        "/reports/customers",
+        {
+          params,
+        }
+      );
+
+    return response.data;
+  };
+  // ==========================================
+// GET PRODUCT REPORT
+// ==========================================
+
+export const getProductReport =
+  async (params = {}) => {
+
+    const response =
+      await api.get(
+        "/reports/products",
+        {
+          params,
+        }
+      );
+
+    return response.data;
+  };

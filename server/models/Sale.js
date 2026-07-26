@@ -36,11 +36,7 @@ const saleItemSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-unitCost: {
-  type: Number,
-  required: true,
-  min: 0,
-},
+
     unit: {
       type: String,
       trim: true,

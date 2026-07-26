@@ -5,6 +5,9 @@ import {
   getProfitReport,
   getPurchaseReport,
   getInventoryReport,
+  getLowStockReport,
+  getCustomerReport,
+  getProductReport
 } from "../controllers/reportController.js";
 import verifyToken from "../middleware/verifyToken.js";
 
@@ -55,5 +58,35 @@ router.get(
   "/inventory",
   verifyToken,
   getInventoryReport
+);
+// ==========================================
+// LOW STOCK REPORT
+// GET /api/reports/low-stock
+// ==========================================
+
+router.get(
+  "/low-stock",
+  verifyToken,
+  getLowStockReport
+);
+// ==========================================
+// CUSTOMER REPORT
+// GET /api/reports/customers
+// ==========================================
+
+router.get(
+  "/customers",
+  verifyToken,
+  getCustomerReport
+);
+// ==========================================
+// PRODUCT PERFORMANCE REPORT
+// GET /api/reports/products
+// ==========================================
+
+router.get(
+  "/products",
+  verifyToken,
+  getProductReport
 );
 export default router;

@@ -1,5 +1,6 @@
 import Sale from "../models/Sale.js";
 import Purchase from "../models/Purchase.js";
+import Customer from "../models/Customer.js";
 import Product from "../models/Product.js";
 // ==========================================
 // BUILD DATE RANGE
@@ -1558,26 +1559,14 @@ export const getInventoryReport = async (
   res
 ) => {
   try {
-    // ======================================
-    // GET PRODUCTS
-    // ======================================
-
     const products = await Product.find({
       businessId: req.user.businessId,
     })
-      .populate(
-        "categoryId",
-        "name"
-      )
+      .populate("categoryId", "name")
       .select("-__v")
       .sort({
         name: 1,
       });
-
-
-    // ======================================
-    // SUMMARY VALUES
-    // ======================================
 
     let totalProducts = 0;
     let activeProducts = 0;
@@ -1589,75 +1578,53 @@ export const getInventoryReport = async (
     let lowStockProducts = 0;
     let outOfStockProducts = 0;
 
+    const inventory = products.map(
+      (product) => {
+        const stockQuantity = Number(
+          product.stockQuantity || 0
+        );
 
-    // ======================================
-    // PRODUCT INVENTORY
-    // ======================================
+        const costPrice = Number(
+          product.costPrice || 0
+        );
 
-    const inventory =
-      products.map((product) => {
+        const sellingPrice = Number(
+          product.sellingPrice || 0
+        );
 
-        const stockQuantity =
-          Number(
-            product.stockQuantity || 0
-          );
-
-        const costPrice =
-          Number(
-            product.costPrice || 0
-          );
-
-        const sellingPrice =
-          Number(
-            product.sellingPrice || 0
-          );
-
-        const lowStockLevel =
-          Number(
-            product.lowStockLevel || 0
-          );
-
+        const lowStockLevel = Number(
+          product.lowStockLevel || 0
+        );
 
         // ==================================
-        // VALUES
+        // INVENTORY VALUES
         // ==================================
 
         const costValue =
-          stockQuantity *
-          costPrice;
+          stockQuantity * costPrice;
 
         const retailValue =
-          stockQuantity *
-          sellingPrice;
+          stockQuantity * sellingPrice;
 
         const potentialProfit =
-          retailValue -
-          costValue;
-
+          retailValue - costValue;
 
         // ==================================
         // STOCK STATUS
         // ==================================
 
-        let stockStatus =
-          "in_stock";
+        let stockStatus = "in_stock";
 
         if (stockQuantity <= 0) {
-          stockStatus =
-            "out_of_stock";
-        }
-
-        else if (
-          stockQuantity <=
-          lowStockLevel
+          stockStatus = "out_of_stock";
+        } else if (
+          stockQuantity <= lowStockLevel
         ) {
-          stockStatus =
-            "low_stock";
+          stockStatus = "low_stock";
         }
-
 
         // ==================================
-        // SUMMARY COUNTERS
+        // SUMMARY
         // ==================================
 
         totalProducts += 1;
@@ -1669,15 +1636,13 @@ export const getInventoryReport = async (
         totalStockQuantity +=
           stockQuantity;
 
-        stockCostValue +=
-          costValue;
+        stockCostValue += costValue;
 
         stockRetailValue +=
           retailValue;
 
         if (
-          stockStatus ===
-          "low_stock"
+          stockStatus === "low_stock"
         ) {
           lowStockProducts += 1;
         }
@@ -1689,17 +1654,14 @@ export const getInventoryReport = async (
           outOfStockProducts += 1;
         }
 
-
         // ==================================
         // RETURN PRODUCT
         // ==================================
 
         return {
-          productId:
-            product._id,
+          productId: product._id,
 
-          name:
-            product.name,
+          name: product.name,
 
           sku:
             product.sku || "",
@@ -1708,12 +1670,11 @@ export const getInventoryReport = async (
             product.barcode || "",
 
           category:
-            product.categoryId
-              ?.name || "-",
+            product.categoryId?.name ||
+            "-",
 
           unit:
-            product.unit ||
-            "piece",
+            product.unit || "piece",
 
           stockQuantity,
 
@@ -1731,11 +1692,10 @@ export const getInventoryReport = async (
 
           stockStatus,
 
-          status:
-            product.status,
+          status: product.status,
         };
-      });
-
+      }
+    );
 
     // ======================================
     // POTENTIAL PROFIT
@@ -1745,13 +1705,11 @@ export const getInventoryReport = async (
       stockRetailValue -
       stockCostValue;
 
-
     // ======================================
     // RESPONSE
     // ======================================
 
     res.status(200).json({
-
       summary: {
         totalProducts,
 
@@ -1772,11 +1730,978 @@ export const getInventoryReport = async (
 
       inventory,
     });
+  } catch (error) {
+    console.error(
+      "Inventory Report Error:",
+      error
+    );
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
+// ==========================================
+// LOW STOCK REPORT
+// GET /api/reports/low-stock
+// ==========================================
+
+export const getLowStockReport = async (
+  req,
+  res
+) => {
+  try {
+    // ======================================
+    // GET ACTIVE PRODUCTS
+    // ======================================
+
+    const products =
+      await Product.find({
+        businessId:
+          req.user.businessId,
+
+        status: true,
+      })
+        .populate(
+          "categoryId",
+          "name"
+        )
+        .select("-__v")
+        .sort({
+          stockQuantity: 1,
+        });
+
+    // ======================================
+    // FILTER LOW STOCK PRODUCTS
+    // ======================================
+
+    const lowStockItems = products
+      .filter((product) => {
+        const stock = Number(
+          product.stockQuantity || 0
+        );
+
+        const lowLevel = Number(
+          product.lowStockLevel || 0
+        );
+
+        return stock <= lowLevel;
+      })
+
+      .map((product) => {
+        const stock = Number(
+          product.stockQuantity || 0
+        );
+
+        const lowLevel = Number(
+          product.lowStockLevel || 0
+        );
+
+        const costPrice = Number(
+          product.costPrice || 0
+        );
+
+        const sellingPrice = Number(
+          product.sellingPrice || 0
+        );
+
+        // ==================================
+        // STOCK STATUS
+        // ==================================
+
+        const stockStatus =
+          stock <= 0
+            ? "out_of_stock"
+            : "low_stock";
+
+        // ==================================
+        // REORDER CALCULATION
+        // ==================================
+
+        const targetStock = Math.max(
+          lowLevel * 2,
+          lowLevel
+        );
+
+        const suggestedReorder =
+          Math.max(
+            targetStock - stock,
+            0
+          );
+
+        const estimatedReorderCost =
+          suggestedReorder *
+          costPrice;
+
+        return {
+          productId:
+            product._id,
+
+          name:
+            product.name,
+
+          sku:
+            product.sku || "",
+
+          barcode:
+            product.barcode || "",
+
+          category:
+            product.categoryId?.name ||
+            "-",
+
+          unit:
+            product.unit || "piece",
+
+          stockQuantity:
+            stock,
+
+          lowStockLevel:
+            lowLevel,
+
+          costPrice,
+
+          sellingPrice,
+
+          stockStatus,
+
+          suggestedReorder,
+
+          estimatedReorderCost,
+        };
+      });
+
+    // ======================================
+    // SUMMARY
+    // ======================================
+
+    const lowStockProducts =
+      lowStockItems.filter(
+        (product) =>
+          product.stockStatus ===
+          "low_stock"
+      ).length;
+
+    const outOfStockProducts =
+      lowStockItems.filter(
+        (product) =>
+          product.stockStatus ===
+          "out_of_stock"
+      ).length;
+
+    const suggestedReorderUnits =
+      lowStockItems.reduce(
+        (total, product) =>
+          total +
+          Number(
+            product.suggestedReorder ||
+              0
+          ),
+        0
+      );
+
+    const estimatedReorderCost =
+      lowStockItems.reduce(
+        (total, product) =>
+          total +
+          Number(
+            product
+              .estimatedReorderCost ||
+              0
+          ),
+        0
+      );
+
+    // ======================================
+    // RESPONSE
+    // ======================================
+
+    res.status(200).json({
+      summary: {
+        productsNeedingAttention:
+          lowStockItems.length,
+
+        lowStockProducts,
+
+        outOfStockProducts,
+
+        suggestedReorderUnits,
+
+        estimatedReorderCost,
+      },
+
+      products:
+        lowStockItems,
+    });
+  } catch (error) {
+    console.error(
+      "Low Stock Report Error:",
+      error
+    );
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+// ==========================================
+// CUSTOMER REPORT
+// GET /api/reports/customers
+// ==========================================
+
+export const getCustomerReport = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      startDate,
+      endDate,
+    } = req.query;
+
+    // ======================================
+    // DATE FILTER
+    // ======================================
+
+    const dateFilter = {};
+
+    if (startDate) {
+      dateFilter.$gte =
+        new Date(startDate);
+    }
+
+    if (endDate) {
+      const end =
+        new Date(endDate);
+
+      end.setHours(
+        23,
+        59,
+        59,
+        999
+      );
+
+      dateFilter.$lte =
+        end;
+    }
+
+
+    // ======================================
+    // SALE FILTER
+    // ======================================
+
+    const saleFilter = {
+      businessId:
+        req.user.businessId,
+
+      status:
+        "completed",
+
+      customerId: {
+        $ne: null,
+      },
+    };
+
+    if (
+      startDate ||
+      endDate
+    ) {
+      saleFilter.createdAt =
+        dateFilter;
+    }
+
+
+    // ======================================
+    // GET CUSTOMER SALES
+    // ======================================
+
+    const sales =
+      await Sale.find(
+        saleFilter
+      )
+        .populate(
+          "customerId",
+          "customerNumber name phone email status"
+        )
+        .select(
+          "saleNumber customerId total createdAt"
+        )
+        .sort({
+          createdAt: -1,
+        });
+
+
+    // ======================================
+    // BUILD CUSTOMER MAP
+    // ======================================
+
+    const customerMap =
+      new Map();
+
+    let identifiedSales = 0;
+    let identifiedRevenue = 0;
+
+
+    for (const sale of sales) {
+
+      if (!sale.customerId) {
+        continue;
+      }
+
+      const customerId =
+        sale.customerId._id
+          .toString();
+
+      identifiedSales += 1;
+
+      identifiedRevenue +=
+        Number(
+          sale.total || 0
+        );
+
+
+      if (
+        !customerMap.has(
+          customerId
+        )
+      ) {
+        customerMap.set(
+          customerId,
+          {
+            customerId:
+              sale.customerId._id,
+
+            customerNumber:
+              sale.customerId
+                .customerNumber,
+
+            name:
+              sale.customerId
+                .name,
+
+            phone:
+              sale.customerId
+                .phone || "",
+
+            email:
+              sale.customerId
+                .email || "",
+
+            status:
+              sale.customerId
+                .status,
+
+            orders:
+              0,
+
+            spent:
+              0,
+
+            lastPurchaseAt:
+              null,
+          }
+        );
+      }
+
+
+      const customer =
+        customerMap.get(
+          customerId
+        );
+
+
+      customer.orders += 1;
+
+      customer.spent +=
+        Number(
+          sale.total || 0
+        );
+
+
+      if (
+        !customer.lastPurchaseAt ||
+        new Date(
+          sale.createdAt
+        ) >
+        new Date(
+          customer.lastPurchaseAt
+        )
+      ) {
+        customer.lastPurchaseAt =
+          sale.createdAt;
+      }
+    }
+
+
+    // ======================================
+    // CUSTOMER ACTIVITY
+    // ======================================
+
+    const customerActivity =
+      Array.from(
+        customerMap.values()
+      )
+        .map((customer) => ({
+          ...customer,
+
+          averageOrderValue:
+            customer.orders > 0
+              ? customer.spent /
+                customer.orders
+              : 0,
+        }))
+        .sort(
+          (a, b) =>
+            b.spent -
+            a.spent
+        );
+
+
+    // ======================================
+    // ALL REGISTERED CUSTOMERS
+    // ======================================
+
+    const totalRegisteredCustomers =
+      await Customer.countDocuments({
+        businessId:
+          req.user.businessId,
+      });
+
+
+    const activeRegisteredCustomers =
+      await Customer.countDocuments({
+        businessId:
+          req.user.businessId,
+
+        status: true,
+      });
+
+
+    // ======================================
+    // CUSTOMERS CREATED IN PERIOD
+    // ======================================
+
+    const customerCreatedFilter = {
+      businessId:
+        req.user.businessId,
+    };
+
+    if (
+      startDate ||
+      endDate
+    ) {
+      customerCreatedFilter.createdAt =
+        dateFilter;
+    }
+
+
+    const newCustomers =
+      await Customer.countDocuments(
+        customerCreatedFilter
+      );
+
+
+    // ======================================
+    // REPEAT CUSTOMERS
+    //
+    // Repeat means 2+ purchases
+    // during selected period.
+    // ======================================
+
+    const repeatCustomers =
+      customerActivity.filter(
+        (customer) =>
+          customer.orders >= 2
+      ).length;
+
+
+    // ======================================
+    // AVERAGE CUSTOMER SPEND
+    // ======================================
+
+    const averageCustomerSpend =
+      customerActivity.length > 0
+        ? identifiedRevenue /
+          customerActivity.length
+        : 0;
+
+
+    // ======================================
+    // TOP CUSTOMERS
+    // ======================================
+
+    const topCustomers =
+      customerActivity
+        .slice(0, 10);
+
+
+    // ======================================
+    // RECENT IDENTIFIED SALES
+    // ======================================
+
+    const recentSales =
+      sales
+        .slice(0, 10)
+        .map((sale) => ({
+          _id:
+            sale._id,
+
+          saleNumber:
+            sale.saleNumber,
+
+          customer:
+            sale.customerId
+              ? {
+                  _id:
+                    sale.customerId._id,
+
+                  customerNumber:
+                    sale.customerId
+                      .customerNumber,
+
+                  name:
+                    sale.customerId
+                      .name,
+                }
+              : null,
+
+          total:
+            sale.total,
+
+          createdAt:
+            sale.createdAt,
+        }));
+
+
+    // ======================================
+    // RESPONSE
+    // ======================================
+
+    res.status(200).json({
+
+      summary: {
+        totalRegisteredCustomers,
+
+        activeRegisteredCustomers,
+
+        customersWhoPurchased:
+          customerActivity.length,
+
+        newCustomers,
+
+        repeatCustomers,
+
+        identifiedSales,
+
+        identifiedRevenue,
+
+        averageCustomerSpend,
+      },
+
+      topCustomers,
+
+      customerActivity,
+
+      recentSales,
+    });
 
   } catch (error) {
 
     console.error(
-      "Inventory Report Error:",
+      "Customer Report Error:",
+      error
+    );
+
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};
+// ==========================================
+// PRODUCT PERFORMANCE REPORT
+// GET /api/reports/products
+// ==========================================
+
+export const getProductReport = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      startDate,
+      endDate,
+    } = req.query;
+
+    // ======================================
+    // DATE FILTER
+    // ======================================
+
+    const dateFilter = {};
+
+    if (startDate) {
+      dateFilter.$gte =
+        new Date(startDate);
+    }
+
+    if (endDate) {
+      const end =
+        new Date(endDate);
+
+      end.setHours(
+        23,
+        59,
+        59,
+        999
+      );
+
+      dateFilter.$lte = end;
+    }
+
+
+    // ======================================
+    // SALE FILTER
+    // ======================================
+
+    const saleFilter = {
+      businessId:
+        req.user.businessId,
+
+      status: "completed",
+    };
+
+    if (
+      startDate ||
+      endDate
+    ) {
+      saleFilter.createdAt =
+        dateFilter;
+    }
+
+
+    // ======================================
+    // GET SALES
+    // ======================================
+
+    const sales =
+      await Sale.find(
+        saleFilter
+      ).select(
+        "items total createdAt"
+      );
+
+
+    // ======================================
+    // GET PRODUCTS
+    // ======================================
+
+    const products =
+      await Product.find({
+        businessId:
+          req.user.businessId,
+      })
+        .populate(
+          "categoryId",
+          "name"
+        )
+        .select(
+          "name sku barcode categoryId costPrice sellingPrice stockQuantity status"
+        );
+
+
+    // ======================================
+    // PRODUCT LOOKUP
+    // ======================================
+
+    const productLookup =
+      new Map();
+
+    products.forEach(
+      (product) => {
+
+        productLookup.set(
+          product._id.toString(),
+          product
+        );
+
+      }
+    );
+
+
+    // ======================================
+    // PERFORMANCE MAP
+    // ======================================
+
+    const performanceMap =
+      new Map();
+
+    let totalUnitsSold = 0;
+
+    let totalRevenue = 0;
+
+    let estimatedCost = 0;
+
+
+    // ======================================
+    // PROCESS SALES
+    // ======================================
+
+    for (const sale of sales) {
+
+      for (
+        const item of
+        sale.items || []
+      ) {
+
+        if (!item.productId) {
+          continue;
+        }
+
+        const productId =
+          item.productId.toString();
+
+        const quantity =
+          Number(
+            item.quantity || 0
+          );
+
+        const revenue =
+          Number(
+            item.subtotal || 0
+          );
+
+        const product =
+          productLookup.get(
+            productId
+          );
+
+
+        // Current cost price is used
+        // because Sale currently stores
+        // selling-price snapshots but not
+        // cost-price snapshots.
+        const costPrice =
+          Number(
+            product?.costPrice || 0
+          );
+
+        const cost =
+          costPrice *
+          quantity;
+
+
+        if (
+          !performanceMap.has(
+            productId
+          )
+        ) {
+
+          performanceMap.set(
+            productId,
+            {
+              productId,
+
+              name:
+                item.productName ||
+                product?.name ||
+                "Unknown Product",
+
+              sku:
+                item.sku ||
+                product?.sku ||
+                "",
+
+              category:
+                product?.categoryId
+                  ?.name || "-",
+
+              quantitySold: 0,
+
+              revenue: 0,
+
+              estimatedCost: 0,
+
+              estimatedProfit: 0,
+
+              orders: 0,
+
+              stockQuantity:
+                Number(
+                  product
+                    ?.stockQuantity ||
+                    0
+                ),
+            }
+          );
+
+        }
+
+
+        const performance =
+          performanceMap.get(
+            productId
+          );
+
+
+        performance.quantitySold +=
+          quantity;
+
+        performance.revenue +=
+          revenue;
+
+        performance.estimatedCost +=
+          cost;
+
+        performance.orders += 1;
+
+
+        totalUnitsSold +=
+          quantity;
+
+        totalRevenue +=
+          revenue;
+
+        estimatedCost +=
+          cost;
+      }
+    }
+
+
+    // ======================================
+    // CALCULATE PROFIT
+    // ======================================
+
+    const productPerformance =
+      Array.from(
+        performanceMap.values()
+      )
+        .map((product) => ({
+
+          ...product,
+
+          estimatedProfit:
+            product.revenue -
+            product.estimatedCost,
+
+          averageSellingPrice:
+            product.quantitySold > 0
+              ? product.revenue /
+                product.quantitySold
+              : 0,
+
+        }))
+        .sort(
+          (a, b) =>
+            b.revenue -
+            a.revenue
+        );
+
+
+    // ======================================
+    // PRODUCTS WITH NO SALES
+    // ======================================
+
+    const productsWithNoSales =
+      products
+        .filter(
+          (product) =>
+            !performanceMap.has(
+              product._id.toString()
+            )
+        )
+        .map((product) => ({
+
+          productId:
+            product._id,
+
+          name:
+            product.name,
+
+          sku:
+            product.sku || "",
+
+          category:
+            product.categoryId
+              ?.name || "-",
+
+          sellingPrice:
+            Number(
+              product.sellingPrice ||
+                0
+            ),
+
+          stockQuantity:
+            Number(
+              product.stockQuantity ||
+                0
+            ),
+
+          status:
+            product.status,
+
+        }));
+
+
+    // ======================================
+    // SUMMARY
+    // ======================================
+
+    const estimatedProfit =
+      totalRevenue -
+      estimatedCost;
+
+
+    const averageRevenuePerUnit =
+      totalUnitsSold > 0
+        ? totalRevenue /
+          totalUnitsSold
+        : 0;
+
+
+    // ======================================
+    // RESPONSE
+    // ======================================
+
+    res.status(200).json({
+
+      summary: {
+
+        productsSold:
+          productPerformance.length,
+
+        totalUnitsSold,
+
+        totalRevenue,
+
+        estimatedCost,
+
+        estimatedProfit,
+
+        averageRevenuePerUnit,
+
+        productsWithNoSales:
+          productsWithNoSales.length,
+
+      },
+
+      topProducts:
+        productPerformance.slice(
+          0,
+          10
+        ),
+
+      productPerformance,
+
+      productsWithNoSales,
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Product Report Error:",
       error
     );
 

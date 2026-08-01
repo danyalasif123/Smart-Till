@@ -2711,3 +2711,417 @@ export const getProductReport = async (
     });
   }
 };
+// ==========================================
+// CASHIER PERFORMANCE REPORT
+// GET /api/reports/cashiers
+// ==========================================
+
+export const getCashierReport = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      startDate,
+      endDate,
+    } = req.query;
+
+
+    // ======================================
+    // DATE FILTER
+    // ======================================
+
+    const dateFilter = {};
+
+    if (startDate) {
+      dateFilter.$gte =
+        new Date(startDate);
+    }
+
+    if (endDate) {
+      const end =
+        new Date(endDate);
+
+      end.setHours(
+        23,
+        59,
+        59,
+        999
+      );
+
+      dateFilter.$lte = end;
+    }
+
+
+    // ======================================
+    // SALE FILTER
+    //
+    // Only POS sales have a cashier.
+    // ======================================
+
+    const saleFilter = {
+      businessId:
+        req.user.businessId,
+
+      status:
+        "completed",
+
+      source:
+        "pos",
+
+      cashierId: {
+        $ne: null,
+      },
+    };
+
+
+    if (
+      startDate ||
+      endDate
+    ) {
+      saleFilter.createdAt =
+        dateFilter;
+    }
+
+
+    // ======================================
+    // GET SALES
+    // ======================================
+
+    const sales =
+      await Sale.find(
+        saleFilter
+      )
+        .populate(
+          "cashierId",
+          "name email role"
+        )
+        .select(
+          "saleNumber cashierId items subtotal discount tax total paymentMethod createdAt"
+        )
+        .sort({
+          createdAt: -1,
+        });
+
+
+    // ======================================
+    // CASHIER MAP
+    // ======================================
+
+    const cashierMap =
+      new Map();
+
+
+    let totalSales = 0;
+
+    let totalRevenue = 0;
+
+    let totalItemsSold = 0;
+
+
+    // ======================================
+    // PROCESS SALES
+    // ======================================
+
+    for (const sale of sales) {
+
+      if (!sale.cashierId) {
+        continue;
+      }
+
+
+      const cashierId =
+        sale.cashierId._id
+          .toString();
+
+
+      // ====================================
+      // ITEMS IN SALE
+      // ====================================
+
+      const itemsSold =
+        (sale.items || [])
+          .reduce(
+            (total, item) =>
+              total +
+              Number(
+                item.quantity || 0
+              ),
+            0
+          );
+
+
+      // ====================================
+      // CREATE CASHIER ENTRY
+      // ====================================
+
+      if (
+        !cashierMap.has(
+          cashierId
+        )
+      ) {
+        cashierMap.set(
+          cashierId,
+          {
+            cashierId:
+              sale.cashierId._id,
+
+            name:
+              sale.cashierId.name,
+
+            email:
+              sale.cashierId.email || "",
+
+            role:
+              sale.cashierId.role || "",
+
+            salesCount: 0,
+
+            revenue: 0,
+
+            itemsSold: 0,
+
+            cashSales: 0,
+
+            cardSales: 0,
+
+            onlineSales: 0,
+
+            otherSales: 0,
+
+            lastSaleAt: null,
+          }
+        );
+      }
+
+
+      const cashier =
+        cashierMap.get(
+          cashierId
+        );
+
+
+      // ====================================
+      // UPDATE CASHIER
+      // ====================================
+
+      cashier.salesCount += 1;
+
+      cashier.revenue +=
+        Number(
+          sale.total || 0
+        );
+
+      cashier.itemsSold +=
+        itemsSold;
+
+
+      // ====================================
+      // PAYMENT METHOD COUNTS
+      // ====================================
+
+      if (
+        sale.paymentMethod ===
+        "cash"
+      ) {
+        cashier.cashSales += 1;
+      }
+
+      else if (
+        sale.paymentMethod ===
+        "card"
+      ) {
+        cashier.cardSales += 1;
+      }
+
+      else if (
+        sale.paymentMethod ===
+        "online"
+      ) {
+        cashier.onlineSales += 1;
+      }
+
+      else {
+        cashier.otherSales += 1;
+      }
+
+
+      // ====================================
+      // LAST SALE
+      // ====================================
+
+      if (
+        !cashier.lastSaleAt ||
+        new Date(
+          sale.createdAt
+        ) >
+        new Date(
+          cashier.lastSaleAt
+        )
+      ) {
+        cashier.lastSaleAt =
+          sale.createdAt;
+      }
+
+
+      // ====================================
+      // OVERALL TOTALS
+      // ====================================
+
+      totalSales += 1;
+
+      totalRevenue +=
+        Number(
+          sale.total || 0
+        );
+
+      totalItemsSold +=
+        itemsSold;
+    }
+
+
+    // ======================================
+    // CASHIER PERFORMANCE
+    // ======================================
+
+    const cashierPerformance =
+      Array.from(
+        cashierMap.values()
+      )
+        .map((cashier) => ({
+
+          ...cashier,
+
+          averageSaleValue:
+            cashier.salesCount > 0
+              ? cashier.revenue /
+                cashier.salesCount
+              : 0,
+
+          averageItemsPerSale:
+            cashier.salesCount > 0
+              ? cashier.itemsSold /
+                cashier.salesCount
+              : 0,
+
+        }))
+        .sort(
+          (a, b) =>
+            b.revenue -
+            a.revenue
+        );
+
+
+    // ======================================
+    // TOP CASHIER
+    // ======================================
+
+    const topCashier =
+      cashierPerformance.length > 0
+        ? cashierPerformance[0]
+        : null;
+
+
+    // ======================================
+    // OVERALL AVERAGES
+    // ======================================
+
+    const averageSaleValue =
+      totalSales > 0
+        ? totalRevenue /
+          totalSales
+        : 0;
+
+
+    const averageItemsPerSale =
+      totalSales > 0
+        ? totalItemsSold /
+          totalSales
+        : 0;
+
+
+    // ======================================
+    // RECENT SALES
+    // ======================================
+
+    const recentSales =
+      sales
+        .slice(0, 10)
+        .map((sale) => ({
+
+          _id:
+            sale._id,
+
+          saleNumber:
+            sale.saleNumber,
+
+          cashier:
+            sale.cashierId
+              ? {
+                  _id:
+                    sale.cashierId._id,
+
+                  name:
+                    sale.cashierId.name,
+
+                  role:
+                    sale.cashierId.role,
+                }
+              : null,
+
+          total:
+            sale.total,
+
+          paymentMethod:
+            sale.paymentMethod,
+
+          createdAt:
+            sale.createdAt,
+
+        }));
+
+
+    // ======================================
+    // RESPONSE
+    // ======================================
+
+    res.status(200).json({
+
+      summary: {
+
+        activeCashiers:
+          cashierPerformance.length,
+
+        totalSales,
+
+        totalRevenue,
+
+        totalItemsSold,
+
+        averageSaleValue,
+
+        averageItemsPerSale,
+
+      },
+
+      topCashier,
+
+      cashierPerformance,
+
+      recentSales,
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Cashier Report Error:",
+      error
+    );
+
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};

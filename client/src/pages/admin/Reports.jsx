@@ -5,6 +5,27 @@ import {
 
 import "./Reports.css";
 
+// ==========================================
+// COMPONENTS
+// ==========================================
+
+import ReportTabs from "../../components/Reports/ReportTabs";
+import ReportFilter from "../../components/Reports/ReportFilter";
+
+import SalesReport from "../../components/Reports/SalesReport";
+import ProfitReport from "../../components/Reports/ProfitReport";
+import PurchaseReport from "../../components/Reports/PurchaseReport";
+import InventoryReport from "../../components/Reports/InventoryReport";
+import LowStockReport from "../../components/Reports/LowStockReport";
+import CustomerReport from "../../components/Reports/CustomerReport";
+import ProductReport from "../../components/Reports/ProductReport";
+import CashierReport from "../../components/Reports/CashierReport";
+import ReportActions from "../../components/Reports/ReportActions";
+
+// ==========================================
+// SERVICES
+// ==========================================
+
 import {
   getSalesReport,
   getProfitReport,
@@ -13,7 +34,10 @@ import {
   getLowStockReport,
   getCustomerReport,
   getProductReport,
+  getCashierReport,
 } from "../../services/reportService";
+
+
 const Reports = () => {
 
   // ==========================================
@@ -30,102 +54,35 @@ const Reports = () => {
   // DATE FILTER
   // ==========================================
 
-  const [period, setPeriod] =
-    useState("month");
+  const [
+    period,
+    setPeriod,
+  ] = useState("month");
 
-  const [startDate, setStartDate] =
-    useState("");
+  const [
+    startDate,
+    setStartDate,
+  ] = useState("");
 
-  const [endDate, setEndDate] =
-    useState("");
+  const [
+    endDate,
+    setEndDate,
+  ] = useState("");
 
 
   // ==========================================
   // REPORT DATA
   // ==========================================
 
-  const [report, setReport] =
-    useState(null);
+  const [
+    report,
+    setReport,
+  ] = useState(null);
 
-  const [loading, setLoading] =
-    useState(false);
-
-
-  // ==========================================
-  // FORMAT CURRENCY
-  // ==========================================
-
-  const formatCurrency = (
-    amount
-  ) => {
-    return new Intl.NumberFormat(
-      "en-US",
-      {
-        style: "currency",
-        currency: "USD",
-      }
-    ).format(
-      Number(amount || 0)
-    );
-  };
-
-
-  // ==========================================
-  // FORMAT DATE
-  // ==========================================
-
-  const formatDate = (
-    date
-  ) => {
-    if (!date) {
-      return "-";
-    }
-
-    return new Date(
-      date
-    ).toLocaleDateString(
-      "en-US",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }
-    );
-  };
-
-
-  // ==========================================
-  // FORMAT TEXT
-  // ==========================================
-
-  const formatText = (
-    value
-  ) => {
-    if (!value) {
-      return "-";
-    }
-
-    return value
-      .replaceAll("_", " ")
-      .replace(
-        /\b\w/g,
-        (letter) =>
-          letter.toUpperCase()
-      );
-  };
-
-
-  // ==========================================
-  // FORMAT PERCENT
-  // ==========================================
-
-  const formatPercent = (
-    value
-  ) => {
-    return `${Number(
-      value || 0
-    ).toFixed(2)}%`;
-  };
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
 
 
   // ==========================================
@@ -140,17 +97,18 @@ const Reports = () => {
     try {
 
       // ======================================
-      // VALIDATE CUSTOM RANGE
+      // VALIDATE CUSTOM DATE RANGE
       // ======================================
 
       if (
-        selectedPeriod ===
-        "custom"
+        selectedPeriod === "custom"
       ) {
+
         if (
           !startDate ||
           !endDate
         ) {
+
           alert(
             "Please select start and end dates."
           );
@@ -158,10 +116,12 @@ const Reports = () => {
           return;
         }
 
+
         if (
           new Date(startDate) >
           new Date(endDate)
         ) {
+
           alert(
             "Start date cannot be after end date."
           );
@@ -174,63 +134,167 @@ const Reports = () => {
       setLoading(true);
 
 
+      // ======================================
+      // DATE PARAMS
+      // ======================================
+
       const params = {
         period:
           selectedPeriod,
 
-        startDate,
+        startDate:
+          selectedPeriod === "custom"
+            ? startDate
+            : undefined,
 
-        endDate,
+        endDate:
+          selectedPeriod === "custom"
+            ? endDate
+            : undefined,
       };
 
 
       let response;
 
 
-if (type === "sales") {
-  response =
-    await getSalesReport(params);
-}
+      // ======================================
+      // SALES
+      // ======================================
 
-else if (type === "profit") {
-  response =
-    await getProfitReport(params);
-}
+      if (type === "sales") {
 
-else if (type === "purchases") {
-  response =
-    await getPurchaseReport(params);
-}
+        response =
+          await getSalesReport(
+            params
+          );
 
-else if (type === "inventory") {
-  response =
-    await getInventoryReport();
-}
+      }
 
-else if (type === "low-stock") {
-  response =
-    await getLowStockReport();
-}
-else if (
-  type === "customers"
-) {
-  response =
-    await getCustomerReport(
-      params
-    );
-}
-else if (
-  type === "products"
-) {
 
-  response =
-    await getProductReport(
-      params
-    );
+      // ======================================
+      // PROFIT
+      // ======================================
 
-}
+      else if (
+        type === "profit"
+      ) {
 
-      setReport(response);
+        response =
+          await getProfitReport(
+            params
+          );
+
+      }
+
+
+      // ======================================
+      // PURCHASES
+      // ======================================
+
+      else if (
+        type === "purchases"
+      ) {
+
+        response =
+          await getPurchaseReport(
+            params
+          );
+
+      }
+
+
+      // ======================================
+      // INVENTORY
+      // ======================================
+
+      else if (
+        type === "inventory"
+      ) {
+
+        response =
+          await getInventoryReport();
+
+      }
+
+
+      // ======================================
+      // LOW STOCK
+      // ======================================
+
+      else if (
+        type === "low-stock"
+      ) {
+
+        response =
+          await getLowStockReport();
+
+      }
+
+
+      // ======================================
+      // CUSTOMERS
+      // ======================================
+
+      else if (
+        type === "customers"
+      ) {
+
+        response =
+          await getCustomerReport(
+            params
+          );
+
+      }
+
+
+      // ======================================
+      // PRODUCTS
+      // ======================================
+
+      else if (
+        type === "products"
+      ) {
+
+        response =
+          await getProductReport(
+            params
+          );
+
+      }
+
+
+      // ======================================
+      // CASHIERS
+      // ======================================
+
+      else if (
+        type === "cashiers"
+      ) {
+
+        response =
+          await getCashierReport(
+            params
+          );
+
+      }
+
+
+      // ======================================
+      // INVALID REPORT
+      // ======================================
+
+      else {
+
+        throw new Error(
+          "Invalid report type"
+        );
+
+      }
+
+
+      setReport(
+        response
+      );
 
     } catch (error) {
 
@@ -244,7 +308,8 @@ else if (
       alert(
         error.response?.data
           ?.message ||
-          "Failed to load report."
+        error.message ||
+        "Failed to load report."
       );
 
     } finally {
@@ -266,23 +331,31 @@ else if (
       selectedPeriod: "month",
     });
 
+    // eslint-disable-next-line
   }, []);
 
 
   // ==========================================
-  // CHANGE REPORT
+  // CHANGE REPORT TYPE
   // ==========================================
 
   const handleReportChange = (
     type
   ) => {
 
-    setReportType(type);
+    setReportType(
+      type
+    );
 
-    setReport(null);
+    setReport(
+      null
+    );
 
 
-    // Custom requires dates
+    // ======================================
+    // CUSTOM DATE RANGE
+    // ======================================
+
     if (
       period === "custom" &&
       (
@@ -290,7 +363,9 @@ else if (
         !endDate
       )
     ) {
+
       return;
+
     }
 
 
@@ -299,6 +374,7 @@ else if (
       selectedPeriod:
         period,
     });
+
   };
 
 
@@ -315,12 +391,20 @@ else if (
     );
 
 
-    // Don't fetch custom until
-    // user selects dates.
+    // ======================================
+    // CUSTOM REQUIRES DATES
+    // ======================================
+
     if (
       newPeriod === "custom"
     ) {
+
+      setReport(
+        null
+      );
+
       return;
+
     }
 
 
@@ -331,33 +415,156 @@ else if (
       selectedPeriod:
         newPeriod,
     });
+
   };
 
 
   // ==========================================
-  // CUSTOM APPLY
+  // APPLY CUSTOM RANGE
   // ==========================================
 
-  const handleCustomApply =
-    () => {
+  const handleCustomApply = () => {
 
-      fetchReport({
-        type:
-          reportType,
+    fetchReport({
+      type:
+        reportType,
 
-        selectedPeriod:
-          "custom",
-      });
+      selectedPeriod:
+        "custom",
+    });
 
-    };
+  };
 
 
   // ==========================================
-  // SUMMARY
+  // RENDER SELECTED REPORT
   // ==========================================
 
-  const summary =
-    report?.summary || {};
+  const renderReport = () => {
+
+    if (
+      loading ||
+      !report
+    ) {
+
+      return null;
+
+    }
+
+
+    switch (
+      reportType
+    ) {
+
+      // ======================================
+      // SALES
+      // ======================================
+
+      case "sales":
+
+        return (
+          <SalesReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // PROFIT
+      // ======================================
+
+      case "profit":
+
+        return (
+          <ProfitReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // PURCHASES
+      // ======================================
+
+      case "purchases":
+
+        return (
+          <PurchaseReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // INVENTORY
+      // ======================================
+
+      case "inventory":
+
+        return (
+          <InventoryReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // LOW STOCK
+      // ======================================
+
+      case "low-stock":
+
+        return (
+          <LowStockReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // CUSTOMERS
+      // ======================================
+
+      case "customers":
+
+        return (
+          <CustomerReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // PRODUCTS
+      // ======================================
+
+      case "products":
+
+        return (
+          <ProductReport
+            report={report}
+          />
+        );
+
+
+      // ======================================
+      // CASHIERS
+      // ======================================
+
+      case "cashiers":
+
+        return (
+          <CashierReport
+            report={report}
+          />
+        );
+
+
+      default:
+
+        return null;
+    }
+  };
 
 
   // ==========================================
@@ -368,356 +575,83 @@ else if (
 
     <div className="reports-page">
 
-
       {/* =====================================
           HEADER
       ===================================== */}
 
       <div className="reports-header">
 
-        <div>
+  <div>
 
-          <h1>
-            Reports
-          </h1>
+    <h1>
+      Reports
+    </h1>
 
-          <p>
-            Analyze sales, profitability
-            and business performance.
-          </p>
+    <p>
+      Analyze sales,
+      profitability, inventory
+      and business performance.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+
+  <ReportActions
+    report={report}
+    reportType={reportType}
+    period={period}
+  />
+
+</div>
 
 
       {/* =====================================
-          REPORT TYPE
+          REPORT TABS
       ===================================== */}
 
-      <div className="report-type-tabs">
-
-
-        <button
-          type="button"
-          className={
-            reportType === "sales"
-              ? "active"
-              : ""
-          }
-          onClick={() =>
-            handleReportChange(
-              "sales"
-            )
-          }
-        >
-          Sales Report
-        </button>
-
-
-        <button
-          type="button"
-          className={
-            reportType === "profit"
-              ? "active"
-              : ""
-          }
-          onClick={() =>
-            handleReportChange(
-              "profit"
-            )
-          }
-        >
-          Profit Report
-        </button>
-
-
-        <button
-  type="button"
-  className={
-    reportType === "purchases"
-      ? "active"
-      : ""
-  }
-  onClick={() =>
-    handleReportChange(
-      "purchases"
-    )
-  }
->
-  Purchase Report
-</button>
-
-
-      <button
-  type="button"
-  className={
-    reportType === "inventory"
-      ? "active"
-      : ""
-  }
-  onClick={() =>
-    handleReportChange(
-      "inventory"
-    )
-  }
->
-  Inventory Report
-</button>
-
-
-       <button
-  type="button"
-  className={
-    reportType === "low-stock"
-      ? "active"
-      : ""
-  }
-  onClick={() =>
-    handleReportChange(
-      "low-stock"
-    )
-  }
->
-  Low Stock
-</button>
-
-     <button
-  type="button"
-  className={
-    reportType === "customers"
-      ? "active"
-      : ""
-  }
-  onClick={() =>
-    handleReportChange(
-      "customers"
-    )
-  }
->
-  Customers
-</button>
-<button
-  type="button"
-  className={
-    reportType === "products"
-      ? "active"
-      : ""
-  }
-  onClick={() =>
-    handleReportChange(
-      "products"
-    )
-  }
->
-  Products
-</button>
-
-      </div>
+      <ReportTabs
+        reportType={
+          reportType
+        }
+        onChange={
+          handleReportChange
+        }
+      />
 
 
       {/* =====================================
           FILTER
       ===================================== */}
 
-      <div className="report-filter-card">
-
-
-        <div className="report-period-buttons">
-
-
-          <button
-            type="button"
-            className={
-              period === "today"
-                ? "active"
-                : ""
-            }
-            onClick={() =>
-              handlePeriodChange(
-                "today"
-              )
-            }
-          >
-            Today
-          </button>
-
-
-          <button
-            type="button"
-            className={
-              period === "week"
-                ? "active"
-                : ""
-            }
-            onClick={() =>
-              handlePeriodChange(
-                "week"
-              )
-            }
-          >
-            This Week
-          </button>
-
-
-          <button
-            type="button"
-            className={
-              period === "month"
-                ? "active"
-                : ""
-            }
-            onClick={() =>
-              handlePeriodChange(
-                "month"
-              )
-            }
-          >
-            This Month
-          </button>
-
-
-          <button
-            type="button"
-            className={
-              period === "year"
-                ? "active"
-                : ""
-            }
-            onClick={() =>
-              handlePeriodChange(
-                "year"
-              )
-            }
-          >
-            This Year
-          </button>
-
-
-          <button
-            type="button"
-            className={
-              period === "custom"
-                ? "active"
-                : ""
-            }
-            onClick={() =>
-              handlePeriodChange(
-                "custom"
-              )
-            }
-          >
-            Custom
-          </button>
-
-
-        </div>
-
-
-        {/* =================================
-            CUSTOM DATE
-        ================================= */}
-
-        {period === "custom" && (
-
-          <div className="report-custom-filter">
-
-
-            <div>
-
-              <label>
-                From
-              </label>
-
-              <input
-                type="date"
-                value={
-                  startDate
-                }
-                onChange={(e) =>
-                  setStartDate(
-                    e.target.value
-                  )
-                }
-              />
-
-            </div>
-
-
-            <div>
-
-              <label>
-                To
-              </label>
-
-              <input
-                type="date"
-                value={
-                  endDate
-                }
-                onChange={(e) =>
-                  setEndDate(
-                    e.target.value
-                  )
-                }
-              />
-
-            </div>
-
-
-            <button
-              type="button"
-              className="report-apply-button"
-              onClick={
-                handleCustomApply
-              }
-              disabled={
-                loading
-              }
-            >
-              Apply
-            </button>
-
-
-          </div>
-
-        )}
-
-
-        {/* =================================
-            ACTIVE RANGE
-        ================================= */}
-
-        {report?.dateRange && (
-
-          <div className="report-active-range">
-
-            Showing data from{" "}
-
-            <strong>
-              {formatDate(
-                report
-                  .dateRange
-                  .start
-              )}
-            </strong>
-
-            {" "}to{" "}
-
-            <strong>
-              {formatDate(
-                report
-                  .dateRange
-                  .end
-              )}
-            </strong>
-
-          </div>
-
-        )}
-
-
-      </div>
+      <ReportFilter
+        period={
+          period
+        }
+        startDate={
+          startDate
+        }
+        endDate={
+          endDate
+        }
+        setStartDate={
+          setStartDate
+        }
+        setEndDate={
+          setEndDate
+        }
+        onPeriodChange={
+          handlePeriodChange
+        }
+        onApply={
+          handleCustomApply
+        }
+        loading={
+          loading
+        }
+        dateRange={
+          report?.dateRange
+        }
+      />
 
 
       {/* =====================================
@@ -727,2543 +661,21 @@ else if (
       {loading && (
 
         <div className="reports-loading">
+
           Loading report...
+
         </div>
 
       )}
 
 
       {/* =====================================
-          SALES REPORT
+          REPORT CONTENT
       ===================================== */}
 
-      {!loading &&
-        report &&
-        reportType ===
-          "sales" && (
+      {renderReport()}
 
-        <>
 
-          {/* SUMMARY */}
-
-          <div className="report-summary-grid">
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Total Sales
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.totalSales
-                )}
-              </strong>
-
-              <small>
-                Revenue in selected period
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Transactions
-              </span>
-
-              <strong>
-                {summary
-                  .totalTransactions ||
-                  0}
-              </strong>
-
-              <small>
-                Completed sales
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Average Sale
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.averageSale
-                )}
-              </strong>
-
-              <small>
-                Average transaction value
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Items Sold
-              </span>
-
-              <strong>
-                {summary
-                  .totalItemsSold ||
-                  0}
-              </strong>
-
-              <small>
-                Product units sold
-              </small>
-
-            </div>
-
-
-          </div>
-
-
-          {/* FINANCIAL */}
-
-          <div className="report-financial-summary">
-
-
-            <div>
-
-              <span>
-                Subtotal
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.subtotal
-                )}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Discounts
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.discount
-                )}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Tax
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.tax
-                )}
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-          {/* PAYMENT + SOURCE */}
-
-          <div className="report-two-column">
-
-
-            <div className="report-section">
-
-              <div className="report-section-header">
-
-                <h2>
-                  Payment Methods
-                </h2>
-
-                <span>
-                  Revenue by payment type
-                </span>
-
-              </div>
-
-
-              {report
-                .paymentBreakdown
-                ?.length > 0 ? (
-
-                <div className="report-breakdown-list">
-
-                  {report.paymentBreakdown.map(
-                    (item) => (
-
-                      <div
-                        className="report-breakdown-row"
-                        key={
-                          item.paymentMethod
-                        }
-                      >
-
-                        <div>
-
-                          <strong>
-                            {formatText(
-                              item.paymentMethod
-                            )}
-                          </strong>
-
-                          <span>
-                            {
-                              item.transactions
-                            }{" "}
-                            transactions
-                          </span>
-
-                        </div>
-
-
-                        <strong>
-                          {formatCurrency(
-                            item.amount
-                          )}
-                        </strong>
-
-                      </div>
-
-                    )
-                  )}
-
-                </div>
-
-              ) : (
-
-                <div className="report-empty">
-                  No payment data.
-                </div>
-
-              )}
-
-            </div>
-
-
-            <div className="report-section">
-
-              <div className="report-section-header">
-
-                <h2>
-                  Sales Channels
-                </h2>
-
-                <span>
-                  POS and online sales
-                </span>
-
-              </div>
-
-
-              {report
-                .sourceBreakdown
-                ?.length > 0 ? (
-
-                <div className="report-breakdown-list">
-
-                  {report.sourceBreakdown.map(
-                    (item) => (
-
-                      <div
-                        className="report-breakdown-row"
-                        key={
-                          item.source
-                        }
-                      >
-
-                        <div>
-
-                          <strong>
-                            {formatText(
-                              item.source
-                            )}
-                          </strong>
-
-                          <span>
-                            {
-                              item.transactions
-                            }{" "}
-                            transactions
-                          </span>
-
-                        </div>
-
-
-                        <strong>
-                          {formatCurrency(
-                            item.amount
-                          )}
-                        </strong>
-
-                      </div>
-
-                    )
-                  )}
-
-                </div>
-
-              ) : (
-
-                <div className="report-empty">
-                  No channel data.
-                </div>
-
-              )}
-
-            </div>
-
-
-          </div>
-
-
-          {/* TOP PRODUCTS */}
-
-          <div className="report-section">
-
-            <div className="report-section-header">
-
-              <h2>
-                Top Selling Products
-              </h2>
-
-              <span>
-                Top 10 by quantity
-              </span>
-
-            </div>
-
-
-            <div className="report-table">
-
-              <div className="report-table-header">
-
-                <div>
-                  Product
-                </div>
-
-                <div>
-                  SKU
-                </div>
-
-                <div>
-                  Quantity
-                </div>
-
-                <div>
-                  Revenue
-                </div>
-
-              </div>
-
-
-              {report
-                .topProducts
-                ?.length > 0 ? (
-
-                report.topProducts.map(
-                  (product) => (
-
-                    <div
-                      className="report-table-row"
-                      key={
-                        product.productId ||
-                        product.productName
-                      }
-                    >
-
-                      <div>
-                        <strong>
-                          {
-                            product.productName
-                          }
-                        </strong>
-                      </div>
-
-                      <div>
-                        {product.sku ||
-                          "-"}
-                      </div>
-
-                      <div>
-                        {
-                          product.quantitySold
-                        }
-                      </div>
-
-                      <div className="report-money">
-                        {formatCurrency(
-                          product.revenue
-                        )}
-                      </div>
-
-                    </div>
-
-                  )
-                )
-
-              ) : (
-
-                <div className="report-table-empty">
-                  No products sold.
-                </div>
-
-              )}
-
-            </div>
-
-          </div>
-
-
-          {/* RECENT SALES */}
-
-          <div className="report-section">
-
-            <div className="report-section-header">
-
-              <h2>
-                Recent Sales
-              </h2>
-
-              <span>
-                Latest transactions
-              </span>
-
-            </div>
-
-
-            <div className="report-sales-table">
-
-              <div className="report-sales-header">
-
-                <div>Sale</div>
-                <div>Date</div>
-                <div>Customer</div>
-                <div>Cashier</div>
-                <div>Method</div>
-                <div>Source</div>
-                <div>Total</div>
-
-              </div>
-
-
-              {report
-                .recentSales
-                ?.length > 0 ? (
-
-                report.recentSales.map(
-                  (sale) => (
-
-                    <div
-                      className="report-sales-row"
-                      key={
-                        sale._id
-                      }
-                    >
-
-                      <div className="report-sale-number">
-                        {
-                          sale.saleNumber
-                        }
-                      </div>
-
-                      <div>
-                        {formatDate(
-                          sale.createdAt
-                        )}
-                      </div>
-
-                      <div>
-                        {sale
-                          .customerId
-                          ?.name ||
-                          "Walk-in"}
-                      </div>
-
-                      <div>
-                        {sale
-                          .cashierId
-                          ?.name ||
-                          "-"}
-                      </div>
-
-                      <div>
-                        {formatText(
-                          sale.paymentMethod
-                        )}
-                      </div>
-
-                      <div>
-                        {formatText(
-                          sale.source
-                        )}
-                      </div>
-
-                      <div className="report-money">
-                        {formatCurrency(
-                          sale.total
-                        )}
-                      </div>
-
-                    </div>
-
-                  )
-                )
-
-              ) : (
-
-                <div className="report-table-empty">
-                  No sales found.
-                </div>
-
-              )}
-
-            </div>
-
-          </div>
-
-        </>
-
-      )}
-
-
-      {/* =====================================
-          PROFIT REPORT
-      ===================================== */}
-
-      {!loading &&
-        report &&
-        reportType ===
-          "profit" && (
-
-        <>
-
-          {/* =================================
-              PROFIT SUMMARY
-          ================================= */}
-
-          <div className="report-summary-grid">
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Revenue
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.productRevenue
-                )}
-              </strong>
-
-              <small>
-                Product sales before
-                discounts
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Cost of Goods
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.cogs
-                )}
-              </strong>
-
-              <small>
-                Cost of products sold
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Gross Profit
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.grossProfit
-                )}
-              </strong>
-
-              <small>
-                Revenue minus discount
-                and product cost
-              </small>
-
-            </div>
-
-
-            <div className="report-summary-card">
-
-              <span>
-                Profit Margin
-              </span>
-
-              <strong>
-                {formatPercent(
-                  summary.profitMargin
-                )}
-              </strong>
-
-              <small>
-                Gross profit percentage
-              </small>
-
-            </div>
-
-
-          </div>
-
-
-          {/* =================================
-              PROFIT SECONDARY SUMMARY
-          ================================= */}
-
-          <div className="report-financial-summary">
-
-
-            <div>
-
-              <span>
-                Discounts
-              </span>
-
-              <strong>
-                {formatCurrency(
-                  summary.discount
-                )}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Transactions
-              </span>
-
-              <strong>
-                {summary.transactions ||
-                  0}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Items Sold
-              </span>
-
-              <strong>
-                {summary.itemsSold ||
-                  0}
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-          {/* =================================
-              PRODUCT PROFIT TABLE
-          ================================= */}
-
-          <div className="report-section">
-
-            <div className="report-section-header">
-
-              <h2>
-                Product Profitability
-              </h2>
-
-              <span>
-                Revenue, cost and profit
-                by product
-              </span>
-
-            </div>
-
-
-            <div className="profit-table-wrapper">
-
-              <div className="profit-table-header">
-
-                <div>
-                  Product
-                </div>
-
-                <div>
-                  SKU
-                </div>
-
-                <div>
-                  Qty
-                </div>
-
-                <div>
-                  Revenue
-                </div>
-
-                <div>
-                  Cost
-                </div>
-
-                <div>
-                  Profit
-                </div>
-
-                <div>
-                  Margin
-                </div>
-
-              </div>
-
-
-              {report.products
-                ?.length > 0 ? (
-
-                report.products.map(
-                  (product) => (
-
-                    <div
-                      className="profit-table-row"
-                      key={
-                        product.productId ||
-                        product.productName
-                      }
-                    >
-
-                      <div>
-
-                        <strong>
-                          {
-                            product.productName
-                          }
-                        </strong>
-
-                      </div>
-
-
-                      <div>
-                        {product.sku ||
-                          "-"}
-                      </div>
-
-
-                      <div>
-                        {
-                          product.quantitySold
-                        }
-                      </div>
-
-
-                      <div>
-                        {formatCurrency(
-                          product.revenue
-                        )}
-                      </div>
-
-
-                      <div>
-                        {formatCurrency(
-                          product.cost
-                        )}
-                      </div>
-
-
-                      <div className="profit-value">
-                        {formatCurrency(
-                          product.profit
-                        )}
-                      </div>
-
-
-                      <div>
-                        {formatPercent(
-                          product.margin
-                        )}
-                      </div>
-
-
-                    </div>
-
-                  )
-                )
-
-              ) : (
-
-                <div className="report-table-empty">
-
-                  No profit data found for
-                  this period.
-
-                </div>
-
-              )}
-
-
-            </div>
-
-          </div>
-
-        </>
-
-      )}
-
-{/* =====================================
-    PURCHASE REPORT
-===================================== */}
-
-{!loading &&
-  report &&
-  reportType === "purchases" && (
-
-  <>
-
-    {/* PURCHASE SUMMARY */}
-
-    <div className="report-summary-grid">
-
-      <div className="report-summary-card">
-        <span>Total Purchases</span>
-
-        <strong>
-          {formatCurrency(
-            summary.totalPurchases
-          )}
-        </strong>
-
-        <small>
-          Total purchase value
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>Amount Paid</span>
-
-        <strong>
-          {formatCurrency(
-            summary.amountPaid
-          )}
-        </strong>
-
-        <small>
-          Payments made to suppliers
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>Outstanding</span>
-
-        <strong>
-          {formatCurrency(
-            summary.outstanding
-          )}
-        </strong>
-
-        <small>
-          Amount still owed
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>Purchases</span>
-
-        <strong>
-          {summary.purchaseCount || 0}
-        </strong>
-
-        <small>
-          Purchase transactions
-        </small>
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        SECONDARY SUMMARY
-    ================================= */}
-
-    <div className="report-financial-summary">
-
-      <div>
-        <span>Items Purchased</span>
-
-        <strong>
-          {summary.totalItemsPurchased || 0}
-        </strong>
-      </div>
-
-
-      <div>
-        <span>Paid</span>
-
-        <strong>
-          {formatCurrency(
-            summary.amountPaid
-          )}
-        </strong>
-      </div>
-
-
-      <div>
-        <span>Balance Due</span>
-
-        <strong>
-          {formatCurrency(
-            summary.outstanding
-          )}
-        </strong>
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        PAYMENT + PRODUCTS
-    ================================= */}
-
-    <div className="report-two-column">
-
-      {/* PAYMENT STATUS */}
-
-      <div className="report-section">
-
-        <div className="report-section-header">
-
-          <h2>
-            Payment Status
-          </h2>
-
-          <span>
-            Supplier payment breakdown
-          </span>
-
-        </div>
-
-
-        {report
-          .paymentStatusBreakdown
-          ?.length > 0 ? (
-
-          <div className="report-breakdown-list">
-
-            {report.paymentStatusBreakdown.map(
-              (item) => (
-
-                <div
-                  className="report-breakdown-row"
-                  key={item.status}
-                >
-
-                  <div>
-
-                    <strong>
-                      {formatText(
-                        item.status
-                      )}
-                    </strong>
-
-                    <span>
-                      {item.purchases || 0}{" "}
-                      purchases
-                    </span>
-
-                  </div>
-
-
-                  <div className="purchase-report-amounts">
-
-                    <strong>
-                      {formatCurrency(
-                        item.amount
-                      )}
-                    </strong>
-
-                    <span>
-                      Due:{" "}
-                      {formatCurrency(
-                        item.outstanding
-                      )}
-                    </span>
-
-                  </div>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        ) : (
-
-          <div className="report-empty">
-            No payment data.
-          </div>
-
-        )}
-
-      </div>
-
-
-      {/* TOP PURCHASED PRODUCTS */}
-
-      <div className="report-section">
-
-        <div className="report-section-header">
-
-          <h2>
-            Top Purchased Products
-          </h2>
-
-          <span>
-            Products bought from suppliers
-          </span>
-
-        </div>
-
-
-        {report
-          .topProducts
-          ?.length > 0 ? (
-
-          <div className="report-breakdown-list">
-
-            {report.topProducts.map(
-              (product) => (
-
-                <div
-                  className="report-breakdown-row"
-                  key={
-                    product.productId ||
-                    product.productName
-                  }
-                >
-
-                  <div>
-
-                    <strong>
-                      {product.productName ||
-                        "Product"}
-                    </strong>
-
-                    <span>
-                      Qty:{" "}
-                      {product.quantityPurchased ||
-                        0}
-                    </span>
-
-                  </div>
-
-
-                  <strong>
-                    {formatCurrency(
-                      product.purchaseValue
-                    )}
-                  </strong>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        ) : (
-
-          <div className="report-empty">
-            No product purchase data.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        SUPPLIER SUMMARY
-    ================================= */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Supplier Summary
-        </h2>
-
-        <span>
-          Purchase spending by supplier
-        </span>
-
-      </div>
-
-
-      <div className="purchase-report-table-wrapper">
-
-        <div className="purchase-report-table-header">
-
-          <div>Supplier</div>
-
-          <div>Purchases</div>
-
-          <div>Total</div>
-
-          <div>Paid</div>
-
-          <div>Outstanding</div>
-
-        </div>
-
-
-        {report
-          .supplierSummary
-          ?.length > 0 ? (
-
-          report.supplierSummary.map(
-            (supplier) => (
-
-              <div
-                className="purchase-report-table-row"
-                key={
-                  supplier.supplierId ||
-                  supplier.supplierName
-                }
-              >
-
-                <div>
-
-                  <strong>
-                    {supplier.supplierName ||
-                      "Unknown Supplier"}
-                  </strong>
-
-                </div>
-
-
-                <div>
-                  {supplier.purchaseCount || 0}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    supplier.totalPurchases
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    supplier.amountPaid
-                  )}
-                </div>
-
-
-                <div className="purchase-outstanding">
-
-                  {formatCurrency(
-                    supplier.outstanding
-                  )}
-
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="report-table-empty">
-            No supplier purchase data.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        RECENT PURCHASES
-    ================================= */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Recent Purchases
-        </h2>
-
-        <span>
-          Latest supplier purchases
-        </span>
-
-      </div>
-
-
-      <div className="purchase-history-wrapper">
-
-        <div className="purchase-history-header">
-
-          <div>Purchase</div>
-
-          <div>Date</div>
-
-          <div>Supplier</div>
-
-          <div>Total</div>
-
-          <div>Paid</div>
-
-          <div>Balance</div>
-
-          <div>Status</div>
-
-        </div>
-
-
-        {report
-          .recentPurchases
-          ?.length > 0 ? (
-
-          report.recentPurchases.map(
-            (purchase) => {
-
-              const purchaseTotal =
-                Number(
-                  purchase.total || 0
-                );
-
-              const purchasePaid =
-                Number(
-                  purchase.amountPaid || 0
-                );
-
-              const purchaseBalance =
-                Math.max(
-                  purchaseTotal -
-                    purchasePaid,
-                  0
-                );
-
-
-              return (
-
-                <div
-                  className="purchase-history-row"
-                  key={purchase._id}
-                >
-
-                  <div className="report-sale-number">
-
-                    {
-                      purchase.purchaseNumber
-                    }
-
-                  </div>
-
-
-                  <div>
-
-                    {formatDate(
-                      purchase.createdAt
-                    )}
-
-                  </div>
-
-
-                  <div>
-
-                    {purchase
-                      .supplierId
-                      ?.name ||
-                      "Unknown Supplier"}
-
-                  </div>
-
-
-                  <div>
-
-                    {formatCurrency(
-                      purchaseTotal
-                    )}
-
-                  </div>
-
-
-                  <div>
-
-                    {formatCurrency(
-                      purchasePaid
-                    )}
-
-                  </div>
-
-
-                  <div className="purchase-outstanding">
-
-                    {formatCurrency(
-                      purchaseBalance
-                    )}
-
-                  </div>
-
-
-                  <div>
-
-                    <span
-                      className={`purchase-status-badge ${
-                        purchase.paymentStatus ||
-                        ""
-                      }`}
-                    >
-
-                      {formatText(
-                        purchase.paymentStatus
-                      )}
-
-                    </span>
-
-                  </div>
-
-                </div>
-
-              );
-
-            }
-          )
-
-        ) : (
-
-          <div className="report-table-empty">
-
-            No purchases found for this
-            period.
-
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  </>
-
-)}
-{/* =====================================
-    INVENTORY REPORT
-===================================== */}
-
-{!loading &&
-  report &&
-  reportType === "inventory" && (
-
-  <>
-
-    {/* SUMMARY */}
-
-    <div className="report-summary-grid">
-
-      <div className="report-summary-card">
-
-        <span>
-          Products
-        </span>
-
-        <strong>
-          {summary.totalProducts || 0}
-        </strong>
-
-        <small>
-          Total products
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Stock Units
-        </span>
-
-        <strong>
-          {summary.totalStockQuantity || 0}
-        </strong>
-
-        <small>
-          Units currently available
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Stock Cost
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.stockCostValue
-          )}
-        </strong>
-
-        <small>
-          Current inventory cost
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Retail Value
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.stockRetailValue
-          )}
-        </strong>
-
-        <small>
-          Potential sales value
-        </small>
-
-      </div>
-
-    </div>
-
-
-    {/* SECOND SUMMARY */}
-
-    <div className="report-financial-summary">
-
-      <div>
-
-        <span>
-          Potential Profit
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.potentialProfit
-          )}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Low Stock
-        </span>
-
-        <strong>
-          {summary.lowStockProducts || 0}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Out of Stock
-        </span>
-
-        <strong>
-          {summary.outOfStockProducts || 0}
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    {/* INVENTORY TABLE */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Current Inventory
-        </h2>
-
-        <span>
-          Current product stock and value
-        </span>
-
-      </div>
-
-
-      <div className="inventory-report-wrapper">
-
-        <div className="inventory-report-header">
-
-          <div>Product</div>
-          <div>Category</div>
-          <div>Stock</div>
-          <div>Cost</div>
-          <div>Sell</div>
-          <div>Cost Value</div>
-          <div>Retail Value</div>
-          <div>Status</div>
-
-        </div>
-
-
-        {report.inventory
-          ?.length > 0 ? (
-
-          report.inventory.map(
-            (product) => (
-
-              <div
-                className="inventory-report-row"
-                key={product.productId}
-              >
-
-                <div>
-
-                  <strong>
-                    {product.name}
-                  </strong>
-
-                  <span className="inventory-product-sku">
-                    {product.sku || "-"}
-                  </span>
-
-                </div>
-
-
-                <div>
-                  {product.category}
-                </div>
-
-
-                <div>
-
-                  {product.stockQuantity}{" "}
-                  {product.unit}
-
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.costPrice
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.sellingPrice
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.costValue
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.retailValue
-                  )}
-                </div>
-
-
-                <div>
-
-                  <span
-                    className={`inventory-status ${product.stockStatus}`}
-                  >
-                    {formatText(
-                      product.stockStatus
-                    )}
-                  </span>
-
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="report-table-empty">
-            No inventory found.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  </>
-
-)}
-{/* =====================================
-    LOW STOCK REPORT
-===================================== */}
-
-{!loading &&
-  report &&
-  reportType === "low-stock" && (
-
-  <>
-
-    {/* SUMMARY */}
-
-    <div className="report-summary-grid">
-
-      <div className="report-summary-card">
-
-        <span>
-          Need Attention
-        </span>
-
-        <strong>
-          {summary
-            .productsNeedingAttention ||
-            0}
-        </strong>
-
-        <small>
-          Products requiring restock
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Low Stock
-        </span>
-
-        <strong>
-          {summary
-            .lowStockProducts ||
-            0}
-        </strong>
-
-        <small>
-          Below stock threshold
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Out of Stock
-        </span>
-
-        <strong>
-          {summary
-            .outOfStockProducts ||
-            0}
-        </strong>
-
-        <small>
-          Products with zero stock
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>
-          Reorder Cost
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary
-              .estimatedReorderCost
-          )}
-        </strong>
-
-        <small>
-          Estimated restocking cost
-        </small>
-
-      </div>
-
-    </div>
-
-
-    {/* REORDER UNITS */}
-
-    <div className="report-financial-summary">
-
-      <div>
-
-        <span>
-          Suggested Reorder Units
-        </span>
-
-        <strong>
-          {summary
-            .suggestedReorderUnits ||
-            0}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Products Affected
-        </span>
-
-        <strong>
-          {summary
-            .productsNeedingAttention ||
-            0}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Estimated Cost
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary
-              .estimatedReorderCost
-          )}
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        PRODUCTS
-    ================================= */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Products Requiring Restock
-        </h2>
-
-        <span>
-          Products at or below their
-          low-stock threshold
-        </span>
-
-      </div>
-
-
-      <div className="low-stock-report-wrapper">
-
-        <div className="low-stock-report-header">
-
-          <div>Product</div>
-
-          <div>Category</div>
-
-          <div>Current</div>
-
-          <div>Low Level</div>
-
-          <div>Reorder</div>
-
-          <div>Unit Cost</div>
-
-          <div>Reorder Cost</div>
-
-          <div>Status</div>
-
-        </div>
-
-
-        {report.products
-          ?.length > 0 ? (
-
-          report.products.map(
-            (product) => (
-
-              <div
-                className="low-stock-report-row"
-                key={
-                  product.productId
-                }
-              >
-
-                {/* PRODUCT */}
-
-                <div>
-
-                  <strong>
-                    {product.name}
-                  </strong>
-
-                  <span className="inventory-product-sku">
-                    {product.sku ||
-                      "-"}
-                  </span>
-
-                </div>
-
-
-                {/* CATEGORY */}
-
-                <div>
-                  {product.category}
-                </div>
-
-
-                {/* CURRENT */}
-
-                <div>
-
-                  <strong>
-                    {product
-                      .stockQuantity}
-                  </strong>
-
-                  {" "}
-
-                  {product.unit}
-
-                </div>
-
-
-                {/* LOW LEVEL */}
-
-                <div>
-                  {product
-                    .lowStockLevel}
-                </div>
-
-
-                {/* REORDER */}
-
-                <div className="reorder-quantity">
-
-                  {product
-                    .suggestedReorder}
-
-                </div>
-
-
-                {/* COST */}
-
-                <div>
-
-                  {formatCurrency(
-                    product.costPrice
-                  )}
-
-                </div>
-
-
-                {/* REORDER COST */}
-
-                <div>
-
-                  {formatCurrency(
-                    product
-                      .estimatedReorderCost
-                  )}
-
-                </div>
-
-
-                {/* STATUS */}
-
-                <div>
-
-                  <span
-                    className={`inventory-status ${product.stockStatus}`}
-                  >
-
-                    {formatText(
-                      product.stockStatus
-                    )}
-
-                  </span>
-
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="low-stock-empty">
-
-            <strong>
-              Stock levels look good
-            </strong>
-
-            <span>
-              No products are currently
-              at or below their low-stock
-              level.
-            </span>
-
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  </>
-
-)}
-{/* =====================================
-    CUSTOMER REPORT
-===================================== */}
-
-{!loading &&
-  report &&
-  reportType === "customers" && (
-
-  <>
-
-    <div className="report-summary-grid">
-
-      <div className="report-summary-card">
-        <span>Customers</span>
-
-        <strong>
-          {summary
-            .customersWhoPurchased || 0}
-        </strong>
-
-        <small>
-          Purchased during this period
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>New Customers</span>
-
-        <strong>
-          {summary.newCustomers || 0}
-        </strong>
-
-        <small>
-          Registered during this period
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>Repeat Customers</span>
-
-        <strong>
-          {summary.repeatCustomers || 0}
-        </strong>
-
-        <small>
-          Made 2 or more purchases
-        </small>
-      </div>
-
-
-      <div className="report-summary-card">
-        <span>Customer Revenue</span>
-
-        <strong>
-          {formatCurrency(
-            summary.identifiedRevenue
-          )}
-        </strong>
-
-        <small>
-          Revenue from identified customers
-        </small>
-      </div>
-
-    </div>
-
-
-    <div className="report-financial-summary">
-
-      <div>
-        <span>
-          Registered Customers
-        </span>
-
-        <strong>
-          {summary
-            .totalRegisteredCustomers || 0}
-        </strong>
-      </div>
-
-
-      <div>
-        <span>
-          Customer Orders
-        </span>
-
-        <strong>
-          {summary.identifiedSales || 0}
-        </strong>
-      </div>
-
-
-      <div>
-        <span>
-          Avg Customer Spend
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.averageCustomerSpend
-          )}
-        </strong>
-      </div>
-
-    </div>
-
-
-    {/* TOP CUSTOMERS */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Top Customers
-        </h2>
-
-        <span>
-          Ranked by spending during
-          the selected period
-        </span>
-
-      </div>
-
-
-      <div className="customer-report-wrapper">
-
-        <div className="customer-report-header">
-
-          <div>Customer</div>
-          <div>Customer ID</div>
-          <div>Orders</div>
-          <div>Total Spent</div>
-          <div>Avg Order</div>
-          <div>Last Purchase</div>
-
-        </div>
-
-
-        {report.topCustomers
-          ?.length > 0 ? (
-
-          report.topCustomers.map(
-            (customer) => (
-
-              <div
-                className="customer-report-row"
-                key={
-                  customer.customerId
-                }
-              >
-
-                <div>
-                  <strong>
-                    {customer.name}
-                  </strong>
-
-                  <span className="customer-report-email">
-                    {customer.email ||
-                      customer.phone ||
-                      "-"}
-                  </span>
-                </div>
-
-
-                <div className="customer-report-number">
-                  {customer.customerNumber}
-                </div>
-
-
-                <div>
-                  {customer.orders}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    customer.spent
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    customer.averageOrderValue
-                  )}
-                </div>
-
-
-                <div>
-                  {formatDate(
-                    customer.lastPurchaseAt
-                  )}
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="report-table-empty">
-            No customer purchases found
-            for this period.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  </>
-
-)}
-{/* =====================================
-    PRODUCT PERFORMANCE REPORT
-===================================== */}
-
-{!loading &&
-  report &&
-  reportType === "products" && (
-
-  <>
-
-    {/* SUMMARY */}
-
-    <div className="report-summary-grid">
-
-      <div className="report-summary-card">
-
-        <span>Products Sold</span>
-
-        <strong>
-          {summary.productsSold || 0}
-        </strong>
-
-        <small>
-          Unique products sold
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>Units Sold</span>
-
-        <strong>
-          {summary.totalUnitsSold || 0}
-        </strong>
-
-        <small>
-          Total quantity sold
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>Revenue</span>
-
-        <strong>
-          {formatCurrency(
-            summary.totalRevenue
-          )}
-        </strong>
-
-        <small>
-          Product sales revenue
-        </small>
-
-      </div>
-
-
-      <div className="report-summary-card">
-
-        <span>Estimated Profit</span>
-
-        <strong>
-          {formatCurrency(
-            summary.estimatedProfit
-          )}
-        </strong>
-
-        <small>
-          Revenue minus estimated cost
-        </small>
-
-      </div>
-
-    </div>
-
-
-    {/* SECONDARY SUMMARY */}
-
-    <div className="report-financial-summary">
-
-      <div>
-
-        <span>
-          Estimated Cost
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.estimatedCost
-          )}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Avg Revenue / Unit
-        </span>
-
-        <strong>
-          {formatCurrency(
-            summary.averageRevenuePerUnit
-          )}
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Products With No Sales
-        </span>
-
-        <strong>
-          {summary.productsWithNoSales ||
-            0}
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        PRODUCT PERFORMANCE TABLE
-    ================================= */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Product Performance
-        </h2>
-
-        <span>
-          Sales performance for the
-          selected period
-        </span>
-
-      </div>
-
-
-      <div className="product-report-wrapper">
-
-        <div className="product-report-header">
-
-          <div>Product</div>
-
-          <div>Category</div>
-
-          <div>Units</div>
-
-          <div>Orders</div>
-
-          <div>Revenue</div>
-
-          <div>Cost</div>
-
-          <div>Profit</div>
-
-          <div>Stock</div>
-
-        </div>
-
-
-        {report
-          .productPerformance
-          ?.length > 0 ? (
-
-          report.productPerformance.map(
-            (product) => (
-
-              <div
-                className="product-report-row"
-                key={
-                  product.productId
-                }
-              >
-
-                <div>
-
-                  <strong>
-                    {product.name}
-                  </strong>
-
-                  <span className="product-report-sku">
-                    {product.sku ||
-                      "-"}
-                  </span>
-
-                </div>
-
-
-                <div>
-                  {product.category}
-                </div>
-
-
-                <div>
-                  {product.quantitySold}
-                </div>
-
-
-                <div>
-                  {product.orders}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.revenue
-                  )}
-                </div>
-
-
-                <div>
-                  {formatCurrency(
-                    product.estimatedCost
-                  )}
-                </div>
-
-
-                <div className={
-                  product.estimatedProfit >= 0
-                    ? "product-profit-positive"
-                    : "product-profit-negative"
-                }>
-
-                  {formatCurrency(
-                    product.estimatedProfit
-                  )}
-
-                </div>
-
-
-                <div>
-                  {product.stockQuantity}
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="report-table-empty">
-            No product sales found for
-            this period.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-
-    {/* =================================
-        PRODUCTS WITH NO SALES
-    ================================= */}
-
-    <div className="report-section">
-
-      <div className="report-section-header">
-
-        <h2>
-          Products With No Sales
-        </h2>
-
-        <span>
-          Products that did not sell
-          during this period
-        </span>
-
-      </div>
-
-
-      <div className="no-sales-products">
-
-        {report
-          .productsWithNoSales
-          ?.length > 0 ? (
-
-          report.productsWithNoSales.map(
-            (product) => (
-
-              <div
-                className="no-sales-product"
-                key={
-                  product.productId
-                }
-              >
-
-                <div>
-
-                  <strong>
-                    {product.name}
-                  </strong>
-
-                  <span>
-                    {product.sku || "-"}
-                  </span>
-
-                </div>
-
-
-                <div>
-
-                  <span>Stock</span>
-
-                  <strong>
-                    {product.stockQuantity}
-                  </strong>
-
-                </div>
-
-
-                <div>
-
-                  <span>Price</span>
-
-                  <strong>
-                    {formatCurrency(
-                      product.sellingPrice
-                    )}
-                  </strong>
-
-                </div>
-
-              </div>
-
-            )
-          )
-
-        ) : (
-
-          <div className="report-empty">
-            Every active product has sales
-            during this period.
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  </>
-
-)}
       {/* =====================================
           NO DATA
       ===================================== */}
@@ -3272,13 +684,17 @@ else if (
         !report && (
 
         <div className="reports-loading">
-          Select a report or date range.
+
+          {period === "custom"
+            ? "Select a custom date range and click Apply."
+            : "No report data available."}
+
         </div>
 
       )}
 
-
     </div>
+
   );
 };
 

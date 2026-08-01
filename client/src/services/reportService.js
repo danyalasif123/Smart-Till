@@ -156,3 +156,20 @@ export const getProductReport =
 
     return response.data;
   };
+  // ==========================================
+// GET CASHIER REPORT
+// ==========================================
+
+export const getCashierReport =
+  async (params = {}) => {
+
+    const response =
+      await api.get(
+        "/reports/cashiers",
+        {
+          params,
+        }
+      );
+
+    return response.data;
+  };

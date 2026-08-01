@@ -7,7 +7,8 @@ import {
   getInventoryReport,
   getLowStockReport,
   getCustomerReport,
-  getProductReport
+  getProductReport,
+  getCashierReport
 } from "../controllers/reportController.js";
 import verifyToken from "../middleware/verifyToken.js";
 
@@ -88,5 +89,15 @@ router.get(
   "/products",
   verifyToken,
   getProductReport
+);
+// ==========================================
+// CASHIER PERFORMANCE REPORT
+// GET /api/reports/cashiers
+// ==========================================
+
+router.get(
+  "/cashiers",
+  verifyToken,
+  getCashierReport
 );
 export default router;

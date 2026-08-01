@@ -2637,3 +2637,724 @@
   }
 
 }
+/* =========================================
+   CASHIER PERFORMANCE REPORT
+========================================= */
+
+.cashier-report-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   CASHIER TABLE GRID
+========================================= */
+
+.cashier-report-header,
+.cashier-report-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.6fr)
+    minmax(100px, 0.8fr)
+    minmax(80px, 0.7fr)
+    minmax(80px, 0.7fr)
+    minmax(120px, 1fr)
+    minmax(120px, 1fr)
+    minmax(130px, 1fr);
+
+  gap: 15px;
+
+  align-items: center;
+
+  min-width: 900px;
+
+  padding: 14px 18px;
+}
+
+
+/* =========================================
+   CASHIER TABLE HEADER
+========================================= */
+
+.cashier-report-header {
+  background: #f8f8f8;
+
+  color: #605e5c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+
+/* =========================================
+   CASHIER ROW
+========================================= */
+
+.cashier-report-row {
+  color: #323130;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #f3f2f1;
+
+  transition: background 0.15s ease;
+}
+
+.cashier-report-row:last-child {
+  border-bottom: none;
+}
+
+.cashier-report-row:hover {
+  background: #faf9f8;
+}
+
+
+/* =========================================
+   CASHIER NAME
+========================================= */
+
+.cashier-report-row
+> div:first-child {
+  min-width: 0;
+}
+
+.cashier-report-row
+> div:first-child
+> strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #323130;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   CASHIER EMAIL
+========================================= */
+
+.cashier-report-email {
+  display: block;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+
+  color: #8a8886;
+
+  font-size: 11px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   ROLE BADGE
+========================================= */
+
+.cashier-role-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 65px;
+
+  padding: 5px 10px;
+
+  background: #eff6fc;
+
+  color: #0078d4;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  text-transform: capitalize;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   SALES / ITEMS
+========================================= */
+
+.cashier-report-row
+> div:nth-child(3),
+.cashier-report-row
+> div:nth-child(4) {
+  font-weight: 600;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================
+   REVENUE
+========================================= */
+
+.cashier-revenue {
+  color: #107c10;
+
+  font-weight: 700;
+
+  font-variant-numeric: tabular-nums;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   AVERAGE SALE
+========================================= */
+
+.cashier-report-row
+> div:nth-child(6) {
+  font-weight: 500;
+
+  font-variant-numeric: tabular-nums;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   LAST SALE
+========================================= */
+
+.cashier-report-row
+> div:nth-child(7) {
+  color: #605e5c;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.cashier-report-wrapper
+.report-table-empty {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 150px;
+
+  padding: 35px 20px;
+
+  color: #8a8886;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   PAYMENT BREAKDOWN
+========================================= */
+
+.cashier-payment-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(300px, 1fr)
+    );
+
+  gap: 16px;
+
+  width: 100%;
+}
+
+
+/* =========================================
+   PAYMENT CARD
+========================================= */
+
+.cashier-payment-card {
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #edebe9;
+  border-radius: 8px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.cashier-payment-card:hover {
+  border-color: #c8c6c4;
+
+  box-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, 0.06);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================
+   PAYMENT CARD TITLE
+========================================= */
+
+.cashier-payment-title {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-bottom: 13px;
+
+  border-bottom: 1px solid #edebe9;
+}
+
+.cashier-payment-title strong {
+  overflow: hidden;
+
+  color: #323130;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.cashier-payment-title span {
+  flex-shrink: 0;
+
+  color: #8a8886;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   PAYMENT VALUES
+========================================= */
+
+.cashier-payment-values {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 8px;
+
+  padding-top: 15px;
+}
+
+
+/* =========================================
+   PAYMENT VALUE ITEM
+========================================= */
+
+.cashier-payment-values
+> div {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 10px 5px;
+
+  background: #faf9f8;
+
+  border-radius: 6px;
+}
+
+.cashier-payment-values
+> div
+> span {
+  color: #8a8886;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  text-transform: uppercase;
+}
+
+.cashier-payment-values
+> div
+> strong {
+  color: #323130;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* =========================================
+   CASH PAYMENT
+========================================= */
+
+.cashier-payment-values
+> div:nth-child(1)
+> strong {
+  color: #107c10;
+}
+
+
+/* =========================================
+   CARD PAYMENT
+========================================= */
+
+.cashier-payment-values
+> div:nth-child(2)
+> strong {
+  color: #0078d4;
+}
+
+
+/* =========================================
+   ONLINE PAYMENT
+========================================= */
+
+.cashier-payment-values
+> div:nth-child(3)
+> strong {
+  color: #8764b8;
+}
+
+
+/* =========================================
+   OTHER PAYMENT
+========================================= */
+
+.cashier-payment-values
+> div:nth-child(4)
+> strong {
+  color: #605e5c;
+}
+
+
+/* =========================================
+   TOP CASHIER SUMMARY
+========================================= */
+
+.report-financial-summary
+> div:last-child
+> strong {
+  overflow: hidden;
+
+  max-width: 200px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   CASHIER SCROLLBAR
+========================================= */
+
+.cashier-report-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cashier-report-wrapper::-webkit-scrollbar-track {
+  background: #f3f2f1;
+
+  border-radius: 10px;
+}
+
+.cashier-report-wrapper::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+
+  border-radius: 10px;
+}
+
+.cashier-report-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .cashier-report-header,
+  .cashier-report-row {
+    min-width: 850px;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+  }
+
+
+  .cashier-payment-grid {
+    grid-template-columns:
+      repeat(
+        auto-fill,
+        minmax(270px, 1fr)
+      );
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .cashier-report-wrapper {
+    border-radius: 6px;
+  }
+
+
+  .cashier-report-header,
+  .cashier-report-row {
+    min-width: 800px;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+  }
+
+
+  .cashier-report-header {
+    font-size: 11px;
+  }
+
+
+  .cashier-report-row {
+    font-size: 12px;
+  }
+
+
+  .cashier-report-row
+  > div:first-child
+  > strong {
+    font-size: 12px;
+  }
+
+
+  .cashier-report-email {
+    font-size: 10px;
+  }
+
+
+  .cashier-role-badge {
+    min-width: 60px;
+
+    padding: 4px 8px;
+
+    font-size: 10px;
+  }
+
+
+  .cashier-payment-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .cashier-report-header,
+  .cashier-report-row {
+    min-width: 780px;
+
+    padding: 11px 12px;
+  }
+
+
+  .cashier-payment-card {
+    padding: 14px;
+  }
+
+
+  .cashier-payment-values {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 8px;
+  }
+
+
+  .cashier-payment-values
+  > div {
+    padding: 9px 5px;
+  }
+
+
+  .cashier-payment-values
+  > div
+  > strong {
+    font-size: 15px;
+  }
+
+
+  .cashier-payment-title {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+}
+/* ==========================================
+   REPORT HEADER
+========================================== */
+
+.reports-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   REPORT ACTIONS
+========================================== */
+
+.report-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 6px;
+
+  margin-left: auto;
+}
+
+
+/* ==========================================
+   SMALL ACTION BUTTONS
+========================================== */
+
+.report-actions button {
+  width: auto;
+  min-width: auto;
+  min-height: 32px;
+
+  padding: 6px 11px;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+/* CSV */
+
+.report-export-button {
+  background: #ffffff;
+
+  color: #374151;
+
+  border: 1px solid #d1d5db;
+}
+
+.report-export-button:hover {
+  background: #f3f4f6;
+
+  border-color: #9ca3af;
+}
+
+
+/* PRINT */
+
+.report-print-button {
+  background: #111827;
+
+  color: #ffffff;
+
+  border: 1px solid #111827;
+}
+
+.report-print-button:hover {
+  background: #1f2937;
+}
+
+
+/* DISABLED */
+
+.report-actions button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 650px) {
+
+  .reports-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .report-actions {
+    width: 100%;
+
+    justify-content: flex-end;
+  }
+
+}

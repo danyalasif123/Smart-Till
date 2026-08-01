@@ -1,0 +1,127 @@
+.payment-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    padding:22px;
+
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+
+}
+
+.payment-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.payment-header h2{
+
+    margin:0;
+
+    font-size:22px;
+
+}
+
+.payment-header p{
+
+    margin-top:5px;
+
+    font-size:13px;
+
+    color:#888;
+
+}
+
+.payment-link{
+
+    font-size:13px;
+
+    color:#6b7280;
+
+    text-decoration:none;
+
+}
+
+.payment-link:hover{
+
+    color:#2563eb;
+
+}
+
+.payment-chart{
+
+    height:220px;
+
+}
+
+.payment-total{
+
+    text-align:center;
+
+    margin:15px 0 20px;
+
+    color:#666;
+
+}
+
+.payment-total strong{
+
+    display:block;
+
+    margin-top:6px;
+
+    font-size:24px;
+
+    color:#111827;
+
+}
+
+.payment-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.payment-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.payment-name{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    text-transform:capitalize;
+
+}
+
+.payment-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+}

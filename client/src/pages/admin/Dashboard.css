@@ -2,11 +2,15 @@
 
     padding:25px;
 
-    background:#f5f6fa;
+    background:#f5f7fb;
 
-    min-height:relative;
+    min-height:100vh;
 
 }
+
+/* ===========================
+   HEADER
+=========================== */
 
 .dashboard-header{
 
@@ -18,15 +22,25 @@
 
     margin:0;
 
+    font-size:32px;
+
+    font-weight:700;
+
 }
 
 .dashboard-header p{
 
-    color:#666;
+    margin-top:6px;
 
-    margin-top:5px;
+    color:#6b7280;
+
+    font-size:15px;
 
 }
+
+/* ===========================
+   TOP SECTION
+=========================== */
 
 .dashboard-overview{
 
@@ -39,6 +53,64 @@
     align-items:start;
 
 }
+
+/* ===========================
+   BOTTOM SECTION
+=========================== */
+
+.dashboard-bottom{
+
+    display:grid;
+
+    grid-template-columns:300px minmax(650px,1fr);
+
+    gap:25px;
+
+    margin-top:25px;
+
+    align-items:start;
+
+}
+.dashboard-bottom-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+.dashboard-bottom-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+.dashboard-right-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+@media(max-width:1100px){
+
+    .dashboard-bottom{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+/* ===========================
+   RESPONSIVE
+=========================== */
 
 @media(max-width:1100px){
 

@@ -1,0 +1,48 @@
+.top-products-card{
+
+    background:#fff;
+
+    border-radius:10px;
+
+    padding:20px;
+
+  
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+.top-products-header{
+
+    margin-bottom:15px;
+
+}
+
+.top-product-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.top-product-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.top-product-row p{
+
+    margin-top:4px;
+
+    color:#777;
+
+    font-size:13px;
+
+}

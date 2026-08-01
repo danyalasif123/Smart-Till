@@ -1,0 +1,205 @@
+.recent-sales-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    padding:28px;
+
+    min-height:340px;
+
+    width:500px;
+
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.recent-sales-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.recent-sales-header h2{
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.recent-sales-header p{
+
+    margin-top:5px;
+
+    color:#9ca3af;
+
+    font-size:13px;
+
+}
+
+/* ===========================
+   VIEW ALL
+=========================== */
+
+.view-all-sales{
+
+    text-decoration:none;
+
+    font-size:13px;
+
+    color:#6b7280;
+
+    font-weight:500;
+
+    transition:.2s;
+
+}
+
+.view-all-sales:hover{
+
+    color:#2563eb;
+
+}
+
+/* ===========================
+   EMPTY
+=========================== */
+
+.recent-sales-empty{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:220px;
+
+    color:#9ca3af;
+
+}
+
+/* ===========================
+   SALE CARD
+=========================== */
+
+.recent-sale-item{
+
+    background:#fafafa;
+
+    border:1px solid #ececec;
+
+    border-radius:10px;
+
+    padding:18px 22px;
+
+    margin-bottom:14px;
+
+    transition:.2s;
+
+}
+
+.recent-sale-item:hover{
+
+    border-color:#d1d5db;
+
+    background:#f5f5f5;
+
+}
+
+/* ===========================
+   TOP ROW
+=========================== */
+
+.sale-top{
+
+    display:grid;
+
+    grid-template-columns:1fr auto auto;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-bottom:10px;
+
+}
+
+.sale-number{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#444;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+.sale-amount{
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+.sale-date{
+
+    font-size:13px;
+
+    color:#888;
+
+}
+
+/* ===========================
+   BOTTOM ROW
+=========================== */
+
+.sale-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.sale-customer{
+
+    font-size:14px;
+
+    color:#666;
+
+}
+
+.payment-method{
+
+    font-size:13px;
+
+    color:#888;
+
+    text-transform:capitalize;
+
+}

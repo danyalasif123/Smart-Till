@@ -100,22 +100,166 @@ export const getDashboard = async (req, res) => {
         $lte: ["$stockQuantity", "$lowStockLevel"],
       },
     });
+// ======================================
+// TOP SELLING PRODUCTS
+// ======================================
 
+const productMap = {};
+
+for (const sale of todaySales) {
+
+  for (const item of sale.items) {
+
+    if (!productMap[item.productId]) {
+
+      productMap[item.productId] = {
+
+        productId: item.productId,
+
+        name: item.productName,
+
+        quantity: 0,
+
+        revenue: 0,
+
+      };
+
+    }
+
+    productMap[item.productId].quantity +=
+      Number(item.quantity);
+
+    productMap[item.productId].revenue +=
+      Number(item.subtotal);
+
+  }
+
+}
+
+const topProducts = Object.values(productMap)
+
+.sort((a, b) => b.quantity - a.quantity)
+
+.slice(0, 5);
+
+// ======================================
+// RECENT SALES
+// ======================================
+
+const recentSales = await Sale.find({
+  businessId,
+  status: "completed",
+})
+.populate(
+  "customerId",
+  "name"
+)
+.sort({
+  createdAt: -1,
+})
+.limit(2)
+.select(
+  "saleNumber total paymentMethod createdAt customerId"
+);
+// ======================================
+// LOW STOCK PRODUCTS
+// ======================================
+
+const lowStockItems = await Product.find({
+  businessId,
+  status: true,
+  $expr: {
+    $lte: [
+      "$stockQuantity",
+      "$lowStockLevel",
+    ],
+  },
+})
+.populate(
+  "categoryId",
+  "name"
+)
+.select(
+  "name sku stockQuantity lowStockLevel categoryId"
+)
+.sort({
+  stockQuantity: 1,
+})
+.limit(2);
+// ======================================
+// RECENT PURCHASES
+// ======================================
+
+const recentPurchases = await Purchase.find({
+  businessId,
+})
+.populate(
+  "supplierId",
+  "name"
+)
+.sort({
+  createdAt: -1,
+})
+.limit(2)
+.select(
+  "purchaseNumber total paymentStatus createdAt supplierId"
+);
+// ======================================
+// PAYMENT METHOD BREAKDOWN
+// ======================================
+
+const paymentBreakdown = await Sale.aggregate([
+  {
+    $match: {
+      businessId,
+      status: "completed",
+    },
+  },
+  {
+    $group: {
+      _id: "$paymentMethod",
+      amount: {
+        $sum: "$total",
+      },
+      transactions: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $sort: {
+      amount: -1,
+    },
+  },
+]);
     // ======================================
     // RESPONSE
     // ======================================
 
-    res.status(200).json({
-      summary: {
-        todaySales: totalSales,
-        todayProfit: 0,
-        todayPurchases: totalPurchases,
-        todayTransactions: todaySales.length,
-        lowStockProducts,
-      },
+  res.status(200).json({
 
-      weeklySales,
-    });
+  summary:{
+
+    todaySales:totalSales,
+
+    todayProfit:0,
+
+    todayPurchases:totalPurchases,
+
+    todayTransactions:todaySales.length,
+
+    lowStockProducts,
+
+  },
+
+  weeklySales,
+
+  topProducts,
+ recentSales,
+ lowStockItems,
+   recentPurchases,
+   paymentBreakdown,
+});
 
   } catch (error) {
     console.error("Dashboard Error:", error);

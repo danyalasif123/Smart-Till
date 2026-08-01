@@ -6,7 +6,11 @@ import { getDashboard } from "../../services/dashboardService";
 
 import SummaryCards from "../../components/Dashboard/SummaryCards";
 import WeeklySalesChart from "../../components/Dashboard/WeeklySalesChart";
-
+import TopProducts from "../../components/Dashboard/TopProducts";
+import RecentSales from "../../components/Dashboard/RecentSales";
+import LowStockProducts from "../../components/Dashboard/LowStockProducts";
+import RecentPurchases from "../../components/Dashboard/RecentPurchases";
+import PaymentMethodChart from "../../components/Dashboard/PaymentMethodChart";
 const Dashboard = () => {
 
   const [dashboard, setDashboard] = useState(null);
@@ -75,7 +79,37 @@ const Dashboard = () => {
         <WeeklySalesChart
           data={dashboard?.weeklySales}
         />
+<div className="dashboard-bottom">
 
+    <div className="dashboard-bottom-left">
+
+        <TopProducts
+            products={dashboard?.topProducts}
+        />
+
+        <LowStockProducts
+            products={dashboard?.lowStockItems}
+        />
+
+    </div>
+
+ <div className="dashboard-bottom-right">
+
+    <div className="dashboard-right-grid">
+
+        <RecentSales
+            sales={dashboard?.recentSales}
+        />
+
+        <RecentPurchases
+            purchases={dashboard?.recentPurchases}
+        />
+
+    </div>
+
+</div>
+
+</div>
       </div>
 
     </div>

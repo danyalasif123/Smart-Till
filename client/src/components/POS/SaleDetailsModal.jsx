@@ -11,7 +11,25 @@ const SaleDetailsModal = ({
   // ==========================================
   // FORMAT MONEY
   // ==========================================
+const refundedAmount =
+  sale.items?.reduce(
 
+    (total, item) =>
+
+      total +
+
+      (
+        Number(item.returnedQuantity || 0) *
+        Number(item.unitPrice || 0)
+      ),
+
+    0
+
+  ) || 0;
+
+const netRevenue =
+  Number(sale.total) -
+  refundedAmount;
   const formatMoney = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -122,6 +140,48 @@ const SaleDetailsModal = ({
                 "-"}
             </strong>
           </div>
+          <div className="sale-detail-field">
+
+  <span>Status</span>
+
+  <strong
+    className={`sale-status ${sale.status}`}
+  >
+    {sale.status
+      ?.replaceAll("_", " ")
+      .replace(/\b\w/g, c => c.toUpperCase())}
+  </strong>
+
+</div>
+
+<div className="sale-detail-field">
+
+  <span>Refunded</span>
+
+  <strong>
+
+    {formatMoney(
+
+      sale.items?.reduce(
+
+        (total, item) =>
+
+          total +
+
+          (
+            Number(item.returnedQuantity || 0) *
+            Number(item.unitPrice || 0)
+          ),
+
+        0
+
+      ) || 0
+
+    )}
+
+  </strong>
+
+</div>
 
         </div>
 
@@ -137,14 +197,25 @@ const SaleDetailsModal = ({
 
             <table className="sale-items-table">
 
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
+             <thead>
+
+<tr>
+
+<th>Product</th>
+
+<th>Sold</th>
+
+<th>Returned</th>
+
+<th>Remaining</th>
+
+<th>Price</th>
+
+<th>Total</th>
+
+</tr>
+
+</thead>
 
               <tbody>
 
@@ -152,7 +223,7 @@ const SaleDetailsModal = ({
                 sale.items.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="4"
+                      colSpan="6"
                       className="sale-no-items"
                     >
                       No items found.
@@ -222,23 +293,27 @@ const SaleDetailsModal = ({
                             </div>
                           </td>
 
-                          <td>
-                            {quantity}
-                          </td>
+                       <td>
+  {quantity}
+</td>
 
-                          <td>
-                            {formatMoney(
-                              price
-                            )}
-                          </td>
+<td>
+  {item.returnedQuantity || 0}
+</td>
 
-                          <td>
-                            <strong>
-                              {formatMoney(
-                                itemTotal
-                              )}
-                            </strong>
-                          </td>
+<td>
+  {quantity - Number(item.returnedQuantity || 0)}
+</td>
+
+<td>
+  {formatMoney(price)}
+</td>
+
+<td>
+  <strong>
+    {formatMoney(itemTotal)}
+  </strong>
+</td>
                         </tr>
                       );
                     }
@@ -253,9 +328,6 @@ const SaleDetailsModal = ({
 
         </div>
 
-        {/* =================================
-            TOTALS
-        ================================= */}
 
         <div className="sale-details-totals">
 
@@ -291,12 +363,10 @@ const SaleDetailsModal = ({
           </div>
 
           <div className="sale-details-grand-total">
-            <span>Total</span>
+            <span>Net Revenue</span>
 
             <strong>
-              {formatMoney(
-                sale.total
-              )}
+             {formatMoney(netRevenue)}
             </strong>
           </div>
 

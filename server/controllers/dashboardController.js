@@ -42,7 +42,7 @@ export const getDashboard = async (req, res) => {
     });
 
     // ======================================
-    // TOTALS
+    // SALES TOTAL
     // ======================================
 
     const totalSales = todaySales.reduce(
@@ -50,10 +50,45 @@ export const getDashboard = async (req, res) => {
       0
     );
 
+    // ======================================
+    // PURCHASE TOTAL
+    // ======================================
+
     const totalPurchases = todayPurchases.reduce(
       (sum, purchase) => sum + Number(purchase.total || 0),
       0
     );
+
+    // ======================================
+    // TODAY PROFIT
+    // ======================================
+
+    let totalProfit = 0;
+
+    for (const sale of todaySales) {
+
+      for (const item of sale.items) {
+
+        const product = await Product.findById(
+          item.productId
+        ).select("costPrice");
+
+        if (!product) continue;
+
+        const sellingPrice =
+          Number(item.unitPrice || 0);
+
+        const costPrice =
+          Number(product.costPrice || 0);
+
+        const quantity =
+          Number(item.quantity || 0);
+
+        totalProfit +=
+          (sellingPrice - costPrice) *
+          quantity;
+      }
+    }
 
     // ======================================
     // WEEKLY SALES
@@ -62,6 +97,7 @@ export const getDashboard = async (req, res) => {
     const weeklySales = [];
 
     for (let i = 6; i >= 0; i--) {
+
       const start = new Date();
       start.setHours(0, 0, 0, 0);
       start.setDate(start.getDate() - i);
@@ -79,11 +115,15 @@ export const getDashboard = async (req, res) => {
       });
 
       weeklySales.push({
-        day: start.toLocaleDateString("en-GB", {
-          weekday: "short",
-        }),
+        day: start.toLocaleDateString(
+          "en-GB",
+          {
+            weekday: "short",
+          }
+        ),
         sales: sales.reduce(
-          (sum, sale) => sum + Number(sale.total || 0),
+          (sum, sale) =>
+            sum + Number(sale.total || 0),
           0
         ),
         transactions: sales.length,
@@ -91,181 +131,200 @@ export const getDashboard = async (req, res) => {
     }
 
     // ======================================
-    // LOW STOCK
+    // LOW STOCK COUNT
     // ======================================
 
-    const lowStockProducts = await Product.countDocuments({
-      businessId,
-      $expr: {
-        $lte: ["$stockQuantity", "$lowStockLevel"],
-      },
-    });
-// ======================================
-// TOP SELLING PRODUCTS
-// ======================================
+    const lowStockProducts =
+      await Product.countDocuments({
+        businessId,
+        $expr: {
+          $lte: [
+            "$stockQuantity",
+            "$lowStockLevel",
+          ],
+        },
+      });
 
-const productMap = {};
+    // ======================================
+    // TOP PRODUCTS
+    // ======================================
 
-for (const sale of todaySales) {
+    const productMap = {};
 
-  for (const item of sale.items) {
+    for (const sale of todaySales) {
 
-    if (!productMap[item.productId]) {
+      for (const item of sale.items) {
 
-      productMap[item.productId] = {
+        if (!productMap[item.productId]) {
 
-        productId: item.productId,
+          productMap[item.productId] = {
 
-        name: item.productName,
+            productId: item.productId,
 
-        quantity: 0,
+            name: item.productName,
 
-        revenue: 0,
+            quantity: 0,
 
-      };
+            revenue: 0,
 
+          };
+
+        }
+
+        productMap[item.productId].quantity +=
+          Number(item.quantity || 0);
+
+        productMap[item.productId].revenue +=
+          Number(item.subtotal || 0);
+      }
     }
 
-    productMap[item.productId].quantity +=
-      Number(item.quantity);
+    const topProducts = Object.values(productMap)
+      .sort((a, b) => b.quantity - a.quantity)
+      .slice(0, 5);
 
-    productMap[item.productId].revenue +=
-      Number(item.subtotal);
+    // ======================================
+    // RECENT SALES
+    // ======================================
 
-  }
-
-}
-
-const topProducts = Object.values(productMap)
-
-.sort((a, b) => b.quantity - a.quantity)
-
-.slice(0, 5);
-
-// ======================================
-// RECENT SALES
-// ======================================
-
-const recentSales = await Sale.find({
-  businessId,
-  status: "completed",
-})
-.populate(
-  "customerId",
-  "name"
-)
-.sort({
-  createdAt: -1,
-})
-.limit(2)
-.select(
-  "saleNumber total paymentMethod createdAt customerId"
-);
-// ======================================
-// LOW STOCK PRODUCTS
-// ======================================
-
-const lowStockItems = await Product.find({
-  businessId,
-  status: true,
-  $expr: {
-    $lte: [
-      "$stockQuantity",
-      "$lowStockLevel",
-    ],
-  },
-})
-.populate(
-  "categoryId",
-  "name"
-)
-.select(
-  "name sku stockQuantity lowStockLevel categoryId"
-)
-.sort({
-  stockQuantity: 1,
-})
-.limit(2);
-// ======================================
-// RECENT PURCHASES
-// ======================================
-
-const recentPurchases = await Purchase.find({
-  businessId,
-})
-.populate(
-  "supplierId",
-  "name"
-)
-.sort({
-  createdAt: -1,
-})
-.limit(2)
-.select(
-  "purchaseNumber total paymentStatus createdAt supplierId"
-);
-// ======================================
-// PAYMENT METHOD BREAKDOWN
-// ======================================
-
-const paymentBreakdown = await Sale.aggregate([
-  {
-    $match: {
+    const recentSales = await Sale.find({
       businessId,
       status: "completed",
-    },
-  },
-  {
-    $group: {
-      _id: "$paymentMethod",
-      amount: {
-        $sum: "$total",
-      },
-      transactions: {
-        $sum: 1,
-      },
-    },
-  },
-  {
-    $sort: {
-      amount: -1,
-    },
-  },
-]);
+    })
+      .populate(
+        "customerId",
+        "name"
+      )
+      .sort({
+        createdAt: -1,
+      })
+      .limit(2)
+      .select(
+        "saleNumber total paymentMethod createdAt customerId"
+      );
+
+    // ======================================
+    // LOW STOCK ITEMS
+    // ======================================
+
+    const lowStockItems =
+      await Product.find({
+        businessId,
+        status: true,
+        $expr: {
+          $lte: [
+            "$stockQuantity",
+            "$lowStockLevel",
+          ],
+        },
+      })
+        .populate(
+          "categoryId",
+          "name"
+        )
+        .select(
+          "name sku stockQuantity lowStockLevel categoryId"
+        )
+        .sort({
+          stockQuantity: 1,
+        })
+        .limit(2);
+
+    // ======================================
+    // RECENT PURCHASES
+    // ======================================
+
+    const recentPurchases =
+      await Purchase.find({
+        businessId,
+      })
+        .populate(
+          "supplierId",
+          "name"
+        )
+        .sort({
+          createdAt: -1,
+        })
+        .limit(2)
+        .select(
+          "purchaseNumber total paymentStatus createdAt supplierId"
+        );
+
+    // ======================================
+    // PAYMENT BREAKDOWN
+    // ======================================
+
+    const paymentBreakdown =
+      await Sale.aggregate([
+        {
+          $match: {
+            businessId,
+            status: "completed",
+          },
+        },
+        {
+          $group: {
+            _id: "$paymentMethod",
+            amount: {
+              $sum: "$total",
+            },
+            transactions: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $sort: {
+            amount: -1,
+          },
+        },
+      ]);
+
     // ======================================
     // RESPONSE
     // ======================================
 
-  res.status(200).json({
+    res.status(200).json({
 
-  summary:{
+      summary: {
 
-    todaySales:totalSales,
+        todaySales: totalSales,
 
-    todayProfit:0,
+        todayProfit: totalProfit,
 
-    todayPurchases:totalPurchases,
+        todayPurchases: totalPurchases,
 
-    todayTransactions:todaySales.length,
+        todayTransactions:
+          todaySales.length,
 
-    lowStockProducts,
+        lowStockProducts,
 
-  },
+      },
 
-  weeklySales,
+      weeklySales,
 
-  topProducts,
- recentSales,
- lowStockItems,
-   recentPurchases,
-   paymentBreakdown,
-});
+      topProducts,
+
+      recentSales,
+
+      lowStockItems,
+
+      recentPurchases,
+
+      paymentBreakdown,
+
+    });
 
   } catch (error) {
-    console.error("Dashboard Error:", error);
+
+    console.error(
+      "Dashboard Error:",
+      error
+    );
 
     res.status(500).json({
       message: error.message,
     });
+
   }
 };

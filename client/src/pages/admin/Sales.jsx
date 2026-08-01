@@ -4,11 +4,16 @@ import "./Sales.css";
 import Search from "../../components/common/Search/Search";
 import { getSales } from "../../services/saleService";
 import SaleDetailsModal from "../../components/POS/SaleDetailsModal";
+import SaleReturnModal from "../../components/POS/SaleReturnModal";
+
 const Sales = () => {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedSale, setSelectedSale] = useState(null);
+  const [returnSale, setReturnSale] = useState(null);
+  const [showReturnModal, setShowReturnModal] = useState(false);
+
   // ==========================================
   // FETCH SALES
   // ==========================================
@@ -21,10 +26,7 @@ const Sales = () => {
 
       setSales(response.sales || []);
     } catch (error) {
-      console.error(
-        "Failed to fetch sales:",
-        error
-      );
+      console.error("Failed to fetch sales:", error);
 
       alert(
         error.response?.data?.message ||
@@ -77,9 +79,7 @@ const Sales = () => {
   // ==========================================
 
   const filteredSales = useMemo(() => {
-    const value = search
-      .trim()
-      .toLowerCase();
+    const value = search.trim().toLowerCase();
 
     if (!value) {
       return sales;
@@ -87,24 +87,20 @@ const Sales = () => {
 
     return sales.filter((sale) => {
       const saleNumber =
-        sale.saleNumber
-          ?.toLowerCase() || "";
+        sale.saleNumber?.toLowerCase() || "";
 
       const customerName =
-        sale.customerId?.name
-          ?.toLowerCase() || "";
+        sale.customerId?.name?.toLowerCase() || "";
 
       const customerNumber =
-        sale.customerId?.customerNumber
-          ?.toLowerCase() || "";
+        sale.customerId?.customerNumber?.toLowerCase() ||
+        "";
 
       const cashierName =
-        sale.createdBy?.name
-          ?.toLowerCase() || "";
+        sale.createdBy?.name?.toLowerCase() || "";
 
       const paymentMethod =
-        sale.paymentMethod
-          ?.toLowerCase() || "";
+        sale.paymentMethod?.toLowerCase() || "";
 
       return (
         saleNumber.includes(value) ||
@@ -117,56 +113,85 @@ const Sales = () => {
   }, [sales, search]);
 
   // ==========================================
-  // TOTAL SALES VALUE
+  // TOTAL REFUNDED VALUE
   // ==========================================
 
-  const totalRevenue = sales.reduce(
-    (total, sale) =>
-      total + Number(sale.total || 0),
-    0
-  );
+  const totalRefund = sales.reduce((total, sale) => {
+    const refund =
+      sale.items?.reduce(
+        (sum, item) =>
+          sum +
+          Number(item.returnedQuantity || 0) *
+            Number(item.unitPrice || 0),
+        0
+      ) || 0;
+
+    return total + refund;
+  }, 0);
+
+  // ==========================================
+  // NET REVENUE
+  // ==========================================
+
+  const totalRevenue =
+    sales.reduce(
+      (total, sale) =>
+        total + Number(sale.total || 0),
+      0
+    ) - totalRefund;
 
   // ==========================================
   // TOTAL ITEMS SOLD
   // ==========================================
 
-  const totalItems = sales.reduce(
-    (total, sale) => {
-      const saleItems =
-        sale.items?.reduce(
-          (itemTotal, item) =>
-            itemTotal +
-            Number(item.quantity || 0),
-          0
-        ) || 0;
+  const totalItems = sales.reduce((total, sale) => {
+    const sold =
+      sale.items?.reduce(
+        (sum, item) =>
+          sum + Number(item.quantity || 0),
+        0
+      ) || 0;
 
-      return total + saleItems;
-    },
-    0
-  );
+    const returned =
+      sale.items?.reduce(
+        (sum, item) =>
+          sum + Number(item.returnedQuantity || 0),
+        0
+      ) || 0;
+
+    return total + (sold - returned);
+  }, 0);
 
   // ==========================================
   // VIEW SALE
   // ==========================================
-const handleView = (sale) => {
-  setSelectedSale(sale);
-};
+
+  const handleView = (sale) => {
+    setSelectedSale(sale);
+  };
+
+  // ==========================================
+  // RETURN SALE
+  // ==========================================
+
+  const handleReturnClick = (sale) => {
+    setReturnSale(sale);
+    setShowReturnModal(true);
+  };
 
   return (
     <div className="sales-page">
-
       {/* =====================================
           HEADER
       ===================================== */}
 
       <div className="sales-header">
-
         <div>
           <h1>Sales History</h1>
 
           <p>
-            View and manage completed sales
-            for your business.
+            View and manage completed sales for your
+            business.
           </p>
         </div>
 
@@ -176,11 +201,8 @@ const handleView = (sale) => {
           onClick={fetchSales}
           disabled={loading}
         >
-          {loading
-            ? "Refreshing..."
-            : "Refresh"}
+          {loading ? "Refreshing..." : "Refresh"}
         </button>
-
       </div>
 
       {/* =====================================
@@ -188,31 +210,25 @@ const handleView = (sale) => {
       ===================================== */}
 
       <div className="sales-summary">
-
         <div className="sales-summary-card">
           <span>Total Sales</span>
-
-          <strong>
-            {sales.length}
-          </strong>
+          <strong>{sales.length}</strong>
         </div>
 
         <div className="sales-summary-card">
           <span>Items Sold</span>
-
-          <strong>
-            {totalItems}
-          </strong>
+          <strong>{totalItems}</strong>
         </div>
 
         <div className="sales-summary-card">
-          <span>Total Revenue</span>
-
-          <strong>
-            {formatMoney(totalRevenue)}
-          </strong>
+          <span>Net Revenue</span>
+          <strong>{formatMoney(totalRevenue)}</strong>
         </div>
 
+        <div className="sales-summary-card">
+          <span>Refunded</span>
+          <strong>{formatMoney(totalRefund)}</strong>
+        </div>
       </div>
 
       {/* =====================================
@@ -220,19 +236,17 @@ const handleView = (sale) => {
       ===================================== */}
 
       <div className="sales-toolbar">
-
         <Search
           placeholder="Search sale, customer, cashier or payment..."
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
+          onChange={(event) =>
+            setSearch(event.target.value)
           }
         />
 
         <div className="sales-result-count">
           {filteredSales.length} sales
         </div>
-
       </div>
 
       {/* =====================================
@@ -240,9 +254,7 @@ const handleView = (sale) => {
       ===================================== */}
 
       <div className="sales-table-wrapper">
-
         <table className="sales-table">
-
           <thead>
             <tr>
               <th>Sale No.</th>
@@ -252,16 +264,17 @@ const handleView = (sale) => {
               <th>Payment</th>
               <th>Items</th>
               <th>Total</th>
-              <th></th>
+              <th>Refunded</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-
             {loading ? (
               <tr>
                 <td
-                  colSpan="8"
+                  colSpan="10"
                   className="sales-empty"
                 >
                   Loading sales...
@@ -270,7 +283,7 @@ const handleView = (sale) => {
             ) : filteredSales.length === 0 ? (
               <tr>
                 <td
-                  colSpan="8"
+                  colSpan="10"
                   className="sales-empty"
                 >
                   No sales found.
@@ -278,20 +291,38 @@ const handleView = (sale) => {
               </tr>
             ) : (
               filteredSales.map((sale) => {
-
                 const itemCount =
                   sale.items?.reduce(
                     (total, item) =>
                       total +
-                      Number(
-                        item.quantity || 0
-                      ),
+                      (Number(item.quantity || 0) -
+                        Number(
+                          item.returnedQuantity || 0
+                        )),
                     0
                   ) || 0;
 
+                const refundedAmount =
+                  sale.items?.reduce(
+                    (total, item) =>
+                      total +
+                      Number(
+                        item.returnedQuantity || 0
+                      ) *
+                        Number(item.unitPrice || 0),
+                    0
+                  ) || 0;
+
+                const formattedStatus = sale.status
+                  ? sale.status
+                      .replaceAll("_", " ")
+                      .replace(/\b\w/g, (character) =>
+                        character.toUpperCase()
+                      )
+                  : "-";
+
                 return (
                   <tr key={sale._id}>
-
                     {/* SALE NUMBER */}
 
                     <td>
@@ -302,22 +333,15 @@ const handleView = (sale) => {
 
                     {/* DATE */}
 
-                    <td>
-                      {formatDate(
-                        sale.createdAt
-                      )}
-                    </td>
+                    <td>{formatDate(sale.createdAt)}</td>
 
                     {/* CUSTOMER */}
 
                     <td>
-
                       {sale.customerId ? (
                         <div className="sales-customer">
-
                           <span>
-                            {sale.customerId
-                              .name ||
+                            {sale.customerId.name ||
                               "Customer"}
                           </span>
 
@@ -327,87 +351,130 @@ const handleView = (sale) => {
                                 .customerNumber
                             }
                           </small>
-
                         </div>
                       ) : (
                         <span className="sales-walkin">
                           Walk-in
                         </span>
                       )}
-
                     </td>
 
                     {/* CASHIER */}
 
-                    <td>
-                      {sale.createdBy?.name ||
-                        "-"}
-                    </td>
+                    <td>{sale.createdBy?.name || "-"}</td>
 
                     {/* PAYMENT */}
 
                     <td>
-
                       <span
                         className={`sales-payment ${
-                          sale.paymentMethod ||
-                          ""
+                          sale.paymentMethod || ""
                         }`}
                       >
-                        {sale.paymentMethod ||
-                          "-"}
+                        {sale.paymentMethod || "-"}
                       </span>
-
                     </td>
 
                     {/* ITEMS */}
 
-                    <td>
-                      {itemCount}
-                    </td>
+                    <td>{itemCount}</td>
 
                     {/* TOTAL */}
 
                     <td>
                       <strong>
-                        {formatMoney(
-                          sale.total
-                        )}
+                        {formatMoney(sale.total)}
                       </strong>
                     </td>
 
-                    {/* VIEW */}
+                    {/* REFUNDED */}
 
                     <td>
-                      <button
-                        type="button"
-                        className="sales-view-btn"
-                        onClick={() =>
-                          handleView(sale)
-                        }
-                      >
-                        View
-                      </button>
+                      {formatMoney(refundedAmount)}
                     </td>
 
+                    {/* STATUS */}
+
+                    <td>
+                      <span
+                        className={`sale-status ${
+                          sale.status || ""
+                        }`}
+                      >
+                        {formattedStatus}
+                      </span>
+                    </td>
+
+                    {/* ACTIONS */}
+
+                    <td>
+                      <div className="sales-actions">
+                        <button
+                          type="button"
+                          className="sales-view-btn"
+                          onClick={() =>
+                            handleView(sale)
+                          }
+                        >
+                          View
+                        </button>
+
+                        <button
+                          type="button"
+                          className="sales-return-btn"
+                          disabled={
+                            sale.status === "returned"
+                          }
+                          onClick={() =>
+                            handleReturnClick(sale)
+                          }
+                        >
+                          {sale.status === "returned"
+                            ? "✓ Returned"
+                            : sale.status ===
+                                "partially_returned"
+                              ? "↺ Return More"
+                              : "Return"}
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 );
               })
             )}
-
           </tbody>
-
         </table>
-
       </div>
-{selectedSale && (
-  <SaleDetailsModal
-    sale={selectedSale}
-    onClose={() =>
-      setSelectedSale(null)
-    }
-  />
-)}
+
+      {/* =====================================
+          VIEW SALE MODAL
+      ===================================== */}
+
+      {selectedSale && (
+        <SaleDetailsModal
+          sale={selectedSale}
+          onClose={() => setSelectedSale(null)}
+        />
+      )}
+
+      {/* =====================================
+          RETURN SALE MODAL
+      ===================================== */}
+
+      {showReturnModal && returnSale && (
+        <SaleReturnModal
+          sale={returnSale}
+          onClose={() => {
+            setShowReturnModal(false);
+            setReturnSale(null);
+          }}
+          onSuccess={() => {
+            fetchSales();
+            setShowReturnModal(false);
+            setReturnSale(null);
+          }}
+        />
+      )}
     </div>
   );
 };

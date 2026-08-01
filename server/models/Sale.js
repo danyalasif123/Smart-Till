@@ -50,11 +50,22 @@ const saleItemSchema = new mongoose.Schema(
       min: 0,
     },
 
-    quantity: {
-      type: Number,
-      required: true,
-      min: 0.001,
-    },
+  quantity: {
+  type: Number,
+  required: true,
+  min: 0.001,
+},
+
+// ======================================
+// RETURNED QUANTITY
+// Used for partial returns
+// ======================================
+
+returnedQuantity: {
+  type: Number,
+  default: 0,
+  min: 0,
+},
 
     // unitPrice × quantity
     subtotal: {
@@ -211,19 +222,20 @@ const saleSchema = new mongoose.Schema(
     // SALE STATUS
     // ======================================
 
-    status: {
-      type: String,
+ status: {
+  type: String,
 
-      enum: [
-        "completed",
-        "pending",
-        "cancelled",
-        "refunded",
-      ],
+  enum: [
+    "completed",
+    "pending",
+    "cancelled",
+     "refunded",
+    "partially_returned",
+    "returned",
+  ],
 
-      default: "completed",
-    },
-
+  default: "completed",
+},
     // ======================================
     // ONLINE ORDER REFERENCE
     //

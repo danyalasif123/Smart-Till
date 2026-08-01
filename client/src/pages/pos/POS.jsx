@@ -8,7 +8,7 @@ import CustomerLookup from "../../components/POS/CustomerLookup";
 
 import { getProducts } from "../../services/productService";
 import { createSale } from "../../services/saleService";
-
+import SaleReturns from "../admin/SaleReturns";
 const POS = () => {
   // ==========================================
   // NAVIGATION
@@ -314,7 +314,9 @@ const POS = () => {
   const handleSalesHistory = () => {
     navigate("/admin/sales");
   };
-
+const handleSaleReturns = () => {
+    navigate("/admin/sale-returns");
+};
   // ==========================================
   // COMPLETE SALE
   // ==========================================
@@ -484,6 +486,13 @@ const POS = () => {
         <div className="pos-header-right">
 
           {/* SALES HISTORY BUTTON */}
+           <button
+            type="button"
+            className="pos-sales-history-btn"
+            onClick={handleSaleReturns}
+          >
+            Sales Return
+          </button>
 
           <button
             type="button"

@@ -18,6 +18,7 @@ import Sales from "../pages/admin/Sales";
 import Inventory from "../pages/admin/Inventory";
 import Purchases from "../pages/admin/Purchases";
 import Reports from "../pages/admin/Reports";
+import SaleReturns from "../pages/admin/SaleReturns";
 function AppRoutes() {
   return (
     <Routes>
@@ -125,6 +126,16 @@ function AppRoutes() {
     <ProtectedRoute role="admin">
       <AdminLayout>
         <Sales />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+      path="/admin/sale-returns"
+  element={
+    <ProtectedRoute role="admin">
+      <AdminLayout>
+        <SaleReturns/>
       </AdminLayout>
     </ProtectedRoute>
   }

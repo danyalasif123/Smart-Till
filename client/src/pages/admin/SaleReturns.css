@@ -1,4 +1,4 @@
-.sales-page {
+.sale-returns-page {
   padding: 20px;
 }
 
@@ -6,7 +6,7 @@
    HEADER
 ========================================= */
 
-.sales-header {
+.sale-returns-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   margin-bottom: 20px;
 }
 
-.sales-header h1 {
+.sale-returns-header h1 {
   margin: 0;
 
   color: #242424;
@@ -24,7 +24,7 @@
   font-weight: 600;
 }
 
-.sales-header p {
+.sale-returns-header p {
   margin: 4px 0 0;
 
   color: #666666;
@@ -32,7 +32,11 @@
   font-size: 12px;
 }
 
-.sales-refresh-btn {
+/* =========================================
+   REFRESH BUTTON
+========================================= */
+
+.sale-returns-refresh-btn {
   height: 34px;
 
   padding: 0 14px;
@@ -50,11 +54,11 @@
   cursor: pointer;
 }
 
-.sales-refresh-btn:hover:not(:disabled) {
+.sale-returns-refresh-btn:hover:not(:disabled) {
   background: #f3f2f1;
 }
 
-.sales-refresh-btn:disabled {
+.sale-returns-refresh-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -63,15 +67,15 @@
    SUMMARY
 ========================================= */
 
-.sales-summary {
+.sale-returns-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 
   margin-bottom: 16px;
 }
 
-.sales-summary-card {
+.sale-returns-card {
   padding: 16px;
 
   background: #ffffff;
@@ -80,7 +84,7 @@
   border-radius: 4px;
 }
 
-.sales-summary-card span {
+.sale-returns-card span {
   display: block;
 
   margin-bottom: 6px;
@@ -90,7 +94,7 @@
   font-size: 11px;
 }
 
-.sales-summary-card strong {
+.sale-returns-card strong {
   color: #242424;
 
   font-size: 20px;
@@ -101,7 +105,7 @@
    TOOLBAR
 ========================================= */
 
-.sales-toolbar {
+.sale-returns-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -110,22 +114,23 @@
   margin-bottom: 12px;
 }
 
-.sales-toolbar > :first-child {
+.sale-returns-toolbar > :first-child {
   width: 100%;
   max-width: 420px;
 }
 
-.sales-result-count {
+.sale-returns-toolbar > :last-child {
   color: #777777;
 
   font-size: 11px;
+  white-space: nowrap;
 }
 
 /* =========================================
-   TABLE
+   TABLE WRAPPER
 ========================================= */
 
-.sales-table-wrapper {
+.sale-returns-table-wrapper {
   width: 100%;
 
   overflow-x: auto;
@@ -136,16 +141,20 @@
   border-radius: 4px;
 }
 
-.sales-table {
+/* =========================================
+   TABLE
+========================================= */
+
+.sale-returns-table {
   width: 100%;
-  min-width: 1050px;
+  min-width: 900px;
 
   border-collapse: collapse;
 
   font-size: 11px;
 }
 
-.sales-table th {
+.sale-returns-table th {
   padding: 11px 12px;
 
   background: #fafafa;
@@ -161,7 +170,7 @@
   white-space: nowrap;
 }
 
-.sales-table td {
+.sale-returns-table td {
   padding: 11px 12px;
 
   border-bottom: 1px solid #eeeeee;
@@ -171,152 +180,98 @@
   vertical-align: middle;
 }
 
-.sales-table tbody tr:last-child td {
+.sale-returns-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-.sales-table tbody tr:hover {
+.sale-returns-table tbody tr:hover {
   background: #fafafa;
 }
 
-/* Center the Actions column heading and content. */
+/* Center the action column. */
 
-.sales-table th:last-child,
-.sales-table td:last-child {
+.sale-returns-table th:last-child,
+.sale-returns-table td:last-child {
   text-align: center;
+}
+
+/* =========================================
+   RETURN NUMBER
+========================================= */
+
+.sale-returns-table td:first-child {
+  color: #0067b8;
+
+  font-weight: 600;
+
+  white-space: nowrap;
 }
 
 /* =========================================
    SALE NUMBER
 ========================================= */
 
-.sale-number {
-  color: #0067b8;
-
-  font-weight: 600;
-}
-
-/* =========================================
-   CUSTOMER
-========================================= */
-
-.sales-customer {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.sales-customer span {
-  color: #323130;
-
+.sale-returns-table td:nth-child(2) {
   font-weight: 500;
-}
 
-.sales-customer small {
-  color: #777777;
-
-  font-size: 9px;
-}
-
-.sales-walkin {
-  color: #777777;
+  white-space: nowrap;
 }
 
 /* =========================================
-   PAYMENT
+   DATE
 ========================================= */
 
-.sales-payment {
-  display: inline-block;
-
-  padding: 3px 7px;
-
-  background: #f3f2f1;
-
-  border-radius: 10px;
-
-  color: #605e5c;
-
-  font-size: 9px;
-  font-weight: 600;
-
-  text-transform: capitalize;
-}
-
-.sales-payment.cash {
-  background: #dff6dd;
-
-  color: #107c10;
-}
-
-.sales-payment.card {
-  background: #deecf9;
-
-  color: #005a9e;
+.sale-returns-table td:nth-child(3) {
+  white-space: nowrap;
 }
 
 /* =========================================
-   STATUS
+   REASON
 ========================================= */
 
-.sale-status {
+.sale-return-reason {
   display: inline-block;
 
-  padding: 5px 12px;
+  padding: 4px 9px;
 
-  border-radius: 20px;
+  background: #fef3c7;
 
-  font-size: 10px;
+  border-radius: 12px;
+
+  color: #b45309;
+
+  font-size: 9px;
   font-weight: 600;
 
   text-transform: capitalize;
   white-space: nowrap;
 }
 
-.sale-status.completed {
-  background: #dcfce7;
+/* =========================================
+   REFUND AMOUNT
+========================================= */
 
-  color: #15803d;
-}
-
-.sale-status.partially_returned {
-  background: #fef3c7;
-
-  color: #b45309;
-}
-
-.sale-status.returned {
-  background: #fee2e2;
-
+.sale-returns-table td:nth-child(6) strong {
   color: #dc2626;
-}
 
-.sale-status.cancelled {
-  background: #e5e7eb;
+  font-weight: 600;
 
-  color: #374151;
+  white-space: nowrap;
 }
 
 /* =========================================
-   ACTIONS
+   VIEW BUTTON
 ========================================= */
 
-.sales-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  width: 100%;
-}
-
-.sales-view-btn,
-.sales-return-btn {
+.sale-return-view-btn {
   padding: 5px 10px;
 
   background: #ffffff;
 
+  border: 1px solid #0067b8;
   border-radius: 3px;
+
+  color: #0067b8;
 
   font-size: 10px;
   font-weight: 600;
@@ -325,37 +280,21 @@
   white-space: nowrap;
 }
 
-.sales-view-btn {
-  border: 1px solid #0067b8;
-
-  color: #0067b8;
-}
-
-.sales-view-btn:hover {
+.sale-return-view-btn:hover {
   background: #edf6fc;
 }
 
-.sales-return-btn {
-  border: 1px solid #dc2626;
-
-  color: #dc2626;
-}
-
-.sales-return-btn:hover:not(:disabled) {
-  background: #fef2f2;
-}
-
-.sales-return-btn:disabled {
-  opacity: 0.6;
-
-  cursor: not-allowed;
+.sale-return-view-btn:focus-visible,
+.sale-returns-refresh-btn:focus-visible {
+  outline: 2px solid #0067b8;
+  outline-offset: 2px;
 }
 
 /* =========================================
-   EMPTY
+   EMPTY STATE
 ========================================= */
 
-.sales-empty {
+.sale-returns-empty {
   padding: 40px !important;
 
   color: #777777 !important;
@@ -367,46 +306,40 @@
    RESPONSIVE
 ========================================= */
 
-@media (max-width: 1000px) {
-  .sales-summary {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 800px) {
-  .sales-page {
+  .sale-returns-page {
     padding: 14px;
   }
 
-  .sales-header {
+  .sale-returns-header {
     align-items: flex-start;
   }
 
-  .sales-toolbar {
+  .sale-returns-toolbar {
     align-items: stretch;
     flex-direction: column;
     gap: 10px;
   }
 
-  .sales-toolbar > :first-child {
+  .sale-returns-toolbar > :first-child {
     max-width: none;
   }
 
-  .sales-result-count {
+  .sale-returns-toolbar > :last-child {
     text-align: right;
   }
 }
 
 @media (max-width: 600px) {
-  .sales-header {
+  .sale-returns-header {
     flex-direction: column;
   }
 
-  .sales-refresh-btn {
+  .sale-returns-refresh-btn {
     width: 100%;
   }
 
-  .sales-summary {
+  .sale-returns-summary {
     grid-template-columns: 1fr;
   }
 }

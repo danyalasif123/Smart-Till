@@ -1,0 +1,47 @@
+.summary-cards{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+    width:100%;
+
+}
+
+.summary-card{
+
+    background:#fff;
+
+    border-radius:10px;
+
+    padding:18px;
+
+    height:130px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+.summary-card span{
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+.summary-card h2{
+
+    margin-top:12px;
+
+    font-size:28px;
+
+}

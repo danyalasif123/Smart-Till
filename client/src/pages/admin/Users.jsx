@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Users.css";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
 import UserTable from "../../components/Users/UserTable";

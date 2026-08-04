@@ -2,7 +2,7 @@ import {
   useEffect,
   useState,
 } from "react";
-
+import Button from "../../components/common/Button/Button";
 import "./Purchases.css";
 import toast from "react-hot-toast";
 import {
@@ -325,15 +325,9 @@ const handlePayment = (
           </p>
         </div>
 
-        <button
-  type="button"
-  className="new-purchase-btn"
-  onClick={() =>
-    setPurchaseModalOpen(true)
-  }
->
-  + New Purchase
-</button>
+        <Button onClick={() =>setPurchaseModalOpen(true)}>
+          + New Purchase
+        </Button>
 
       </div>
 

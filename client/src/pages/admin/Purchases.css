@@ -37,8 +37,8 @@
   border: none;
   border-radius: 3px;
 
-  background: #0067b8;
-  color: white;
+  background: gray;
+  color: black;
 
   font-size: 10px;
   font-weight: 600;
@@ -46,9 +46,6 @@
   cursor: pointer;
 }
 
-.new-purchase-btn:hover {
-  background: #005a9e;
-}
 
 
 /* =========================================

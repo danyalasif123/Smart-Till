@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Customers.css";
-
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
-
+import toast from "react-hot-toast";
 import CustomerTable from "../../components/Customers/CustomerTable";
 import CustomerModal from "../../components/Customers/CustomerModal";
 import CustomerDetailsModal from "../../components/Customers/CustomerDetailsModal";
@@ -65,7 +64,7 @@ const [
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load customers."
       );
@@ -192,7 +191,7 @@ const handleCloseDetails = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to delete customer."
       );

@@ -6,9 +6,9 @@
 
     padding:28px;
 
-    min-height:340px;
+    max-height:270px;
 
-    width:500px;
+    width:400px;
 
     box-shadow:0 4px 18px rgba(0,0,0,.08);
 
@@ -34,7 +34,7 @@
 
     margin:0;
 
-    font-size:24px;
+    font-size:12px;
 
     font-weight:700;
 
@@ -46,7 +46,7 @@
 
     color:#9ca3af;
 
-    font-size:13px;
+    font-size:11px;
 
 }
 
@@ -58,11 +58,11 @@
 
     text-decoration:none;
 
-    font-size:13px;
+    font-size:11px;
 
     color:#6b7280;
 
-    font-weight:500;
+    font-weight:200;
 
     transition:.2s;
 
@@ -142,7 +142,7 @@
 
     font-size:14px;
 
-    font-weight:600;
+    font-weight:200;
 
     color:#444;
 
@@ -156,9 +156,9 @@
 
 .sale-amount{
 
-    font-size:17px;
+    font-size:11px;
 
-    font-weight:600;
+    font-weight:200;
 
     color:#222;
 
@@ -166,7 +166,7 @@
 
 .sale-date{
 
-    font-size:13px;
+    font-size:11px;
 
     color:#888;
 
@@ -188,7 +188,7 @@
 
 .sale-customer{
 
-    font-size:14px;
+    font-size:12px;
 
     color:#666;
 
@@ -196,7 +196,7 @@
 
 .payment-method{
 
-    font-size:13px;
+    font-size:12px;
 
     color:#888;
 

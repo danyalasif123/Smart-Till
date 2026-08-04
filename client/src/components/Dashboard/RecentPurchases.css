@@ -6,13 +6,17 @@
 
     padding:28px;
 
-    min-height:340px;
+    max-height:270px;
 
-  width:500px;
+    width:400px;
 
     box-shadow:0 4px 18px rgba(0,0,0,.08);
 
 }
+
+/* ===========================
+   HEADER
+=========================== */
 
 .recent-purchases-header{
 
@@ -30,7 +34,7 @@
 
     margin:0;
 
-    font-size:24px;
+    font-size:12px;
 
     font-weight:700;
 
@@ -42,19 +46,25 @@
 
     color:#9ca3af;
 
-    font-size:13px;
+    font-size:11px;
 
 }
+
+/* ===========================
+   VIEW ALL
+=========================== */
 
 .view-all-purchases{
 
     text-decoration:none;
 
-    font-size:13px;
+    font-size:11px;
 
     color:#6b7280;
 
-    font-weight:500;
+    font-weight:200;
+
+    transition:.2s;
 
 }
 
@@ -63,6 +73,10 @@
     color:#2563eb;
 
 }
+
+/* ===========================
+   EMPTY
+=========================== */
 
 .recent-purchases-empty{
 
@@ -77,6 +91,10 @@
     color:#9ca3af;
 
 }
+
+/* ===========================
+   PURCHASE CARD
+=========================== */
 
 .recent-purchase-item{
 
@@ -96,11 +114,15 @@
 
 .recent-purchase-item:hover{
 
-    background:#f5f5f5;
-
     border-color:#d1d5db;
 
+    background:#f5f5f5;
+
 }
+
+/* ===========================
+   TOP ROW
+=========================== */
 
 .purchase-top{
 
@@ -108,9 +130,9 @@
 
     grid-template-columns:1fr auto auto;
 
-    gap:25px;
-
     align-items:center;
+
+    gap:25px;
 
     margin-bottom:10px;
 
@@ -120,17 +142,23 @@
 
     font-size:14px;
 
-    font-weight:600;
+    font-weight:200;
 
     color:#444;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
 
 }
 
 .purchase-amount{
 
-    font-size:17px;
+    font-size:11px;
 
-    font-weight:600;
+    font-weight:200;
 
     color:#222;
 
@@ -138,11 +166,15 @@
 
 .purchase-date{
 
-    font-size:13px;
+    font-size:11px;
 
     color:#888;
 
 }
+
+/* ===========================
+   BOTTOM ROW
+=========================== */
 
 .purchase-bottom{
 
@@ -156,7 +188,7 @@
 
 .purchase-supplier{
 
-    font-size:14px;
+    font-size:12px;
 
     color:#666;
 
@@ -164,10 +196,10 @@
 
 .purchase-status{
 
-    font-size:13px;
-
-    text-transform:capitalize;
+    font-size:12px;
 
     color:#888;
+
+    text-transform:capitalize;
 
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./Sales.css";
-
+import { Toaster } from "react-hot-toast";
 import Search from "../../components/common/Search/Search";
 import { getSales } from "../../services/saleService";
 import SaleDetailsModal from "../../components/POS/SaleDetailsModal";
@@ -28,7 +28,7 @@ const Sales = () => {
     } catch (error) {
       console.error("Failed to fetch sales:", error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load sales."
       );

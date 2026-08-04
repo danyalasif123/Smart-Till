@@ -4,7 +4,7 @@ import {
 } from "react";
 
 import "./Purchases.css";
-
+import toast from "react-hot-toast";
 import {
   getPurchases,
   receivePurchase,
@@ -76,7 +76,7 @@ const [
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load purchases."
       );
@@ -122,7 +122,7 @@ const [
           purchase._id
         );
 
-      alert(
+      toast.error(
         response.message ||
           "Purchase received successfully."
       );
@@ -135,7 +135,7 @@ const [
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to receive purchase."
       );
@@ -172,7 +172,7 @@ const [
           purchase._id
         );
 
-      alert(
+      toast.error(
         response.message ||
           "Purchase cancelled successfully."
       );
@@ -185,7 +185,7 @@ const [
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to cancel purchase."
       );

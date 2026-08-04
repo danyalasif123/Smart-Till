@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./SaleReturns.css";
 
 import Search from "../../components/common/Search/Search";
-
+import { Toaster } from "react-hot-toast";
 import {
   getSaleReturns,
 } from "../../services/saleReturnService";
@@ -42,7 +42,7 @@ const SaleReturns = () => {
 
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Failed to load sale returns."
       );

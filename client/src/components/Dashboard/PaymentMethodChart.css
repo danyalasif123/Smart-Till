@@ -1,127 +1,133 @@
 .payment-card{
-
     background:#fff;
-
-    border-radius:14px;
-
-    padding:22px;
-
-    box-shadow:0 4px 18px rgba(0,0,0,.08);
-
+    border-radius:10px;
+    padding:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .payment-header{
-
     display:flex;
-
     justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:20px;
-
+    align-items:flex-start;
+    margin-bottom:12px;
 }
 
 .payment-header h2{
-
     margin:0;
-
-    font-size:22px;
-
+    font-size:16px;
+    font-weight:600;
+    color:#111827;
 }
 
 .payment-header p{
-
-    margin-top:5px;
-
-    font-size:13px;
-
-    color:#888;
-
+    margin-top:3px;
+    font-size:12px;
+    color:#6b7280;
 }
 
 .payment-link{
-
-    font-size:13px;
-
-    color:#6b7280;
-
+    font-size:12px;
+    color:#2563eb;
     text-decoration:none;
-
+    font-weight:500;
 }
 
 .payment-link:hover{
-
-    color:#2563eb;
-
+    text-decoration:underline;
 }
+
+/* ==============================
+   CHART
+============================== */
 
 .payment-chart{
-
-    height:220px;
-
+    height:140px;
+    margin-bottom:10px;
 }
 
+/* ==============================
+   TOTAL
+============================== */
+
 .payment-total{
-
     text-align:center;
-
-    margin:15px 0 20px;
-
-    color:#666;
-
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:14px;
 }
 
 .payment-total strong{
-
     display:block;
-
-    margin-top:6px;
-
-    font-size:24px;
-
+    margin-top:4px;
+    font-size:18px;
     color:#111827;
-
+    font-weight:700;
 }
 
+/* ==============================
+   LIST
+============================== */
+
 .payment-list{
-
     display:flex;
-
     flex-direction:column;
-
-    gap:12px;
-
+    gap:10px;
 }
 
 .payment-row{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
+    padding:6px 0;
+    border-bottom:1px solid #f3f4f6;
+}
 
+.payment-row:last-child{
+    border-bottom:none;
 }
 
 .payment-name{
-
     display:flex;
-
     align-items:center;
-
-    gap:10px;
-
+    gap:8px;
+    font-size:13px;
+    font-weight:500;
     text-transform:capitalize;
+    color:#374151;
+}
 
+.payment-row strong{
+    font-size:13px;
+    color:#111827;
 }
 
 .payment-dot{
-
-    width:12px;
-
-    height:12px;
-
+    width:8px;
+    height:8px;
     border-radius:50%;
+    flex-shrink:0;
+}
 
+/* ==============================
+   RESPONSIVE
+============================== */
+
+@media (max-width:768px){
+
+    .payment-card{
+        padding:14px;
+    }
+
+    .payment-header{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .payment-chart{
+        height:120px;
+    }
+
+    .payment-total strong{
+        font-size:16px;
+    }
 }

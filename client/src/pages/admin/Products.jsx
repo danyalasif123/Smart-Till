@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Products.css";
-
+import toast from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
 
@@ -36,7 +36,7 @@ const Products = () => {
     } catch (error) {
       console.error("Failed to fetch products:", error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load products."
       );
@@ -120,7 +120,7 @@ const Products = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to delete product."
       );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Categories.css";
-
+import toast from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
 
@@ -39,7 +39,7 @@ const Categories = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load categories."
       );
@@ -131,7 +131,7 @@ const Categories = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to delete category."
       );

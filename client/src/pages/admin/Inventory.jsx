@@ -4,7 +4,7 @@ import {
 } from "react";
 
 import "./Inventory.css";
-
+import toast from "react-hot-toast";
 import Search from "../../components/common/Search/Search";
 import StockAdjustmentModal from "../../components/Inventory/StockAdjustmentModal";
 import {getInventory,} from "../../services/inventoryService";
@@ -57,7 +57,7 @@ const [
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load inventory."
       );

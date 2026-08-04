@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerBusiness } from "../../services/businessService";
 import "./Auth.css";
+import { Toaster } from "react-hot-toast";
 function RegisterBusiness() {
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ function RegisterBusiness() {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -38,13 +39,13 @@ function RegisterBusiness() {
 
       await registerBusiness(formData);
 
-      alert("Business Registered Successfully");
+      toast.success("Business Registered Successfully");
 
       navigate("/");
     } catch (error) {
       console.log(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Registration Failed"
       );

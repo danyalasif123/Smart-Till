@@ -4,6 +4,7 @@ import {
 } from "react";
 
 import "./Reports.css";
+import toast from "react-hot-toast";
 
 // ==========================================
 // COMPONENTS
@@ -109,7 +110,7 @@ const Reports = () => {
           !endDate
         ) {
 
-          alert(
+          toast.error(
             "Please select start and end dates."
           );
 
@@ -122,7 +123,7 @@ const Reports = () => {
           new Date(endDate)
         ) {
 
-          alert(
+          toast.error(
             "Start date cannot be after end date."
           );
 
@@ -305,7 +306,7 @@ const Reports = () => {
 
       setReport(null);
 
-      alert(
+      toast.error(
         error.response?.data
           ?.message ||
         error.message ||

@@ -16,9 +16,9 @@ const TopProducts = ({
 
       <div className="top-products-header">
 
-        <h2>
+        <h5>
           Top Selling Products
-        </h2>
+        </h5>
 
       </div>
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./POS.css";
+import toast from "react-hot-toast";
 
 import ProductGrid from "../../components/POS/ProductGrid";
 import Cart from "../../components/POS/Cart";
@@ -386,13 +387,8 @@ const handleSaleReturns = () => {
         // SUCCESS
         // ====================================
 
-        alert(
-          `Sale completed successfully.\n` +
-            `Sale: ${response.sale.saleNumber}` +
-            customerText +
-            `\nTotal: $${Number(
-              response.sale.total
-            ).toFixed(2)}`
+       toast.success(
+          "Sale completed successfully"
         );
 
         // ====================================
@@ -416,11 +412,7 @@ const handleSaleReturns = () => {
           error
         );
 
-        alert(
-          error.response?.data
-            ?.message ||
-            "Failed to complete sale."
-        );
+        toast.error("Failed to complete sale.");
 
         // Refresh stock because another
         // cashier may have changed it

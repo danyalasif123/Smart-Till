@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 import { getDashboard } from "../../services/dashboardService";
-
+import toast from "react-hot-toast";
 import SummaryCards from "../../components/Dashboard/SummaryCards";
 import WeeklySalesChart from "../../components/Dashboard/WeeklySalesChart";
 import TopProducts from "../../components/Dashboard/TopProducts";

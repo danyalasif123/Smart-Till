@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
 import "./Auth.css";
+import toast from "react-hot-toast";
 function Login() {
   const navigate = useNavigate();
 
@@ -53,7 +54,7 @@ function Login() {
     } catch (error) {
       console.log(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Login Failed"
       );

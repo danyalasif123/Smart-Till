@@ -30,7 +30,9 @@
     border-bottom:1px solid #eee;
 
 }
-
+top-products-header h2{
+    font-size: 13px;
+}
 .top-product-row:last-child{
 
     border-bottom:none;

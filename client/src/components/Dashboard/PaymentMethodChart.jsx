@@ -79,20 +79,19 @@ const PaymentMethodChart = ({
       <div className="payment-chart">
 
         <ResponsiveContainer
-          width="100%"
-          height={220}
-        >
+  width="100%"
+  height={120}
+>
 
           <PieChart>
-
-            <Pie
-              data={data}
-              dataKey="amount"
-              nameKey="_id"
-              innerRadius={55}
-              outerRadius={85}
-              paddingAngle={3}
-            >
+<Pie
+  data={data}
+  dataKey="amount"
+  nameKey="_id"
+  innerRadius={35}
+  outerRadius={55}
+  paddingAngle={2}
+>
 
               {data.map(
                 (

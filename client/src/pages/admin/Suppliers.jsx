@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Suppliers.css";
-
+import { Toaster } from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
 
@@ -39,7 +39,7 @@ const Suppliers = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to load suppliers."
       );
@@ -123,7 +123,7 @@ const Suppliers = () => {
         error
       );
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to delete supplier."
       );

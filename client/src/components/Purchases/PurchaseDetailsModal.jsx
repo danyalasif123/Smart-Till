@@ -504,30 +504,15 @@ const PurchaseDetailsModal = ({
 
                   {/* HEADER */}
 
-                  <div className="purchase-details-table-header">
-
-                    <div>
-                      Product
-                    </div>
-
-                    <div>
-                      SKU
-                    </div>
-
-                    <div>
-                      Qty
-                    </div>
-
-                    <div>
-                      Unit Cost
-                    </div>
-
-                    <div>
-                      Total
-                    </div>
-
-                  </div>
-
+                 <div className="purchase-details-table-header">
+  <div>Product</div>
+  <div>SKU</div>
+  <div>Purchased</div>
+  <div>Returned</div>
+  <div>Remaining</div>
+  <div>Unit Cost</div>
+  <div>Total</div>
+</div>
 
                   {/* ITEMS */}
 
@@ -537,48 +522,41 @@ const PurchaseDetailsModal = ({
                       index
                     ) => (
 
-                      <div
-                        className="purchase-details-table-row"
-                        key={
-                          item._id ||
-                          index
-                        }
-                      >
+                   <div
+  className={`purchase-details-table-row ${
+    item.returnedQuantity > 0
+      ? "purchase-item-returned"
+      : ""
+  }`}
+>
 
-                        <div>
+  <div>
+    <strong className="details-product-name">
+      {item.productName}
+    </strong>
+  </div>
 
-                          <strong className="details-product-name">
-                            {item.productName}
-                          </strong>
+  <div>{item.sku || "-"}</div>
 
-                        </div>
+  <div>{item.quantity}</div>
 
+  <div>
+    {item.returnedQuantity || 0}
+  </div>
 
-                        <div>
-                          {item.sku || "-"}
-                        </div>
+  <div>
+    {item.quantity - (item.returnedQuantity || 0)}
+  </div>
 
+  <div>
+    {formatCurrency(item.unitCost)}
+  </div>
 
-                        <div>
-                          {item.quantity}
-                        </div>
+  <div className="details-item-total">
+    {formatCurrency(item.subtotal)}
+  </div>
 
-
-                        <div>
-                          {formatCurrency(
-                            item.unitCost
-                          )}
-                        </div>
-
-
-                        <div className="details-item-total">
-                          {formatCurrency(
-                            item.subtotal
-                          )}
-                        </div>
-
-                      </div>
-
+</div>
                     )
                   )}
 
@@ -681,7 +659,42 @@ const PurchaseDetailsModal = ({
 
               </div>
 
+<div className="purchase-details-section">
 
+  <div className="purchase-details-section-heading">
+    <h3>Return Summary</h3>
+  </div>
+
+  <div className="purchase-payment-details-summary">
+
+    <div>
+      <span>Returned Items</span>
+      <strong>
+        {purchase.items.reduce(
+          (t, i) => t + (i.returnedQuantity || 0),
+          0
+        )}
+      </strong>
+    </div>
+
+    <div>
+      <span>Refund Amount</span>
+      <strong className="refund-amount">
+        {formatCurrency(
+          purchase.items.reduce(
+            (t, i) =>
+              t +
+              (i.returnedQuantity || 0) *
+                i.unitCost,
+            0
+          )
+        )}
+      </strong>
+    </div>
+
+  </div>
+
+</div>
               {/* =============================
                   PAYMENT HISTORY
               ============================= */}

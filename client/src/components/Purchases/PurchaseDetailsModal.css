@@ -146,7 +146,7 @@
 
 .purchase-details-statuses {
   display: flex;
-
+  
   gap: 7px;
 }
 
@@ -313,13 +313,14 @@
 
   display: grid;
 
-  grid-template-columns:
-    2fr
-    1fr
-    0.6fr
-    1fr
-    1fr;
-
+grid-template-columns:
+2fr
+1fr
+0.7fr
+0.7fr
+0.8fr
+1fr
+1fr;
   gap: 10px;
 
   align-items: center;
@@ -786,4 +787,28 @@
     grid-template-columns: 1fr;
   }
 
+}
+.purchase-item-returned{
+    background:#fff8e1;
+}
+.returned-qty{
+    color:#d32f2f;
+    font-weight:700;
+}
+.remaining-qty{
+    color:#2e7d32;
+    font-weight:700;
+}
+.refund-amount{
+    color:#d32f2f;
+    font-weight:700;
+}
+.purchase-details-status.partially_returned{
+    background:#fff4ce;
+    color:#8a6d00;
+}
+
+.purchase-details-status.returned{
+    background:#fde7e9;
+    color:#a4262c;
 }

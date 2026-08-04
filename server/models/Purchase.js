@@ -35,7 +35,10 @@ const purchaseItemSchema =
         required: true,
         min: 1,
       },
-
+returnedQuantity: {
+  type: Number,
+  default: 0,
+},
       // Cost per unit from supplier
       unitCost: {
         type: Number,
@@ -183,18 +186,19 @@ const purchaseSchema =
       // cancelled:
       // Purchase cancelled.
       // ======================================
+status: {
+  type: String,
 
-      status: {
-        type: String,
+  enum: [
+    "pending",
+    "received",
+    "partially_returned",
+    "returned",
+    "cancelled",
+  ],
 
-        enum: [
-          "pending",
-          "received",
-          "cancelled",
-        ],
-
-        default: "pending",
-      },
+  default: "pending",
+},
 
 
       // ======================================

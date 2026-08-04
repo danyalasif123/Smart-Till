@@ -14,6 +14,7 @@ import purchaseRoutes from "./routes/purchaseRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import saleReturnRoutes from "./routes/saleReturnRoutes.js";
+import purchaseReturnRoutes from "./routes/purchaseReturnRoutes.js";
 // other routes
 
 const app = express();
@@ -34,4 +35,5 @@ app.use("/api/purchases",purchaseRoutes);
 app.use("/api/reports",reportRoutes);
 app.use("/api/dashboard",dashboardRoutes);
 app.use("/api/sale-returns",saleReturnRoutes);
+app.use("/api/purchase-returns",purchaseReturnRoutes);
 export default app;

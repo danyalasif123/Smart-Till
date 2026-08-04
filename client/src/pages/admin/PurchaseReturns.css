@@ -1,0 +1,345 @@
+.purchase-returns-page {
+  padding: 20px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.purchase-returns-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.purchase-returns-header h1 {
+  margin: 0;
+
+  color: #242424;
+
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.purchase-returns-header p {
+  margin: 4px 0 0;
+
+  color: #666666;
+
+  font-size: 12px;
+}
+
+/* =========================================
+   REFRESH BUTTON
+========================================= */
+
+.purchase-returns-refresh-btn {
+  height: 34px;
+
+  padding: 0 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c6c4;
+  border-radius: 3px;
+
+  color: #323130;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.purchase-returns-refresh-btn:hover:not(:disabled) {
+  background: #f3f2f1;
+}
+
+.purchase-returns-refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.purchase-returns-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+.purchase-returns-card {
+  padding: 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.purchase-returns-card span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #666666;
+
+  font-size: 11px;
+}
+
+.purchase-returns-card strong {
+  color: #242424;
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.purchase-returns-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 12px;
+}
+
+.purchase-returns-toolbar > :first-child {
+  width: 100%;
+  max-width: 420px;
+}
+
+.purchase-returns-toolbar > :last-child {
+  color: #777777;
+
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.purchase-returns-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.purchase-returns-table {
+  width: 100%;
+  min-width: 900px;
+
+  border-collapse: collapse;
+
+  font-size: 11px;
+}
+
+.purchase-returns-table th {
+  padding: 11px 12px;
+
+  background: #fafafa;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #605e5c;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-align: left;
+  white-space: nowrap;
+}
+
+.purchase-returns-table td {
+  padding: 11px 12px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  color: #323130;
+
+  vertical-align: middle;
+}
+
+.purchase-returns-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.purchase-returns-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* Center Action Column */
+
+.purchase-returns-table th:last-child,
+.purchase-returns-table td:last-child {
+  text-align: center;
+}
+
+/* =========================================
+   RETURN NUMBER
+========================================= */
+
+.purchase-returns-table td:first-child {
+  color: #0067b8;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   PURCHASE NUMBER
+========================================= */
+
+.purchase-returns-table td:nth-child(2) {
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   DATE
+========================================= */
+
+.purchase-returns-table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+/* =========================================
+   REASON
+========================================= */
+
+.purchase-return-reason {
+  display: inline-block;
+
+  padding: 4px 9px;
+
+  background: #fef3c7;
+
+  border-radius: 12px;
+
+  color: #b45309;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* =========================================
+   REFUND
+========================================= */
+
+.purchase-returns-table td:nth-child(6) strong {
+  color: #dc2626;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   VIEW BUTTON
+========================================= */
+
+.purchase-return-view-btn {
+  padding: 5px 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #0067b8;
+  border-radius: 3px;
+
+  color: #0067b8;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.purchase-return-view-btn:hover {
+  background: #edf6fc;
+}
+
+.purchase-return-view-btn:focus-visible,
+.purchase-returns-refresh-btn:focus-visible {
+  outline: 2px solid #0067b8;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.purchase-returns-empty {
+  padding: 40px !important;
+
+  color: #777777 !important;
+
+  text-align: center !important;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+  .purchase-returns-page {
+    padding: 14px;
+  }
+
+  .purchase-returns-header {
+    align-items: flex-start;
+  }
+
+  .purchase-returns-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .purchase-returns-toolbar > :first-child {
+    max-width: none;
+  }
+
+  .purchase-returns-toolbar > :last-child {
+    text-align: right;
+  }
+}
+
+@media (max-width: 600px) {
+  .purchase-returns-header {
+    flex-direction: column;
+  }
+
+  .purchase-returns-refresh-btn {
+    width: 100%;
+  }
+
+  .purchase-returns-summary {
+    grid-template-columns: 1fr;
+  }
+}

@@ -5,6 +5,7 @@ import {
 import Button from "../../components/common/Button/Button";
 import "./Purchases.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import {
   getPurchases,
   receivePurchase,
@@ -16,7 +17,8 @@ import PurchaseModal
   from "../../components/Purchases/PurchaseDetailsModal";
   import PurchasePaymentModal
   from "../../components/Purchases/PurchasePaymentModal";
-
+import PurchaseReturnModal
+  from "../../components/PurchaseReturnModal/PurchaseReturnModal";
 const Purchases = () => {
   // ==========================================
   // STATE
@@ -33,7 +35,7 @@ const Purchases = () => {
 
   const [actionLoading, setActionLoading] =
     useState(null);
-
+const navigate = useNavigate();
 const [
   purchaseModalOpen,
   setPurchaseModalOpen,
@@ -68,8 +70,9 @@ const [
 
       setPurchases(
         response.purchases || []
+        
       );
-
+console.log(response.purchases);
     } catch (error) {
       console.error(
         "Get Purchases Error:",
@@ -85,7 +88,15 @@ const [
       setLoading(false);
     }
   };
+const [
+  returnPurchase,
+  setReturnPurchase,
+] = useState(null);
 
+const [
+  returnModalOpen,
+  setReturnModalOpen,
+] = useState(false);
 
   // ==========================================
   // INITIAL LOAD
@@ -122,7 +133,7 @@ const [
           purchase._id
         );
 
-      toast.error(
+      toast.success(
         response.message ||
           "Purchase received successfully."
       );
@@ -304,6 +315,19 @@ const handlePayment = (
 
   setPaymentModalOpen(true);
 };
+const handleReturn = (
+  purchase
+) => {
+
+  setReturnPurchase(
+    purchase
+  );
+
+  setReturnModalOpen(
+    true
+  );
+
+};
 
   // ==========================================
   // RENDER
@@ -325,10 +349,26 @@ const handlePayment = (
           </p>
         </div>
 
-        <Button onClick={() =>setPurchaseModalOpen(true)}>
-          + New Purchase
-        </Button>
+       <div className="purchase-header-actions">
 
+  <Button
+    onClick={() =>
+      setPurchaseModalOpen(true)
+    }
+  >
+    + New Purchase
+  </Button>
+
+  <Button
+    variant="secondary"
+    onClick={() =>
+      navigate("/admin/purchase-returns")
+    }
+  >
+    Purchase Returns
+  </Button>
+
+</div>
       </div>
 
 
@@ -492,8 +532,13 @@ const handlePayment = (
                         className={`purchase-status ${purchase.status}`}
                       >
                         {
-                          purchase.status
-                        }
+  purchase.status
+    ?.replaceAll("_", " ")
+    .replace(
+      /\b\w/g,
+      c => c.toUpperCase()
+    )
+}
                       </span>
                     </div>
 
@@ -513,70 +558,68 @@ const handlePayment = (
 
                     {/* ACTIONS */}
 
-                    <div className="purchase-actions">
-{purchase.status !== "cancelled" &&
-  purchase.paymentStatus !== "paid" && (
+                  <div className="purchase-actions">
+
+  {/* View */}
+  <button
+    type="button"
+    className="purchase-view-btn"
+    onClick={() => handleView(purchase)}
+  >
+    View
+  </button>
+
+  {/* Pay */}
+  {purchase.status !== "cancelled" &&
+   purchase.paymentStatus !== "paid" && (
     <button
       type="button"
       className="purchase-payment-btn"
-      onClick={() =>
-        handlePayment(
-          purchase
-        )
-      }
+      onClick={() => handlePayment(purchase)}
     >
       Pay
     </button>
-)}
-                     <button
-  type="button"
-  className="purchase-view-btn"
-  onClick={() =>
-    handleView(purchase)
-  }
->
-  View
-</button>
+  )}
 
+  {/* Receive */}
+  {purchase.status === "pending" && (
+    <button
+      type="button"
+      className="purchase-receive-btn"
+      disabled={isProcessing}
+      onClick={() => handleReceive(purchase)}
+    >
+      {isProcessing ? "Receiving..." : "Receive"}
+    </button>
+  )}
 
-                      {isPending && (
-                        <>
-                          <button
-                            type="button"
-                            className="purchase-receive-btn"
-                            disabled={
-                              isProcessing
-                            }
-                            onClick={() =>
-                              handleReceive(
-                                purchase
-                              )
-                            }
-                          >
-                            {isProcessing
-                              ? "..."
-                              : "Receive"}
-                          </button>
+  {/* Cancel */}
+  {purchase.status === "pending" && (
+    <button
+      type="button"
+      className="purchase-cancel-btn"
+      disabled={isProcessing}
+      onClick={() => handleCancel(purchase)}
+    >
+      Cancel
+    </button>
+  )}
 
-                          <button
-                            type="button"
-                            className="purchase-cancel-btn"
-                            disabled={
-                              isProcessing
-                            }
-                            onClick={() =>
-                              handleCancel(
-                                purchase
-                              )
-                            }
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      )}
+  {/* Return */}
+  {(purchase.status === "received" ||
+    purchase.status === "partially_returned") && (
+    <button
+      type="button"
+      className="purchase-return-btn"
+      onClick={() => handleReturn(purchase)}
+    >
+      {purchase.status === "partially_returned"
+        ? "↺ Return More"
+        : "Return"}
+    </button>
+  )}
 
-                    </div>
-
+</div>
                   </div>
                 );
               }
@@ -617,6 +660,20 @@ const handlePayment = (
     fetchPurchases
   }
 />
+{returnModalOpen && returnPurchase && (
+  <PurchaseReturnModal
+    purchase={returnPurchase}
+    onClose={() => {
+      setReturnModalOpen(false);
+      setReturnPurchase(null);
+    }}
+    onSuccess={() => {
+      fetchPurchases();
+      setReturnModalOpen(false);
+      setReturnPurchase(null);
+    }}
+  />
+)}
     </div>
   );
 };

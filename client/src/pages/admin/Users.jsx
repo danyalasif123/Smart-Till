@@ -3,8 +3,8 @@ import "./Users.css";
 import toast, { Toaster } from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
-import UserTable from "../../components/Users/UserTable";
-import UserModal from "../../components/Users/UserModal";
+import UserTable from "../../components/users/UserTable";
+import UserModal from "../../components/users/UserModal";
 import {
   getUsers,
   deleteUser,

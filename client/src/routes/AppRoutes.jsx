@@ -17,6 +17,7 @@ import POS from "../pages/pos/POS";
 import Sales from "../pages/admin/Sales";
 import Inventory from "../pages/admin/Inventory";
 import Purchases from "../pages/admin/Purchases";
+
 import Reports from "../pages/admin/Reports";
 import SaleReturns from "../pages/admin/SaleReturns";
 import PurchaseReturn from "../pages/admin/PurchaseReturns"
@@ -176,7 +177,18 @@ function AppRoutes() {
       </AdminLayout>
     </ProtectedRoute>}
 />
+<Route
+  path="/admin/reports"
+  element={
+    <ProtectedRoute role="admin">
+      <AdminLayout>
+        <Reports />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
     </Routes>
+    
     
   );
 }

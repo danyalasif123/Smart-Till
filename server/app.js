@@ -19,13 +19,12 @@ import purchaseReturnRoutes from "./routes/purchaseReturnRoutes.js";
 
 const app = express();
 
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://smart-till-n7qw3g67s-danyalasif123s-projects.vercel.app",
-    ],
-    credentials: true,
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());

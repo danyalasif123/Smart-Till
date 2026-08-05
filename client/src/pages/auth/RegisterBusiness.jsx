@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerBusiness } from "../../services/businessService";
 import "./Auth.css";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 function RegisterBusiness() {
   const navigate = useNavigate();
 

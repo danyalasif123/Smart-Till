@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Suppliers.css";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import Button from "../../components/common/Button/Button";
 import Search from "../../components/common/Search/Search";
 

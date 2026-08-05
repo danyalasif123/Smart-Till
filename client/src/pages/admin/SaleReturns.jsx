@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./SaleReturns.css";
 
 import Search from "../../components/common/Search/Search";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import {
   getSaleReturns,
 } from "../../services/saleReturnService";

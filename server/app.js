@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://your-vercel-app.vercel.app"
+      "https://smart-till-n7qw3g67s-danyalasif123s-projects.vercel.app",
     ],
     credentials: true,
   })

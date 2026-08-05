@@ -6,63 +6,43 @@
 
 .navbar{
 
-    height:70px;
+    background:#fff;
 
-    background:#ffffff;
+    border-bottom:1px solid #e5e5e5;
 
-   
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   TOP BAR
+=========================== */
+
+.navbar-top{
+
+    height:56px;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:space-between;
 
-    padding:0 25px;
+    align-items:center;
 
+    padding:0 22px;
 }
 
 .logo h2{
 
     color:#0078d4;
 
+    font-size:22px;
+
+    font-weight:700;
 }
 
-.nav-links{
-
-    display:flex;
-
-    gap:25px;
-
-}
-
-.nav-links a{
-
-    text-decoration:none;
-
-    color:#444;
-
-    font-size:15px;
-
-    padding:8px 0;
-
-    transition:.3s;
-
-}
-
-.nav-links a:hover{
-
-    color:#0078d4;
-
-}
-
-.nav-links a.active{
-
-    color:#0078d4;
-
-    border-bottom:3px solid #0078d4;
-
-}
+/* ===========================
+   USER
+=========================== */
 
 .user-section{
 
@@ -70,28 +50,146 @@
 
     align-items:center;
 
-    gap:20px;
+    gap:14px;
+}
 
+.user-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    text-align:right;
+}
+
+.user-info span{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+.user-info small{
+
+    font-size:11px;
+
+    color:#777;
+
+    text-transform:capitalize;
 }
 
 .user-section button{
 
     background:#0078d4;
 
-    color:white;
+    color:#fff;
 
     border:none;
 
-    padding:8px 16px;
+    border-radius:4px;
+
+    height:34px;
+
+    padding:0 16px;
 
     cursor:pointer;
 
-    border-radius:4px;
+    font-size:12px;
 
+    font-weight:600;
+
+    transition:.2s;
 }
 
 .user-section button:hover{
 
     background:#0063b1;
+}
+
+/* ===========================
+   MENU
+=========================== */
+
+.navbar-menu{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:4px;
+
+    padding:0 16px;
+
+    height:44px;
+
+    overflow-x:auto;
+
+    border-top:1px solid #f2f2f2;
+
+    background:#fafafa;
+}
+
+.navbar-menu::-webkit-scrollbar{
+
+    height:6px;
+}
+
+.navbar-menu::-webkit-scrollbar-thumb{
+
+    background:#d0d0d0;
+
+    border-radius:20px;
+}
+
+.navbar-menu a{
+
+    text-decoration:none;
+
+    color:#555;
+
+    font-size:12px;
+
+    font-weight:500;
+
+    padding:8px 12px;
+
+    border-radius:4px;
+
+    white-space:nowrap;
+
+    transition:.2s;
+}
+
+.navbar-menu a:hover{
+
+    background:#eef6fc;
+
+    color:#0078d4;
+}
+
+.navbar-menu a.active{
+
+    background:#0078d4;
+
+    color:#fff;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+    .navbar-top{
+
+        padding:0 15px;
+    }
+
+    .logo h2{
+
+        font-size:19px;
+    }
 
 }

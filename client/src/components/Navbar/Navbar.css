@@ -6,21 +6,14 @@
 
 .navbar{
 
-    background:#fff;
+    background:white;
 
-    border-bottom:1px solid #e5e5e5;
-
-    display:flex;
-    flex-direction:column;
+    border-bottom:1px solid #dcdcdc;
 }
-
-/* ===========================
-   TOP BAR
-=========================== */
 
 .navbar-top{
 
-    height:56px;
+    height:58px;
 
     display:flex;
 
@@ -28,168 +21,119 @@
 
     align-items:center;
 
-    padding:0 22px;
+    padding:0 20px;
 }
 
-.logo h2{
+.navbar-top h2{
 
     color:#0078d4;
 
     font-size:22px;
-
-    font-weight:700;
 }
 
-/* ===========================
-   USER
-=========================== */
+.navbar-search{
 
-.user-section{
+    width:380px;
+
+    height:36px;
+
+    border:1px solid #ccc;
+
+    border-radius:4px;
+
+    padding:0 14px;
+
+    outline:none;
+}
+
+.navbar-search:focus{
+
+    border-color:#0078d4;
+}
+
+.navbar-user{
 
     display:flex;
 
     align-items:center;
 
-    gap:14px;
+    gap:16px;
 }
 
-.user-info{
-
-    display:flex;
-
-    flex-direction:column;
-
-    text-align:right;
-}
-
-.user-info span{
+.navbar-user span{
 
     font-size:13px;
 
     font-weight:600;
-
-    color:#333;
 }
 
-.user-info small{
-
-    font-size:11px;
-
-    color:#777;
-
-    text-transform:capitalize;
-}
-
-.user-section button{
-
-    background:#0078d4;
-
-    color:#fff;
-
-    border:none;
-
-    border-radius:4px;
+.navbar-user button{
 
     height:34px;
 
+    border:none;
+
+    background:#0078d4;
+
+    color:white;
+
     padding:0 16px;
 
+    border-radius:4px;
+
     cursor:pointer;
-
-    font-size:12px;
-
-    font-weight:600;
-
-    transition:.2s;
 }
 
-.user-section button:hover{
+.navbar-bottom{
 
-    background:#0063b1;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    height:52px;
+
+    background:#fafafa;
+
+    border-top:1px solid #f2f2f2;
 }
 
-/* ===========================
-   MENU
-=========================== */
-
-.navbar-menu{
+.nav-link{
 
     display:flex;
 
     align-items:center;
 
-    gap:4px;
-
-    padding:0 16px;
-
-    height:44px;
-
-    overflow-x:auto;
-
-    border-top:1px solid #f2f2f2;
-
-    background:#fafafa;
-}
-
-.navbar-menu::-webkit-scrollbar{
-
-    height:6px;
-}
-
-.navbar-menu::-webkit-scrollbar-thumb{
-
-    background:#d0d0d0;
-
-    border-radius:20px;
-}
-
-.navbar-menu a{
+    gap:8px;
 
     text-decoration:none;
 
-    color:#555;
+    color:#444;
 
-    font-size:12px;
+    padding:0 14px;
 
-    font-weight:500;
-
-    padding:8px 12px;
+    height:40px;
 
     border-radius:4px;
 
-    white-space:nowrap;
+    font-size:13px;
 
-    transition:.2s;
+    font-weight:500;
 }
 
-.navbar-menu a:hover{
+.nav-link:hover{
 
     background:#eef6fc;
 
     color:#0078d4;
 }
 
-.navbar-menu a.active{
+.nav-link.active{
 
     background:#0078d4;
 
-    color:#fff;
-}
-
-/* ===========================
-   RESPONSIVE
-=========================== */
-
-@media(max-width:900px){
-
-    .navbar-top{
-
-        padding:0 15px;
-    }
-
-    .logo h2{
-
-        font-size:19px;
-    }
-
+    color:white;
 }

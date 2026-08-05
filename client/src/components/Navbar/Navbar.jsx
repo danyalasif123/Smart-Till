@@ -1,110 +1,112 @@
 import "./Navbar.css";
-import {
-  NavLink,
-  useNavigate,
-} from "react-router-dom";
+
+import { NavLink } from "react-router-dom";
+
+import { navItems } from "./navItems";
+
+import DropdownMenu from "./DropdownMenu";
 
 import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
-  const { user, logoutUser } = useAuth();
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logoutUser();
-    navigate("/", { replace: true });
-  };
+    const { user, logoutUser } = useAuth();
 
-  return (
-    <header className="navbar">
+    return (
 
-      {/* TOP BAR */}
+        <header className="navbar">
 
-      <div className="navbar-top">
+            <div className="navbar-top">
 
-        <div className="logo">
-          <h2>SmartTill</h2>
-        </div>
+                <h2>
+                    SmartTill
+                </h2>
 
-        <div className="user-section">
+                <input
+                    placeholder="Search..."
+                    className="navbar-search"
+                />
 
-          <div className="user-info">
-            <span>{user?.name}</span>
-            <small>{user?.role}</small>
-          </div>
+                <div className="navbar-user">
 
-          <button onClick={handleLogout}>
-            Logout
-          </button>
+                    <span>
 
-        </div>
+                        {user?.name}
 
-      </div>
+                    </span>
 
-      {/* MENU */}
+                    <button
+                        onClick={logoutUser}
+                    >
+                        Logout
+                    </button>
 
-      <nav className="navbar-menu">
+                </div>
 
-        <NavLink to="/admin">
-          Dashboard
-        </NavLink>
+            </div>
 
-        <NavLink to="/admin/pos">
-          POS
-        </NavLink>
+            <div className="navbar-bottom">
 
-        <NavLink to="/admin/sales">
-          Sales
-        </NavLink>
+                {
 
-        <NavLink to="/admin/sale-returns">
-          Sale Returns
-        </NavLink>
+                    navItems.map((item) => {
 
-        <NavLink to="/admin/purchases">
-          Purchases
-        </NavLink>
+                        if (item.children) {
 
-        <NavLink to="/admin/purchase-returns">
-          Purchase Returns
-        </NavLink>
+                            return (
 
-        <NavLink to="/admin/products">
-          Products
-        </NavLink>
+                                <DropdownMenu
 
-        <NavLink to="/admin/categories">
-          Categories
-        </NavLink>
+                                    key={item.label}
 
-        <NavLink to="/admin/inventory">
-          Inventory
-        </NavLink>
+                                    title={item.label}
 
-        <NavLink to="/admin/customers">
-          Customers
-        </NavLink>
+                                    icon={item.icon}
 
-        <NavLink to="/admin/suppliers">
-          Suppliers
-        </NavLink>
+                                    children={item.children}
 
-        <NavLink to="/admin/users">
-          Users
-        </NavLink>
+                                />
 
-        <NavLink to="/admin/reports">
-          Reports
-        </NavLink>
+                            );
 
-        <NavLink to="/admin/settings">
-          Settings
-        </NavLink>
+                        }
 
-      </nav>
+                        const Icon = item.icon;
 
-    </header>
-  );
+                        return (
+
+                            <NavLink
+
+                                key={item.to}
+
+                                to={item.to}
+
+                                className="nav-link"
+
+                            >
+
+                                <Icon />
+
+                                <span>
+
+                                    {item.label}
+
+                                </span>
+
+                            </NavLink>
+
+                        );
+
+                    })
+
+                }
+
+            </div>
+
+        </header>
+
+    );
+
 }
 
 export default Navbar;

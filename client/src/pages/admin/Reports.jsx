@@ -162,14 +162,18 @@ const Reports = () => {
       // SALES
       // ======================================
 
-      if (type === "sales") {
+     // ======================================
+// SALES
+// ======================================
 
-        response =
-          await getSalesReport(
-            params
-          );
+if (type === "sales") {
 
-      }
+  response = await getSalesReport(params);
+
+  // DEBUG: check what backend returns
+  console.log("SALES REPORT RESPONSE:", response);
+
+}
 
 
       // ======================================

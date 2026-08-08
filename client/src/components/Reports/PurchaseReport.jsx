@@ -1,202 +1,304 @@
 import {
   formatCurrency,
-  formatPercent,
+  formatDate,
+  formatText,
 } from "../../utils/reportFormatters";
 
-const ProfitReport = ({ report }) => {
-  const summary =
-    report?.summary || {};
+const PurchaseReport = ({ report }) => {
+  const purchases = report?.purchases || [];
+
+  // =========================================
+  // FALLBACK CALCULATIONS
+  // =========================================
+
+  const calculatedTotal = purchases.reduce(
+    (sum, purchase) =>
+      sum + Number(purchase.total || 0),
+    0
+  );
+
+  const calculatedSubtotal = purchases.reduce(
+    (sum, purchase) =>
+      sum + Number(purchase.subtotal || 0),
+    0
+  );
+
+  const calculatedDiscount = purchases.reduce(
+    (sum, purchase) =>
+      sum + Number(purchase.discount || 0),
+    0
+  );
+
+  const calculatedTax = purchases.reduce(
+    (sum, purchase) =>
+      sum + Number(purchase.tax || 0),
+    0
+  );
+
+  const calculatedItems = purchases.reduce(
+    (sum, purchase) =>
+      sum + Number(purchase.totalItems || 0),
+    0
+  );
+
+  // =========================================
+  // SUMMARY WITH FALLBACKS
+  // =========================================
+
+  const summary = {
+    totalPurchases:
+      report?.summary?.totalPurchases > 0
+        ? report.summary.totalPurchases
+        : calculatedTotal,
+
+    totalTransactions:
+      report?.summary?.totalTransactions > 0
+        ? report.summary.totalTransactions
+        : purchases.length,
+
+    averagePurchase:
+      report?.summary?.averagePurchase > 0
+        ? report.summary.averagePurchase
+        : purchases.length > 0
+        ? calculatedTotal / purchases.length
+        : 0,
+
+    totalItems:
+      report?.summary?.totalItems > 0
+        ? report.summary.totalItems
+        : calculatedItems,
+
+    subtotal:
+      report?.summary?.subtotal > 0
+        ? report.summary.subtotal
+        : calculatedSubtotal,
+
+    discount:
+      report?.summary?.discount > 0
+        ? report.summary.discount
+        : calculatedDiscount,
+
+    tax:
+      report?.summary?.tax > 0
+        ? report.summary.tax
+        : calculatedTax,
+  };
 
   return (
     <>
 
+      {/* SUMMARY */}
+
       <div className="report-summary-grid">
 
         <div className="report-summary-card">
-          <span>Revenue</span>
+          <span>Total Purchases</span>
 
           <strong>
             {formatCurrency(
-              summary.productRevenue
+              summary.totalPurchases
             )}
           </strong>
 
           <small>
-            Product sales before discounts
+            Purchase value in selected period
           </small>
         </div>
 
 
         <div className="report-summary-card">
-          <span>Cost of Goods</span>
+          <span>Transactions</span>
 
           <strong>
-            {formatCurrency(
-              summary.cogs
-            )}
+            {summary.totalTransactions}
           </strong>
 
           <small>
-            Cost of products sold
+            Purchase orders created
           </small>
         </div>
 
 
         <div className="report-summary-card">
-          <span>Gross Profit</span>
+          <span>Average Purchase</span>
 
           <strong>
             {formatCurrency(
-              summary.grossProfit
+              summary.averagePurchase
             )}
           </strong>
 
           <small>
-            Revenue minus discount and
-            product cost
+            Average purchase order value
           </small>
         </div>
 
 
         <div className="report-summary-card">
-          <span>Profit Margin</span>
+          <span>Items Purchased</span>
 
           <strong>
-            {formatPercent(
-              summary.profitMargin
-            )}
+            {summary.totalItems}
           </strong>
 
           <small>
-            Gross profit percentage
+            Total product units purchased
           </small>
         </div>
 
       </div>
 
 
+      {/* FINANCIAL */}
+
       <div className="report-financial-summary">
+
+        <div>
+          <span>Subtotal</span>
+
+          <strong>
+            {formatCurrency(summary.subtotal)}
+          </strong>
+        </div>
+
 
         <div>
           <span>Discounts</span>
 
           <strong>
-            {formatCurrency(
-              summary.discount
-            )}
+            {formatCurrency(summary.discount)}
           </strong>
         </div>
 
-        <div>
-          <span>Transactions</span>
-
-          <strong>
-            {summary.transactions || 0}
-          </strong>
-        </div>
 
         <div>
-          <span>Items Sold</span>
+          <span>Tax</span>
 
           <strong>
-            {summary.itemsSold || 0}
+            {formatCurrency(summary.tax)}
           </strong>
         </div>
 
       </div>
 
 
+      {/* SUPPLIER BREAKDOWN */}
+
       <div className="report-section">
 
         <div className="report-section-header">
-          <h2>
-            Product Profitability
-          </h2>
+          <h2>Supplier Breakdown</h2>
 
-          <span>
-            Revenue, cost and profit by
-            product
-          </span>
+          <span>Purchases grouped by supplier</span>
         </div>
 
 
-        <div className="profit-table-wrapper">
+        {report.supplierBreakdown?.length > 0 ? (
 
-          <div className="profit-table-header">
-            <div>Product</div>
-            <div>SKU</div>
-            <div>Qty</div>
-            <div>Revenue</div>
-            <div>Cost</div>
-            <div>Profit</div>
-            <div>Margin</div>
+          <div className="report-breakdown-list">
+
+            {report.supplierBreakdown.map((item) => (
+
+              <div
+                className="report-breakdown-row"
+                key={item.supplierId || item.supplierName}
+              >
+
+                <div>
+                  <strong>
+                    {item.supplierName}
+                  </strong>
+
+                  <span>
+                    {item.transactions} purchases
+                  </span>
+                </div>
+
+                <strong>
+                  {formatCurrency(item.amount)}
+                </strong>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        ) : (
+
+          <div className="report-empty">
+            No supplier data available.
+          </div>
+
+        )}
+
+      </div>
+
+
+      {/* RECENT PURCHASES */}
+
+      <div className="report-section">
+
+        <div className="report-section-header">
+          <h2>Recent Purchases</h2>
+
+          <span>Latest supplier purchase orders</span>
+        </div>
+
+
+        <div className="report-sales-table">
+
+          <div className="report-sales-header">
+            <div>Purchase</div>
+            <div>Date</div>
+            <div>Supplier</div>
+            <div>Items</div>
+            <div>Reference</div>
+            <div>Total</div>
           </div>
 
 
-          {report.products
-            ?.length > 0 ? (
+          {purchases.length > 0 ? (
 
-            report.products.map(
-              (product) => (
+            purchases.map((purchase) => (
 
-                <div
-                  className="profit-table-row"
-                  key={
-                    product.productId ||
-                    product.productName
-                  }
-                >
+              <div
+                className="report-sales-row"
+                key={purchase._id}
+              >
 
-                  <div>
-                    <strong>
-                      {
-                        product.productName
-                      }
-                    </strong>
-                  </div>
-
-                  <div>
-                    {product.sku || "-"}
-                  </div>
-
-                  <div>
-                    {product.quantitySold}
-                  </div>
-
-                  <div>
-                    {formatCurrency(
-                      product.revenue
-                    )}
-                  </div>
-
-                  <div>
-                    {formatCurrency(
-                      product.cost
-                    )}
-                  </div>
-
-                  <div className="profit-value">
-                    {formatCurrency(
-                      product.profit
-                    )}
-                  </div>
-
-                  <div>
-                    {formatPercent(
-                      product.margin
-                    )}
-                  </div>
-
+                <div className="report-sale-number">
+                  {purchase.purchaseNumber}
                 </div>
 
-              )
-            )
+                <div>
+                  {formatDate(purchase.createdAt)}
+                </div>
+
+                <div>
+                  {purchase.supplierId?.name || "-"}
+                </div>
+
+                <div>
+                  {purchase.totalItems || 0}
+                </div>
+
+                <div>
+                  {purchase.supplierReference || "-"}
+                </div>
+
+                <div className="report-money">
+                  {formatCurrency(purchase.total)}
+                </div>
+
+              </div>
+
+            ))
 
           ) : (
 
             <div className="report-table-empty">
-              No profit data found for
-              this period.
+              No purchases found.
             </div>
 
           )}
@@ -209,4 +311,4 @@ const ProfitReport = ({ report }) => {
   );
 };
 
-export default ProfitReport;
+export default PurchaseReport;

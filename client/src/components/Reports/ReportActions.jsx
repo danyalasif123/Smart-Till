@@ -270,11 +270,11 @@ const ReportActions = ({
       "purchases"
     ) {
 
-      return (
-        report.recentPurchases ||
-        []
-      ).map(
-        (purchase) => ({
+   return (
+  report.purchases ||
+  report.recentPurchases ||
+  []
+).map((purchase) => ({
 
           Purchase:
             purchase.purchaseNumber,

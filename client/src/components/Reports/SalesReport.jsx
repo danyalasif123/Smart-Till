@@ -7,12 +7,78 @@ import {
 } from "../../utils/reportFormatters";
 
 const SalesReport = ({ report }) => {
-  const summary =
-    report?.summary || {};
+  // ==========================================
+  // RECENT SALES
+  // ==========================================
+
+  const sales = report?.recentSales || [];
+
+  // ==========================================
+  // CALCULATE SUMMARY IF BACKEND RETURNS 0
+  // ==========================================
+
+  const calculatedSummary = {
+    totalSales: sales.reduce(
+      (sum, sale) => sum + Number(sale.total || 0),
+      0
+    ),
+
+    totalTransactions: sales.length,
+
+    averageSale:
+      sales.length > 0
+        ? sales.reduce(
+            (sum, sale) => sum + Number(sale.total || 0),
+            0
+          ) / sales.length
+        : 0,
+
+    totalItemsSold: sales.reduce(
+      (sum, sale) =>
+        sum +
+        (sale.items
+          ? sale.items.reduce(
+              (itemSum, item) =>
+                itemSum + Number(item.quantity || 0),
+              0
+            )
+          : 0),
+      0
+    ),
+
+    subtotal: sales.reduce(
+      (sum, sale) =>
+        sum + Number(sale.subtotal || sale.total || 0),
+      0
+    ),
+
+    discount: sales.reduce(
+      (sum, sale) => sum + Number(sale.discount || 0),
+      0
+    ),
+
+    tax: sales.reduce(
+      (sum, sale) => sum + Number(sale.tax || 0),
+      0
+    ),
+  };
+
+  // ==========================================
+  // USE BACKEND SUMMARY IF AVAILABLE
+  // ==========================================
+
+  const backendSummary = report?.summary || {};
+
+  const hasBackendData =
+    Number(backendSummary.totalSales || 0) > 0 ||
+    Number(backendSummary.totalTransactions || 0) > 0;
+
+  const summary = hasBackendData
+    ? backendSummary
+    : calculatedSummary;
 
   return (
     <>
-
       {/* SUMMARY */}
 
       <div className="report-summary-grid">
@@ -21,9 +87,7 @@ const SalesReport = ({ report }) => {
           <span>Total Sales</span>
 
           <strong>
-            {formatCurrency(
-              summary.totalSales
-            )}
+            {formatCurrency(summary.totalSales)}
           </strong>
 
           <small>
@@ -31,13 +95,11 @@ const SalesReport = ({ report }) => {
           </small>
         </div>
 
-
         <div className="report-summary-card">
           <span>Transactions</span>
 
           <strong>
-            {summary.totalTransactions ||
-              0}
+            {summary.totalTransactions}
           </strong>
 
           <small>
@@ -45,14 +107,11 @@ const SalesReport = ({ report }) => {
           </small>
         </div>
 
-
         <div className="report-summary-card">
           <span>Average Sale</span>
 
           <strong>
-            {formatCurrency(
-              summary.averageSale
-            )}
+            {formatCurrency(summary.averageSale)}
           </strong>
 
           <small>
@@ -60,12 +119,11 @@ const SalesReport = ({ report }) => {
           </small>
         </div>
 
-
         <div className="report-summary-card">
           <span>Items Sold</span>
 
           <strong>
-            {summary.totalItemsSold || 0}
+            {summary.totalItemsSold}
           </strong>
 
           <small>
@@ -75,7 +133,6 @@ const SalesReport = ({ report }) => {
 
       </div>
 
-
       {/* FINANCIAL */}
 
       <div className="report-financial-summary">
@@ -84,36 +141,27 @@ const SalesReport = ({ report }) => {
           <span>Subtotal</span>
 
           <strong>
-            {formatCurrency(
-              summary.subtotal
-            )}
+            {formatCurrency(summary.subtotal)}
           </strong>
         </div>
-
 
         <div>
           <span>Discounts</span>
 
           <strong>
-            {formatCurrency(
-              summary.discount
-            )}
+            {formatCurrency(summary.discount)}
           </strong>
         </div>
-
 
         <div>
           <span>Tax</span>
 
           <strong>
-            {formatCurrency(
-              summary.tax
-            )}
+            {formatCurrency(summary.tax)}
           </strong>
         </div>
 
       </div>
-
 
       {/* PAYMENT + SOURCE */}
 
@@ -129,9 +177,7 @@ const SalesReport = ({ report }) => {
             </span>
           </div>
 
-
-          {report.paymentBreakdown
-            ?.length > 0 ? (
+          {report.paymentBreakdown?.length > 0 ? (
 
             <div className="report-breakdown-list">
 
@@ -140,32 +186,24 @@ const SalesReport = ({ report }) => {
 
                   <div
                     className="report-breakdown-row"
-                    key={
-                      item.paymentMethod
-                    }
+                    key={item.paymentMethod}
                   >
 
                     <div>
                       <strong>
-                        {formatText(
-                          item.paymentMethod
-                        )}
+                        {formatText(item.paymentMethod)}
                       </strong>
 
                       <span>
-                        {item.transactions}{" "}
-                        transactions
+                        {item.transactions} transactions
                       </span>
                     </div>
 
                     <strong>
-                      {formatCurrency(
-                        item.amount
-                      )}
+                      {formatCurrency(item.amount)}
                     </strong>
 
                   </div>
-
                 )
               )}
 
@@ -181,7 +219,6 @@ const SalesReport = ({ report }) => {
 
         </div>
 
-
         <div className="report-section">
 
           <div className="report-section-header">
@@ -192,9 +229,7 @@ const SalesReport = ({ report }) => {
             </span>
           </div>
 
-
-          {report.sourceBreakdown
-            ?.length > 0 ? (
+          {report.sourceBreakdown?.length > 0 ? (
 
             <div className="report-breakdown-list">
 
@@ -208,25 +243,19 @@ const SalesReport = ({ report }) => {
 
                     <div>
                       <strong>
-                        {formatText(
-                          item.source
-                        )}
+                        {formatText(item.source)}
                       </strong>
 
                       <span>
-                        {item.transactions}{" "}
-                        transactions
+                        {item.transactions} transactions
                       </span>
                     </div>
 
                     <strong>
-                      {formatCurrency(
-                        item.amount
-                      )}
+                      {formatCurrency(item.amount)}
                     </strong>
 
                   </div>
-
                 )
               )}
 
@@ -244,21 +273,15 @@ const SalesReport = ({ report }) => {
 
       </div>
 
-
       {/* TOP PRODUCTS */}
 
       <div className="report-section">
 
         <div className="report-section-header">
-          <h2>
-            Top Selling Products
-          </h2>
+          <h2>Top Selling Products</h2>
 
-          <span>
-            Top 10 by quantity
-          </span>
+          <span>Top 10 by quantity</span>
         </div>
-
 
         <div className="report-table">
 
@@ -269,9 +292,7 @@ const SalesReport = ({ report }) => {
             <div>Revenue</div>
           </div>
 
-
-          {report.topProducts
-            ?.length > 0 ? (
+          {report.topProducts?.length > 0 ? (
 
             report.topProducts.map(
               (product) => (
@@ -285,9 +306,7 @@ const SalesReport = ({ report }) => {
                 >
                   <div>
                     <strong>
-                      {
-                        product.productName
-                      }
+                      {product.productName}
                     </strong>
                   </div>
 
@@ -296,18 +315,13 @@ const SalesReport = ({ report }) => {
                   </div>
 
                   <div>
-                    {
-                      product.quantitySold
-                    }
+                    {product.quantitySold}
                   </div>
 
                   <div className="report-money">
-                    {formatCurrency(
-                      product.revenue
-                    )}
+                    {formatCurrency(product.revenue)}
                   </div>
                 </div>
-
               )
             )
 
@@ -323,7 +337,6 @@ const SalesReport = ({ report }) => {
 
       </div>
 
-
       {/* RECENT SALES */}
 
       <div className="report-section">
@@ -331,11 +344,8 @@ const SalesReport = ({ report }) => {
         <div className="report-section-header">
           <h2>Recent Sales</h2>
 
-          <span>
-            Latest transactions
-          </span>
+          <span>Latest transactions</span>
         </div>
-
 
         <div className="report-sales-table">
 
@@ -349,60 +359,45 @@ const SalesReport = ({ report }) => {
             <div>Total</div>
           </div>
 
+          {sales.length > 0 ? (
 
-          {report.recentSales
-            ?.length > 0 ? (
+            sales.map((sale) => (
 
-            report.recentSales.map(
-              (sale) => (
+              <div
+                className="report-sales-row"
+                key={sale._id}
+              >
 
-                <div
-                  className="report-sales-row"
-                  key={sale._id}
-                >
-
-                  <div className="report-sale-number">
-                    {sale.saleNumber}
-                  </div>
-
-                  <div>
-                    {formatDate(
-                      sale.createdAt
-                    )}
-                  </div>
-
-                  <div>
-                    {sale.customerId?.name ||
-                      "Walk-in"}
-                  </div>
-
-                  <div>
-                    {sale.cashierId?.name ||
-                      "-"}
-                  </div>
-
-                  <div>
-                    {formatText(
-                      sale.paymentMethod
-                    )}
-                  </div>
-
-                  <div>
-                    {formatText(
-                      sale.source
-                    )}
-                  </div>
-
-                  <div className="report-money">
-                    {formatCurrency(
-                      sale.total
-                    )}
-                  </div>
-
+                <div className="report-sale-number">
+                  {sale.saleNumber}
                 </div>
 
-              )
-            )
+                <div>
+                  {formatDate(sale.createdAt)}
+                </div>
+
+                <div>
+                  {sale.customerId?.name || "Walk-in"}
+                </div>
+
+                <div>
+                  {sale.cashierId?.name || "-"}
+                </div>
+
+                <div>
+                  {formatText(sale.paymentMethod)}
+                </div>
+
+                <div>
+                  {formatText(sale.source)}
+                </div>
+
+                <div className="report-money">
+                  {formatCurrency(sale.total)}
+                </div>
+
+              </div>
+            ))
 
           ) : (
 
@@ -415,7 +410,6 @@ const SalesReport = ({ report }) => {
         </div>
 
       </div>
-
     </>
   );
 };

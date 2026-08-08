@@ -1,19 +1,32 @@
-.chart-card{
-
-    background:#fff;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-
-    height:305px;
-
+.chart-card {
+  width: 100%;
+  min-width: 0;
+  height: 305px;
+  padding: 20px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.chart-header{
+.chart-header {
+  margin-bottom: 15px;
+}
 
-    margin-bottom:15px;
+.chart-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+}
 
+@media (max-width: 600px) {
+  .chart-card {
+    height: 280px;
+    padding: 16px 10px 16px 6px;
+  }
+
+  .chart-header {
+    padding-left: 10px;
+  }
 }

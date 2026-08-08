@@ -1,205 +1,150 @@
-.recent-purchases-card{
-
-    background:#fff;
-
-    border-radius:14px;
-
-    padding:28px;
-
-    max-height:270px;
-
-    width:400px;
-
-    box-shadow:0 4px 18px rgba(0,0,0,.08);
-
+.recent-purchases-card {
+  width: 100%;
+  min-width: 0;
+  padding: 22px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* ===========================
-   HEADER
-=========================== */
-
-.recent-purchases-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:25px;
-
+.recent-purchases-header {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.recent-purchases-header h2{
-
-    margin:0;
-
-    font-size:12px;
-
-    font-weight:700;
-
+.recent-purchases-header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.recent-purchases-header p{
-
-    margin-top:5px;
-
-    color:#9ca3af;
-
-    font-size:11px;
-
+.recent-purchases-header p {
+  margin: 5px 0 0;
+  color: #9ca3af;
+  font-size: 11px;
 }
 
-/* ===========================
-   VIEW ALL
-=========================== */
-
-.view-all-purchases{
-
-    text-decoration:none;
-
-    font-size:11px;
-
-    color:#6b7280;
-
-    font-weight:200;
-
-    transition:.2s;
-
+.view-all-purchases {
+  flex-shrink: 0;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.view-all-purchases:hover{
-
-    color:#2563eb;
-
+.view-all-purchases:hover {
+  color: #2563eb;
 }
 
-/* ===========================
-   EMPTY
-=========================== */
-
-.recent-purchases-empty{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    height:220px;
-
-    color:#9ca3af;
-
+.recent-purchases-empty {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  text-align: center;
 }
 
-/* ===========================
-   PURCHASE CARD
-=========================== */
-
-.recent-purchase-item{
-
-    background:#fafafa;
-
-    border:1px solid #ececec;
-
-    border-radius:10px;
-
-    padding:18px 22px;
-
-    margin-bottom:14px;
-
-    transition:.2s;
-
+.recent-purchase-item {
+  min-width: 0;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  transition: 0.2s;
 }
 
-.recent-purchase-item:hover{
-
-    border-color:#d1d5db;
-
-    background:#f5f5f5;
-
+.recent-purchase-item:last-child {
+  margin-bottom: 0;
 }
 
-/* ===========================
-   TOP ROW
-=========================== */
-
-.purchase-top{
-
-    display:grid;
-
-    grid-template-columns:1fr auto auto;
-
-    align-items:center;
-
-    gap:25px;
-
-    margin-bottom:10px;
-
+.recent-purchase-item:hover {
+  background: #f5f5f5;
+  border-color: #d1d5db;
 }
 
-.purchase-number{
-
-    font-size:14px;
-
-    font-weight:200;
-
-    color:#444;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-
+.purchase-top {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
 }
 
-.purchase-amount{
-
-    font-size:11px;
-
-    font-weight:200;
-
-    color:#222;
-
+.purchase-number {
+  overflow: hidden;
+  color: #444;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.purchase-date{
-
-    font-size:11px;
-
-    color:#888;
-
+.purchase-amount,
+.purchase-date {
+  font-size: 11px;
+  white-space: nowrap;
 }
 
-/* ===========================
-   BOTTOM ROW
-=========================== */
-
-.purchase-bottom{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
+.purchase-amount {
+  color: #222;
 }
 
-.purchase-supplier{
-
-    font-size:12px;
-
-    color:#666;
-
+.purchase-date {
+  color: #888;
 }
 
-.purchase-status{
+.purchase-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-    font-size:12px;
+.purchase-supplier {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #666;
+  font-size: 12px;
+}
 
-    color:#888;
+.purchase-status {
+  flex-shrink: 0;
+  color: #888;
+  font-size: 12px;
+  text-transform: capitalize;
+}
 
-    text-transform:capitalize;
+@media (max-width: 600px) {
+  .recent-purchases-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
 
+  .recent-purchase-item {
+    padding: 14px;
+  }
+
+  .purchase-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+  }
+
+  .purchase-date {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 380px) {
+  .purchase-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
 }

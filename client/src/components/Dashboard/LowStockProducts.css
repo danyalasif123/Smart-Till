@@ -1,68 +1,89 @@
-.low-stock-card{
-    background:#fff;
-    border-radius:10px;
-    padding:16px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+.low-stock-card {
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.low-stock-header{
-    margin-bottom:10px;
+.low-stock-header {
+  margin-bottom: 10px;
 }
 
-.low-stock-header h2{
-    margin:0;
-    font-size:16px;
-    font-weight:600;
-    color:#111827;
+.low-stock-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.low-stock-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid #f1f5f9;
+.low-stock-row {
+  display: flex;
+  min-width: 0;
+  padding: 10px 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.low-stock-row:last-child{
-    border-bottom:none;
+.low-stock-row:last-child {
+  border-bottom: none;
 }
 
-.low-stock-row strong{
-    display:block;
-    font-size:14px;
-    font-weight:600;
-    color:#111827;
+.low-stock-row > div:first-child {
+  min-width: 0;
 }
 
-.low-stock-row p{
-    margin:2px 0 0;
-    font-size:12px;
-    color:#6b7280;
+.low-stock-row strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.low-stock-right{
-    display:flex;
-    align-items:center;
+.low-stock-row p {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+  color: #6b7280;
+  font-size: 12px;
 }
 
-.stock-badge{
-    min-width:34px;
-    height:26px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#ef4444;
-    color:#fff;
-    border-radius:14px;
-    font-size:12px;
-    font-weight:600;
-    padding:0 8px;
+.low-stock-right {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
 }
 
-.low-stock-empty{
-    text-align:center;
-    color:#16a34a;
-    font-size:13px;
-    padding:20px 0;
+.stock-badge {
+  display: flex;
+  min-width: 34px;
+  height: 26px;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: center;
+  background: #ef4444;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.low-stock-empty {
+  padding: 20px 0;
+  color: #16a34a;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .low-stock-card {
+    padding: 16px;
+  }
+
+  .low-stock-header h2 {
+    font-size: 14px;
+  }
 }

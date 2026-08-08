@@ -437,65 +437,96 @@
    RESPONSIVE
 ========================================= */
 /* =========================================
-   MOBILE RESPONSIVE
+   MOBILE IMPROVED
 ========================================= */
-
 @media (max-width: 768px) {
   .purchase-modal-overlay {
-    padding: 10px;
-    align-items: flex-start;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
   }
 
   .purchase-modal {
     width: 100%;
-    max-width: 100%;
-    max-height: 650px;
+    max-width: none;
 
-    border-radius: 8px;
+    /* Use the actual mobile viewport height */
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+
+    margin: 0;
+    border-radius: 0;
 
     display: flex;
     flex-direction: column;
-
     overflow: hidden;
   }
 
   .purchase-modal-header {
-    padding: 16px;
+    flex: 0 0 auto;
+    padding: 14px 16px;
   }
 
   .purchase-modal-header h2 {
     font-size: 16px;
   }
 
-  .purchase-modal-body {
-    flex: 1;
-    overflow-y: auto;
-
-    padding: 16px;
-
-    max-height: none;
+  .purchase-modal-header p {
+    font-size: 11px;
   }
+
+  /*
+   * Important: the form must fill the remaining modal height.
+   * This lets its body scroll while the footer stays visible.
+   */
+  .purchase-modal > form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.purchase-modal-body {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+}
+  
 
   .purchase-form-grid,
   .purchase-bottom-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .purchase-form-grid {
+    gap: 12px;
+  }
+
+  .purchase-bottom-grid {
+    gap: 18px;
+  }
+
+  .purchase-form-group,
+  .purchase-form-group input,
+  .purchase-form-group select,
+  .purchase-form-group textarea {
+    min-width: 0;
   }
 
   .purchase-products-heading {
     align-items: flex-start;
-    flex-direction: column;
-
     gap: 10px;
   }
 
   .purchase-add-product-btn {
-    width: 100%;
-    height: 36px;
+    flex-shrink: 0;
   }
 
-  /* Product table becomes stacked on mobile */
   .purchase-item-table {
-    border: none;
+    width: 100%;
     overflow: visible;
   }
 
@@ -504,36 +535,36 @@
   }
 
   .purchase-item-row {
-    min-width: auto;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 
-    display: grid;
-    grid-template-columns: 1fr;
-
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
 
-    margin-bottom: 12px;
-    padding: 14px;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
 
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-
-    background: #ffffff;
+  .purchase-item-row > div {
+    width: 100%;
+    min-width: 0;
   }
 
   .purchase-item-row input,
   .purchase-item-row select {
-    height: 38px;
-    font-size: 12px;
+    width: 100%;
   }
 
   .purchase-row-total {
     font-size: 13px;
-    text-align: right;
+    font-weight: 600;
+    color: #111827;
   }
 
   .purchase-remove-item {
     width: 100%;
-    height: 34px;
+    height: 36px;
   }
 
   .purchase-summary {
@@ -541,7 +572,8 @@
   }
 
   .purchase-summary-input {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
   }
 
   .purchase-summary-input input {
@@ -549,54 +581,56 @@
   }
 
   .purchase-modal-footer {
-    position: sticky;
-    bottom: 0;
+    position: static;
+    flex: 0 0 auto;
 
-    background: #ffffff;
+    padding:
+      12px
+      16px
+      calc(12px + env(safe-area-inset-bottom));
 
-    padding: 14px 16px;
-
+    background: #fff;
     border-top: 1px solid #e5e7eb;
 
     display: flex;
-    flex-direction: column-reverse;
-
     gap: 10px;
   }
 
   .purchase-modal-footer button {
-    width: 100%;
-    min-width: auto;
+    flex: 1;
+    min-width: 0;
     height: 40px;
-
     font-size: 12px;
   }
 }
 
-/* Extra small phones */
 @media (max-width: 480px) {
-  .purchase-modal-overlay {
-    padding: 6px;
+  .purchase-modal-header {
+    padding: 12px 14px;
   }
 
-  .purchase-modal-header,
-  .purchase-modal-body,
+  .purchase-modal-body {
+    padding: 12px 14px 24px;
+  }
+
   .purchase-modal-footer {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding:
+      12px
+      14px
+      calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .purchase-products-heading {
+    flex-direction: column;
+  }
+
+  .purchase-add-product-btn {
+    width: 100%;
   }
 
   .purchase-form-group input,
   .purchase-form-group select,
   .purchase-form-group textarea {
-    font-size: 12px;
-  }
-
-  .purchase-summary-total {
-    font-size: 14px;
-  }
-
-  .purchase-summary-total strong {
-    font-size: 18px;
+    font-size: 16px;
   }
 }

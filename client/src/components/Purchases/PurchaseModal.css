@@ -436,16 +436,167 @@
 /* =========================================
    RESPONSIVE
 ========================================= */
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .purchase-modal-overlay {
-    align-items: flex-start;
-
     padding: 10px;
+    align-items: flex-start;
+  }
+
+  .purchase-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 650px;
+
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+  }
+
+  .purchase-modal-header {
+    padding: 16px;
+  }
+
+  .purchase-modal-header h2 {
+    font-size: 16px;
+  }
+
+  .purchase-modal-body {
+    flex: 1;
+    overflow-y: auto;
+
+    padding: 16px;
+
+    max-height: none;
   }
 
   .purchase-form-grid,
   .purchase-bottom-grid {
     grid-template-columns: 1fr;
+  }
+
+  .purchase-products-heading {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .purchase-add-product-btn {
+    width: 100%;
+    height: 36px;
+  }
+
+  /* Product table becomes stacked on mobile */
+  .purchase-item-table {
+    border: none;
+    overflow: visible;
+  }
+
+  .purchase-item-header {
+    display: none;
+  }
+
+  .purchase-item-row {
+    min-width: auto;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+    padding: 14px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+
+    background: #ffffff;
+  }
+
+  .purchase-item-row input,
+  .purchase-item-row select {
+    height: 38px;
+    font-size: 12px;
+  }
+
+  .purchase-row-total {
+    font-size: 13px;
+    text-align: right;
+  }
+
+  .purchase-remove-item {
+    width: 100%;
+    height: 34px;
+  }
+
+  .purchase-summary {
+    padding: 14px;
+  }
+
+  .purchase-summary-input {
+    grid-template-columns: 1fr;
+  }
+
+  .purchase-summary-input input {
+    width: 100%;
+  }
+
+  .purchase-modal-footer {
+    position: sticky;
+    bottom: 0;
+
+    background: #ffffff;
+
+    padding: 14px 16px;
+
+    border-top: 1px solid #e5e7eb;
+
+    display: flex;
+    flex-direction: column-reverse;
+
+    gap: 10px;
+  }
+
+  .purchase-modal-footer button {
+    width: 100%;
+    min-width: auto;
+    height: 40px;
+
+    font-size: 12px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+  .purchase-modal-overlay {
+    padding: 6px;
+  }
+
+  .purchase-modal-header,
+  .purchase-modal-body,
+  .purchase-modal-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .purchase-form-group input,
+  .purchase-form-group select,
+  .purchase-form-group textarea {
+    font-size: 12px;
+  }
+
+  .purchase-summary-total {
+    font-size: 14px;
+  }
+
+  .purchase-summary-total strong {
+    font-size: 18px;
   }
 }

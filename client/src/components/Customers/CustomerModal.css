@@ -330,7 +330,7 @@
   .customer-modal {
     width: 100%;
     max-width: 100%;
-    max-height: calc(100vh - 20px);
+    max-height: 650px;
 
     /* REMOVE THIS */
     /* min-height: 100vh; */

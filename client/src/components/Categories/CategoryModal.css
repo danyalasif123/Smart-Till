@@ -222,7 +222,7 @@
   .category-modal {
     width: 100%;
     max-width: 100%;
-    max-height: calc(100vh - 20px);
+  max-height: 650px;
 
     padding: 16px;
 

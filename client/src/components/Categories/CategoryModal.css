@@ -209,15 +209,33 @@
    RESPONSIVE
 ========================================= */
 
+/* =========================================
+   RESPONSIVE
+========================================= */
+
 @media (max-width: 600px) {
   .category-modal-overlay {
-    padding: 12px;
+    padding: 10px;
+    align-items: flex-start;
   }
 
   .category-modal {
     width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
 
     padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+  }
+
+  .category-modal form {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 2px;
   }
 
   .category-modal-header h2 {
@@ -225,6 +243,22 @@
   }
 
   .category-modal-footer {
-    flex-wrap: wrap;
+    position: sticky;
+    bottom: 0;
+
+    background: var(--surface);
+
+    padding-top: 12px;
+    margin-top: 12px;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+    gap: 10px;
+  }
+
+  .category-modal-footer button {
+    flex: 1;
+    width: 100%;
   }
 }

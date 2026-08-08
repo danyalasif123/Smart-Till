@@ -317,27 +317,63 @@
    MOBILE
 ========================================= */
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 480px) {
   .customer-modal-overlay {
-    padding: 0;
+    padding: 10px;
+    align-items: flex-start;
   }
 
   .customer-modal {
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
 
-    min-height: 100vh;
+    /* REMOVE THIS */
+    /* min-height: 100vh; */
 
     margin: 0;
+    padding: 14px;
 
-    border: none;
-    border-radius: 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+  }
+
+  .customer-modal form {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 2px;
   }
 
   .customer-modal-header h2 {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .customer-modal-footer {
-    flex-wrap: wrap;
+    position: sticky;
+    bottom: 0;
+
+    background: var(--surface);
+
+    padding-top: 12px;
+    margin-top: 12px;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+    gap: 10px;
+  }
+
+  .customer-modal-footer button {
+    flex: 1;
+    width: 100%;
   }
 }

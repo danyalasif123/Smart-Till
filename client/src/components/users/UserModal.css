@@ -141,3 +141,118 @@
 
   border-top: 1px solid var(--border);
 }
+/* Prevent padding from increasing the modal's actual width */
+.user-modal {
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-start;
+
+    padding: 12px;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .user-modal {
+    width: 100%;
+    max-width: 550px;
+
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+
+    margin: auto;
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+  }
+
+  .modal-header {
+    flex: 0 0 auto;
+    margin-bottom: 14px;
+  }
+
+  .user-modal form {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    padding-right: 2px;
+  }
+
+  .modal-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+
+    flex: 0 0 auto;
+
+    margin-top: 6px;
+    padding: 12px 0 0;
+
+    background: var(--surface);
+  }
+
+  .modal-footer button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /*
+   * A 16px control font prevents automatic form zoom
+   * on iPhone browsers.
+   */
+  .user-modal input,
+  .user-modal select,
+  .user-modal textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0;
+  }
+
+  .user-modal {
+    max-width: none;
+
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+
+    margin: 0;
+    padding:
+      14px
+      14px
+      calc(14px + env(safe-area-inset-bottom));
+
+    border-radius: 0;
+  }
+
+  .modal-header h2 {
+    font-size: 17px;
+  }
+
+  .user-modal form {
+    gap: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 6px;
+  }
+
+  .modal-footer {
+    gap: 8px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

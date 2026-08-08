@@ -63,3 +63,129 @@
     font-size: 11px;
     font-weight: 600;
 }
+/* Keep long values inside their columns */
+.table-cell {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.table-cell.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  border: 1px solid #2563eb;
+  background: #fff;
+  color: #2563eb;
+}
+
+.delete-btn {
+  border: 1px solid #dc2626;
+  background: #fff;
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .user-table {
+    border: none;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+
+    min-height: 0;
+    margin-bottom: 12px;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+
+    overflow: hidden;
+  }
+
+  .table-cell {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+    padding: 10px 12px;
+
+    border-bottom: 1px solid #f1f1f1;
+    overflow-wrap: anywhere;
+  }
+
+  .table-cell::before {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .table-cell:nth-child(1)::before {
+    content: "Name";
+  }
+
+  .table-cell:nth-child(2)::before {
+    content: "Email";
+  }
+
+  .table-cell:nth-child(3)::before {
+    content: "Role";
+  }
+
+  .table-cell:nth-child(4)::before {
+    content: "Status";
+  }
+
+  .table-cell.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+
+    padding: 12px;
+    border-bottom: none;
+  }
+
+  .table-cell.actions::before {
+    display: none;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    width: 100%;
+    min-height: 38px;
+  }
+
+  .table-empty {
+    padding: 24px 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 420px) {
+  .table-cell {
+    grid-template-columns: 72px minmax(0, 1fr);
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+}

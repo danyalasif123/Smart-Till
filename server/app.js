@@ -23,8 +23,9 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://smart-till-zeta.vercel.app",
       "http://localhost:5173",
+      "https://smart-till-zeta.vercel.app",
+      "https://smart-till-a6lwy6ft1-danyalasif123s-projects.vercel.app"
     ],
     credentials: true,
   })
